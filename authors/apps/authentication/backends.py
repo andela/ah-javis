@@ -6,9 +6,9 @@ from rest_framework import authentication, exceptions
 
 from .models import User
 
-"""Configure JWT Here"""
 class JWTAuthentication:
-    ''' JWTAuthentication imprements jwt authentication '''
+    """ JWTAuthentication implement jwt authentication. """
 
     def authenticate(self, request):
         pass
+
