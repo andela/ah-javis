@@ -82,11 +82,11 @@ WSGI_APPLICATION = 'authors.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jarvis', # Database name
+        'NAME': 'jarvis', # Database name of your liking
         'USER': 'postgres', # Your postgresql username
         'PASSWORD': '123456', # Your postgresql password
         'HOST': '127.0.0.1', # Localhost for develop
-        'PORT': '5432', # Postgresql port
+        'PORT': '', # Postgresql port
     }
 }
 
