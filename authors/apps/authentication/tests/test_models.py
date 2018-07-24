@@ -42,6 +42,11 @@ class UserModelTest(TestCase):
         with self.assertRaises(TypeError):
             User.objects.create_user(email=None, username=None, password=None)
 
+    def test_email_must_be_provided(self):
+        """ test_email_must_be_provided(). """
+        with self.assertRaises(TypeError):
+            User.objects.create_user(email=None, username="testuser", password=None)
+
 
     def test_user_can_updated(self):
         """ test_model_can_update() user can be updated. """
@@ -56,3 +61,17 @@ class UserModelTest(TestCase):
         """ test_timestamp_added() The created_at should be added by default. """
         user = create_user()
         self.assertIsNotNone(user.created_at)
+
+    def test_create_superuser(self):
+        """ test_create_superuser() Test that user model can create superuser user. """
+        user = User.objects.create_superuser(password="password",
+                                             email="superuser@mail.com",
+                                             username="superuser")
+        self.assertTrue(user.is_superuser)
+
+    def test_create_superuser_password(self):
+        """ Test test_create_superuser_password() must have password. """
+        with self.assertRaises(TypeError):
+            User.objects.create_superuser(password=None,
+                                          email="superuser@mail.com",
+                                          username="superuser")
