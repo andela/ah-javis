@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+from os import getenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -82,9 +83,9 @@ WSGI_APPLICATION = 'authors.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jarvis', # Database name of your liking
-        'USER': 'postgres', # Your postgresql username
-        'PASSWORD': '123456', # Your postgresql password
+        'NAME': getenv('DEV_DATABASE_NAME'), # Your databse name from the .env file
+        'USER': getenv('DEV_DATABASE_USER'), # Your postgresql username from the .env file
+        'PASSWORD': getenv('DEV_DATABASE_PASSWORD'), # Your postgresql password from the .env file
         'HOST': '127.0.0.1', # Localhost for develop
         'PORT': '', # Postgresql port
     }
