@@ -13,14 +13,6 @@ TEST_USER = {
     }
 }
 
-def register_user(self, user):
-    """ Register User. """
-    self.client.post(
-        reverse("authentication:registration"),
-        user,
-        format='json')
-
-
 
 class RegisterViewTest(APITestCase):
     """ RegisterViewTest tests the view functinality for register. """
@@ -113,9 +105,16 @@ class RegisterViewTest(APITestCase):
 class TestLogin(APITestCase):
     """ Tests the view function for login. """
 
+    def register_user(self, user):
+        """ Register User. """
+        self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
     def test_user_can_login(self):
         """ Tests that a registered user can login. """
-        register_user(self, TEST_USER)
+        self.register_user(TEST_USER)
         response = self.client.post(
             reverse("authentication:login"), TEST_USER, format='json')
 
@@ -161,7 +160,7 @@ class TestLogin(APITestCase):
 
     def test_user_is_active(self):
         """ Tests that the user logging in us not a banned user. """
-        register_user(self, TEST_USER)
+        self.register_user(TEST_USER)
         user = User.objects.get()
         user.is_active = False
         user.save()
