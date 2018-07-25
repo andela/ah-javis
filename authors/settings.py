@@ -11,9 +11,17 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import environ
-root = environ.Path(__file__) - 2 # t folder back (/a/b/c/ - 3 = /)
-env = environ.Env(DEBUG=(bool, False),) # set default values and casting
-environ.Env.read_env(root('.env')) # reading .env file
+
+"""
+Create a .env file in you root folder(ah-jarvis/)
+The .env file holds all the details of the database, secret key and debug mode
+Copy the details as they are in the env.example file in the root folder
+Paste them on your .env and the run the app
+"""
+
+root = environ.Path(__file__) - 2
+env = environ.Env(DEBUG=(bool, False),)
+environ.Env.read_env(root('.env'))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = root()
@@ -83,6 +91,8 @@ WSGI_APPLICATION = 'authors.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 #Check the env.example file to get the idea of how your .env will be structured
+
+
 DATABASES = {
     'default': env.db()
 }
