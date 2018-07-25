@@ -10,20 +10,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
-import os
-from os import getenv
+import environ
+root = environ.Path(__file__) - 2 # t folder back (/a/b/c/ - 3 = /)
+env = environ.Env(DEBUG=(bool, False),) # set default values and casting
+environ.Env.read_env(root('.env')) # reading .env file
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = root()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -82,14 +84,7 @@ WSGI_APPLICATION = 'authors.wsgi.application'
 
 #Check the env.example file to get the idea of how your .env will be structured
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': getenv('DEV_DATABASE_NAME'), # Your databse name from the .env file
-        'USER': getenv('DEV_DATABASE_USER'), # Your postgresql username from the .env file
-        'PASSWORD': getenv('DEV_DATABASE_PASSWORD'), # Your postgresql password from the .env file
-        'HOST': '127.0.0.1', # Localhost for develop
-        'PORT': '', # Postgresql port
-    }
+    'default': env.db()
 }
 
 # Password validation
