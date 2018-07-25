@@ -1,14 +1,8 @@
 """ Module to test all the authentication model. """
 from django.test import TestCase
 from ..models import User
+from .utils import create_user
 
-
-
-def create_user(username="testuser", email="testuser@mail.com", password="password"):
-    """ create_user() creates and returns a user. """
-    user = User.objects.create_user(username, email, password=password)
-    user.save()
-    return user
 
 
 class UserModelTest(TestCase):
