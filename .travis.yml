@@ -4,6 +4,8 @@ python:
 services:
   - postgresql
 beforehscript:
+  - export SECRET_KEY="7pgozr2jn7zs_o%i8id6rddie!*0f0qy3$8231i^4*@u3"
+  - export DATABASE_URL="postgresql://postgres:@localhost/testdb"
   - psql -c 'create database testdb;' -U postgres
 install: pip install -r requirements.txt
 script:
