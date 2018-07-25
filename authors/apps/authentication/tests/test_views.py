@@ -13,6 +13,14 @@ TEST_USER = {
     }
 }
 
+def register_user(self, user):
+    """ Register User. """
+    self.client.post(
+        reverse("authentication:registration"),
+        user,
+        format='json')
+
+
 
 class RegisterViewTest(APITestCase):
     """ RegisterViewTest tests the view functinality for register. """
@@ -99,15 +107,7 @@ class RegisterViewTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
 
-""" Register User. """
 
-
-def register_user(self, user):
-    self.user = user
-    self.client.post(
-        reverse("authentication:registration"),
-        user,
-        format='json')
 
 
 class TestLogin(APITestCase):
@@ -130,7 +130,7 @@ class TestLogin(APITestCase):
             reverse("authentication:login"), TEST_USER, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_email_and_password_required(self):
+    def test_email_password_required(self):
         """ Tests that email and password are both required for login. """
         response = self.client.post(
             reverse("authentication:login"), format='json')
