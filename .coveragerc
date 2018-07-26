@@ -6,5 +6,6 @@ omit =
      authors/settings.py
      */wsgi.py
 
-source = 
+source =
       authors
+
