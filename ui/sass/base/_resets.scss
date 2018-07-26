@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Raleway:200");
+
 html,
 body,
 div,
@@ -83,6 +85,8 @@ video {
   padding: 0;
   border: 0;
   vertical-align: baseline;
+  font-family: "Raleway", sans-serif;
+  font-weight: 200;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -97,10 +101,6 @@ menu,
 nav,
 section {
   display: block;
-}
-
-html {
-  font-size: 62.5% !important;
 }
 
 body {
