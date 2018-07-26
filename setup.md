@@ -17,11 +17,13 @@ Create the database using `create database jarvis`
 ### Setting up postgres configurations in .env
 
 ```
-LOCAL_DB_URL=postgresql://postgres:123456@localhost:5432/jarvis
+DATABASE_URL=postgresql://<postgres_username>:<postgres_password>@<host>:<port>/<db_name>
 ```
+#### Remember to remove the greater than and less than symbols
 
 `postgresql` represents the type of database you are using which is postgresql
-`postgres` represents your postgresql User name
-`123456` represents your postgresql User password
-`localhost:5432` represents your postgresql server port
-`jarvis` represents your postgesql database name
+`postgres_username` represents your postgresql User name
+`postgres_password` represents your postgresql User password
+`host` represents your postgresql host
+`port` represents your postgresql server port
+`db_name` represents your postgesql database name
