@@ -1,5 +1,4 @@
-
-[![Build Status](https://travis-ci.org/andela/ah-jarvis.svg?branch=develop)](https://travis-ci.org/andela/ah-jarvis)[![Coverage Status](https://coveralls.io/repos/github/andela/ah-jarvis/badge.svg)](https://coveralls.io/github/andela/ah-jarvis)
+[![Build Status](https://travis-ci.org/andela/ah-jarvis.svg?branch=develop)](https://travis-ci.org/andela/ah-jarvis) [![Coverage Status](https://coveralls.io/repos/github/andela/ah-jarvis/badge.svg)](https://coveralls.io/github/andela/ah-jarvis)
 
 # Authors Haven - A Social platform for the creative at heart.
 
