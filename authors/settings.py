@@ -22,7 +22,6 @@ Paste them on your .env and the run the app
 root = environ.Path(__file__) - 2
 env = environ.Env(DEBUG=(bool, False),)
 environ.Env.read_env(root('.env'))
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = root()
 
@@ -90,7 +89,10 @@ WSGI_APPLICATION = 'authors.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-#Check the env.example file to get the idea of how your .env will be structured
+'''
+Check the env.example file to get the idea of how your .env will be structured
+Check the setup.md file for instructions to set up postgres database url
+'''
 
 
 DATABASES = {
