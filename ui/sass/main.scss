@@ -1,0 +1,10 @@
+// Variables should be the first because all other files are inheriting from them
+@import "utils/variables";
+
+//IMPORT ALL THE OTHER FILES HERE
+@import "base/resets";
+@import "base/base";
+@import "components/buttons";
+@import "components/icons";
+@import "pages/auth";
+@import "utils/helpers";

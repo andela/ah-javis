@@ -1,0 +1,30 @@
+body {
+  background-color: $secondary-color;
+}
+
+.text-primary {
+  color: $primary-color;
+}
+
+.fb-blue {
+  background-color: #3d5a96 !important;
+}
+
+.brand {
+  font-size: 30px !important;
+}
+
+form {
+  & .row {
+    margin-bottom: 0;
+  }
+}
+
+.link--icon {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    margin-right: 10px;
+  }
+}

@@ -96,6 +96,10 @@ ENV/
 # SQLite3
 db.sqlite3
 
+# UI
+.vscode
+styles.css
+styles.css.map
 #vscode
 .vscode
 .vs/
