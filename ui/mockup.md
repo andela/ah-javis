@@ -25,17 +25,27 @@ npm -i -g live-server
 
 ### Quick Start
 
-1.  Navigate to ah-jarvis and run the following command sass for compilation of sass to css
+1.  Clone the project locally
+
+```
+git clone -b auth-mockup-159054000 git@github.com:andela/ah-jarvis.git
+
+cd ah-jarvis/
+```
+
+2.  Run the following command sass for compilation of sass to css
 
 ```
 $ sass --watch ui/sass/main.scss ui/static/styles.css
 ```
 
-2.  Run live server from a different terminal
+3.  Run live server from a different terminal
 
 ```
 $ live-server .
 ```
+
+On the tab open on your browser click on the ui/ then click on the public/ finaly click on the signin/
 
 ### Social Login
 
