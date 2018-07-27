@@ -50,6 +50,10 @@ coverage.xml
 *.mo
 *.pot
 
+# vscode
+
+.vscode/
+
 # Django stuff:
 *.log
 local_settings.py
@@ -96,3 +100,7 @@ db.sqlite3
 .vscode
 styles.css
 styles.css.map
+#vscode
+.vscode
+.vs/
+*.swp
