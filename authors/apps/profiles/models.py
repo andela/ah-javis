@@ -1,8 +1,10 @@
 
 from django.db import models
 
+from authors.apps.core.models import TimeModel
 
-class Profile(models.Model):
+
+class Profile(TimeModel):
     # There is an inherent relationship between the Profile and
     # User models. By creating a one-to-one relationship between the two, we
     # are formalizing this relationship. Every user will have one -- and only
@@ -19,12 +21,6 @@ class Profile(models.Model):
     # In addition to the `bio` field, each user may have a profile image or
     # avatar. This field is not required and it may be blank.
     image = models.URLField(blank=True)
-
-    # A timestamp representing when this object was created.
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    # A timestamp representing when this object was last updated.
-    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.user.username
