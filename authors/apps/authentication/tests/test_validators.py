@@ -47,3 +47,23 @@ class RegisterViewTest(APITestCase):
             format='json')
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+    def test_username_cannot_be_register_twice(self):
+        """ Test that username can not beregistered twice. """
+        
+        user = {
+            "user": {
+                "email": "test@gmail.com",
+                "username": "testuser",
+                "password": "testspassword"
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        self.assertEqual(errors['username'][0], "user with this username already exists.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
