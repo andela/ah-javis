@@ -1,4 +1,4 @@
-""" Module to test all the views in authentication. """
+""" module to test all the views in authentication. """
 import json
 from django.urls import reverse
 from rest_framework.test import APITestCase
