@@ -67,3 +67,44 @@ class RegisterViewTest(APITestCase):
         errors = json.loads(response.content).get("errors")
         self.assertEqual(errors['username'][0], "user with this username already exists.")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
+    def test_password_cannot_be_lass_than_8_characters(self):
+        """Test that password cannot be less than 8 characters"""
+
+        user = {
+            "user": {
+                "email": "test3@gmail.com",
+                "username": "testuser3",
+                "password": "tests"
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        self.assertEqual(errors['password'][0], "Password should be atleats 8 characters.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_password_Not_being_alphanumeric(self):
+        """Test that password should contain alphanumeric characters."""
+
+        user = {
+            "user": {
+                "email": "test4@gmail.com",
+                "username": "testuser4",
+                "password": "testspass"
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        error = errors['password'][0]
+        self.assertEqual(errors, "Password should have alphanumeric characters.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
