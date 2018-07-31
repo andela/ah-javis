@@ -30,7 +30,7 @@ BASE_DIR = root()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
-JWT_SECRET_KEY = env('JWT_SECRET_KEY') if env('JWT_SECRET_KEY') else SECRET_KEY
+JWT_SECRET_KEY = env('JWT_SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!

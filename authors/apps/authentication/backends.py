@@ -9,6 +9,7 @@ from .models import User
 
 class JWTAuthentication(authentication.BaseAuthentication):
     """ JWTAuthentication implement jwt authentication. """
+    authentication_header_prefix='Bearer'
 
     def authenticate(self, request):
         """ Authenticate the request and return a two-tuple of (user, token). or None """
@@ -30,7 +31,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
 
         prefix = authentication_header[0].decode('utf-8')
         token = authentication_header[1].decode('utf-8')
-        if prefix.lower() != 'bearer':
+        if prefix.lower() != self.authentication_header_prefix.lower():
             raise exceptions.AuthenticationFailed("Invalid token")
 
         return self.authenticate_user(request, token)
@@ -38,7 +39,7 @@ class JWTAuthentication(authentication.BaseAuthentication):
     def authenticate_user(self, request, token):
         """  Returns an active user that matches the payload's user id and email. """
         try:
-            payload = jwt.decode(token, settings.SECRET_KEY)
+            payload = jwt.decode(token, settings.JWT_SECRET_KEY)
         except jwt.ExpiredSignature:
             msg = 'Signature has expired.'
             raise exceptions.AuthenticationFailed(msg)
