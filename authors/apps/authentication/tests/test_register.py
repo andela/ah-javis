@@ -38,7 +38,7 @@ class RegisterViewTest(APITestCase):
         user = {
             "user": {
                 "username": "testuser",
-                "password": "testspassword"
+                "password": "pass123."
             }
         }
         response = self.client.post(
@@ -66,7 +66,7 @@ class RegisterViewTest(APITestCase):
         user = {
             "user": {
                 "email": "test@mail.com",
-                "password": "testpassword"
+                "password": "pass123."
             }
         }
         response = self.client.post(

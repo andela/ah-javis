@@ -19,7 +19,7 @@ class RegisterViewTest(APITestCase):
             "user": {
                 "email": "testuser",
                 "username": "testuser",
-                "password": "testspassword"
+                "password": "Pass123."
             }
         }
         response = self.client.post(
@@ -38,7 +38,7 @@ class RegisterViewTest(APITestCase):
             "user": {
                 "email": "test@gmail.com",
                 "username": "testuser",
-                "password": "testspassword"
+                "password": "Pass123."
             }
         }
         response = self.client.post(
@@ -55,7 +55,7 @@ class RegisterViewTest(APITestCase):
             "user": {
                 "email": "test@gmail.com",
                 "username": "testuser",
-                "password": "testspassword"
+                "password": "Pass123."
             }
         }
         response = self.client.post(
@@ -75,7 +75,7 @@ class RegisterViewTest(APITestCase):
             "user": {
                 "email": "test3@gmail.com",
                 "username": "testuser3",
-                "password": "tests"
+                "password": "Pass1."
             }
         }
         response = self.client.post(
@@ -105,6 +105,7 @@ class RegisterViewTest(APITestCase):
 
         response.render()
         errors = json.loads(response.content).get("errors")
-        error = errors
+        error = errors['error']
         self.assertEqual(error[0], "Password should have atleast an uppercase, number and special character.")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+

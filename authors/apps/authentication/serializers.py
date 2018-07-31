@@ -20,8 +20,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
         if not re.match(r"^(?=.*[A-Z])(?=.*[a-z0-9]).*", password):
             raise serializers.ValidationError("Password should have atleast an uppercase, number and special character.")
+
         if len(password) < 8:
             raise serializers.ValidationError('Password should be atleats 8 characters.')
+
         return data
     
     # The client should not be able to send a token along with a registration
