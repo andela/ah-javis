@@ -2,6 +2,7 @@
 from django.db import models
 
 from authors.apps.core.models import TimeModel
+from django.conf import settings
 
 
 class Profile(TimeModel):
@@ -10,7 +11,7 @@ class Profile(TimeModel):
     # are formalizing this relationship. Every user will have one -- and only
     # one -- related Profile model.
     user = models.OneToOneField(
-        'authentication.User', on_delete=models.CASCADE
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
     # Each user profile will have a field where they can tell other users
