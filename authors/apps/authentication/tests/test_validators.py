@@ -85,7 +85,7 @@ class RegisterViewTest(APITestCase):
 
         response.render()
         errors = json.loads(response.content).get("errors")
-        self.assertEqual(errors['password'][0], "Password should be atleats 8 characters.")
+        self.assertEqual(errors['error'][0], "Password should be atleats 8 characters.")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_password_Not_being_alphanumeric(self):
@@ -105,6 +105,6 @@ class RegisterViewTest(APITestCase):
 
         response.render()
         errors = json.loads(response.content).get("errors")
-        error = errors['password'][0]
-        self.assertEqual(errors, "Password should have alphanumeric characters.")
+        error = errors
+        self.assertEqual(error[0], "Password should have atleast an uppercase, number and special character.")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)

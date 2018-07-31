@@ -1,6 +1,8 @@
+import re
 from django.contrib.auth import authenticate
 
 from rest_framework import serializers
+from django.core.validators import RegexValidator
 
 from .models import User
 
@@ -10,12 +12,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     # Ensure passwords are at least 8 characters long, no longer than 128
     # characters, and can not be read by the client.
-    password = serializers.CharField(
-        max_length=128,
-        min_length=8,
-        write_only=True
-    )
+    password = serializers.CharField(max_length=128, write_only=True)
 
+    def validate(self, data):
+        """Check that password has alphanumeric characters"""
+        password = data.get('password', None)
+
+        if not re.match(r"^(?=.*[A-Z])(?=.*[a-z0-9]).*", password):
+            raise serializers.ValidationError("Password should have atleast an uppercase, number and special character.")
+        if len(password) < 8:
+            raise serializers.ValidationError('Password should be atleats 8 characters.')
+        return data
+    
     # The client should not be able to send a token along with a registration
     # request. Making `token` read-only handles that for us.
 
