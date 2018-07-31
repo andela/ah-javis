@@ -119,9 +119,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def token(self):
+        """ user jwt token property. """
         return self._generate_jwt_token()
 
     def _generate_jwt_token(self):
+        """ Method to generate user jwt token. """
         time = datetime.now() + timedelta(days=5)
         token = jwt.encode({
             "id":self.pk,
