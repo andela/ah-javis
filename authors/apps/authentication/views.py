@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 
 from .renderers import UserJSONRenderer
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer
+    LoginSerializer, RegistrationSerializer, UserSerializer, EmailSerializer
 )
 
 
@@ -75,8 +75,21 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
 
 class ForgotPasswordAPIView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = EmailSerializer
+
     def post(self, request):
-        pass
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # Send the user and email with the reset password page
+        send_mail(
+            'Authors Haven Reset Password',
+            'Follow this link to reset your password. Link to reset password page',
+            'info@authorsheaven.com',
+            [serializer.data.get('email')],
+            fail_silently=False,
+        )
+        return Response(status=status.HTTP_200_OK)
 
 
 class ResetPasswordAPIView(APIView):
