@@ -73,3 +73,12 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class ForgotPasswordAPIView(APIView):
+    def post(self, request):
+        pass
+
+
+class ResetPasswordAPIView(APIView):
+    def patch(self, reauest):
+        pass
