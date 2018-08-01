@@ -2,12 +2,15 @@ from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .models import User
 from django.http import HttpResponse
 from rest_framework.views import APIView
 
 from authors.apps.core.email import SendMail
 from django.contrib.auth import get_user_model
+from .utils import generate_token
 from .renderers import UserJSONRenderer
 from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer
@@ -43,6 +46,21 @@ class RegistrationAPIView(APIView):
             to=[user.email]
         ).send()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class VerifyAccount(APIView):
+    def get(self, request, uidb64, token):
+        try:
+            uid = force_text(urlsafe_base64_decode(uidb64))
+            user = User.objects.get(pk=uid)
+        except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        if user is not None and generate_token.check_token(user, token):
+            user.is_confirmed = True
+            user.save()
+            return HttpResponse("Account was verified successfully")
+        else:
+            return HttpResponse('Activation link is invalid!')
 
 
 class LoginAPIView(APIView):
