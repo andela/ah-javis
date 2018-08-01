@@ -20,7 +20,7 @@ brew install sass/sass/sass
 2.  Install live-server
 
 ```
-npm -i -g live-server
+npm i -g live-server
 ```
 
 ### Quick Start
@@ -36,7 +36,13 @@ cd ah-jarvis/
 2.  Run the following command sass for compilation of sass to css
 
 ```
-$ sass --watch ui/sass/main.scss ui/static/styles.css
+$ sass ui/sass/main.scss ui/static/styles.css
+```
+
+or
+
+```
+$ sass ui/sass/main.scss:ui/static/styles.css
 ```
 
 3.  Run live server from a different terminal
