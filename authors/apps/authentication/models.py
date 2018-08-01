@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
     """
     Django requires that custom users define their own Manager class. By
     inheriting from `BaseUserManager`, we get a lot of the same code used by
-    Django to create a `User` for free. 
+    Django to create a `User` for free.
 
     All we have to do is override the `create_user` function which we will use
     to create `User` objects.
@@ -117,4 +117,17 @@ class User(AbstractBaseUser, PermissionsMixin):
         """
         return self.username
 
+    @property
+    def token(self):
+        """ user jwt token property. """
+        return self._generate_jwt_token()
 
+    def _generate_jwt_token(self):
+        """ Method to generate user jwt token. """
+        time = datetime.now() + settings.JWT_EXPIRATION_DELTA
+        token = jwt.encode({
+            "id":self.pk,
+            "exp": int(time.strftime('%s'))
+        }, settings.JWT_SECRET_KEY, algorithm='HS256')
+
+        return token.decode('utf-8')

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import environ
+import datetime
 
 """
 Create a .env file in you root folder(ah-jarvis/)
@@ -30,6 +31,8 @@ BASE_DIR = root()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
+JWT_SECRET_KEY = env('JWT_SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
@@ -154,3 +157,6 @@ REST_FRAMEWORK = {
         'authors.apps.authentication.backends.JWTAuthentication',
     ),
 }
+
+# JWT_EXPIRATION_DELTA set to default 1 day
+JWT_EXPIRATION_DELTA = datetime.timedelta(seconds=env("JWT_EXPIRATION_SECONDS",default=86400))
