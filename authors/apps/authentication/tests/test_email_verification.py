@@ -48,3 +48,19 @@ class TestLogin(APITestCase):
 
         # Verify that the account has been verified
         self.assertTrue(user.is_confirmed)
+
+    def test_invalid_verification_link(self):
+        """ Tests an invalid token """
+        self.register_user(TEST_USER)
+        user = User.objects.get()
+        token = generate_token.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(9)).decode("utf-8")
+        request = APIRequestFactory().get(
+            reverse("authentication:verify", args=[uid, token]))
+        verify_account = VerifyAccount.as_view()
+        response = verify_account(request, uidb64=uid, token=token)
+        self.assertTrue(response.status_code, 200)
+        user = User.objects.get()
+
+        # Verify that the account has not been verified
+        self.assertFalse(user.is_confirmed)
