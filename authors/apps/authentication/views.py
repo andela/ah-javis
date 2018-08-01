@@ -2,8 +2,12 @@ from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from .models import User
+from django.http import HttpResponse
 from rest_framework.views import APIView
 
+from authors.apps.core.email import SendMail
+from django.contrib.auth import get_user_model
 from .renderers import UserJSONRenderer
 from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer
@@ -25,7 +29,19 @@ class RegistrationAPIView(APIView):
         serializer = self.serializer_class(data=user)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-
+        user = get_user_model().objects.filter(
+            email=serializer.data.get("email")).first()
+        token = generate_token.make_token(user)
+        SendMail(
+            "email.html",
+            {
+                'user': user,
+                'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8"),
+                'token': token
+            },
+            subject="Verify your account",
+            to=[user.email]
+        ).send()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -72,4 +88,3 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
