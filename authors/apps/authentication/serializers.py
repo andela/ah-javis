@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate
 
 from rest_framework import serializers
 
+from authors.apps.profiles.serializers import ProfileSerializer
 from .models import User
 
 
@@ -36,7 +37,6 @@ class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(max_length=255, read_only=True)
     password = serializers.CharField(max_length=128, write_only=True)
     token = serializers.CharField(max_length=128, read_only=True)
-
 
     def validate(self, data):
         # The `validate` method is where we make sure that the current
@@ -89,7 +89,7 @@ class LoginSerializer(serializers.Serializer):
         return {
             'email': user.email,
             'username': user.username,
-            'token':user.token
+            'token': user.token
 
         }
 
@@ -107,9 +107,18 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
+    profile = ProfileSerializer(write_only=True)
+
+    bio = serializers.CharField(source='profile.bio', read_only=True)
+    image = image = serializers.CharField(
+        source='profile.image', read_only=True)
+
     class Meta:
         model = User
-        fields = ('email', 'username', 'password')
+        fields = (
+            'email', 'username', 'password', 'token', 'profile', 'bio',
+            'image',
+        )
 
         # The `read_only_fields` option is an alternative for explicitly
         # specifying the field with `read_only=True` like we did for password
@@ -118,7 +127,6 @@ class UserSerializer(serializers.ModelSerializer):
         # password field, we needed to specify the `min_length` and
         # `max_length` properties too, but that isn't the case for the token
         # field.
-
 
     def update(self, instance, validated_data):
         """Performs an update on a User."""
@@ -129,6 +137,8 @@ class UserSerializer(serializers.ModelSerializer):
         # here is that we need to remove the password field from the
         # `validated_data` dictionary before iterating over it.
         password = validated_data.pop('password', None)
+
+        profile_data = validated_data.pop('profile', {})
 
         for (key, value) in validated_data.items():
             # For the keys remaining in `validated_data`, we will set them on
@@ -144,5 +154,10 @@ class UserSerializer(serializers.ModelSerializer):
         # the model. It's worth pointing out that `.set_password()` does not
         # save the model.
         instance.save()
+
+        for (key, value) in profile_data.items():
+            setattr(instance.profile, key, value)
+
+        instance.profile.save()
 
         return instance
