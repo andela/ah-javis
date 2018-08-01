@@ -5,6 +5,7 @@ from .views import ProfileRetrieveAPIView
 app_name = 'profiles'
 
 urlpatterns = [
-    url(r'^profiles/(?P<username>\w+)/?$',
-        ProfileRetrieveAPIView.as_view()),
+    url(r'^(?P<username>\w+)/?$',
+        ProfileRetrieveAPIView.as_view(), name="view_profile"),
+
 ]
