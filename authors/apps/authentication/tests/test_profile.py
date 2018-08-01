@@ -42,7 +42,25 @@ class TestUserProfile(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(details["bio"], "")
 
+    def test_non_existent_user(self):
+        """
+        Checking for response when a non user checks his profile
+        """
+        wrong_name = "my_name"
+        url = reverse("profiles:view_profile", args=[wrong_name])
+        response = self.client.get(url)
+        response.render()
+        profile = json.loads(response.content)
+        details = profile["profile"]
+
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(details["detail"],
+                         "The requested profile does not exist.")
+
     def test_update_profile(self):
+        """
+        Update user details
+        """
         token = self.register_user(TEST_USER).get("user").get("token")
         self.register_user(TEST_USER)
 
