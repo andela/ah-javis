@@ -124,7 +124,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def _generate_jwt_token(self):
         """ Method to generate user jwt token. """
-        time = datetime.now() + timedelta(days=5)
+        time = datetime.now() + settings.JWT_EXPIRATION_DELTA
         token = jwt.encode({
             "id":self.pk,
             "exp": int(time.strftime('%s'))
