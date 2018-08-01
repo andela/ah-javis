@@ -65,6 +65,7 @@ class RegisterViewTest(APITestCase):
         """ Test that username is required on register. """
         user = {
             "user": {
+                "username": "",
                 "email": "test@mail.com",
                 "password": "pass123."
             }

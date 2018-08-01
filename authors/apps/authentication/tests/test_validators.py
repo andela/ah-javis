@@ -48,6 +48,45 @@ class RegisterViewTest(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
+    def test_email_is_required(self):
+        """ Test that email is required. """
+        
+        user = {
+            "user": {
+                "username": "testuser",
+                "password": "Pass123."
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        self.assertEqual(errors['email'][0], "This field is required.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+         
+    def test_email_is_not_empty(self):
+        """ Test that email is not empty. """
+        
+        user = {
+            "user": {
+                "email": "",
+                "username": "testuser",
+                "password": "Pass123."
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        self.assertEqual(errors['email'][0], "Email is required.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
     def test_username_cannot_be_register_twice(self):
         """ Test that username can not beregistered twice. """
         
@@ -65,10 +104,49 @@ class RegisterViewTest(APITestCase):
 
         response.render()
         errors = json.loads(response.content).get("errors")
-        self.assertEqual(errors['username'][0], "user with this username already exists.")
+        self.assertEqual(errors['username'][0], "Username is taken.")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+         
+    def test_username_is_required(self):
+        """ Test that username is required. """
         
-    def test_password_cannot_be_lass_than_8_characters(self):
+        user = {
+            "user": {
+                "email": "testuser@gmail.com",
+                "password": "Pass123."
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        self.assertEqual(errors['username'][0], "This field is required.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+ 
+    def test_username_is_not_empty(self):
+        """ Test that username is not empty. """
+        
+        user = {
+            "user": {
+                "email": "test@gmail.com",
+                "username": "",
+                "password": "Pass123."
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        self.assertEqual(errors['username'][0], "Username is required.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_password_cannot_be_less_than_8_characters(self):
         """Test that password cannot be less than 8 characters"""
 
         user = {
@@ -85,10 +163,10 @@ class RegisterViewTest(APITestCase):
 
         response.render()
         errors = json.loads(response.content).get("errors")
-        self.assertEqual(errors['error'][0], "Password should be atleats 8 characters.")
+        self.assertEqual(errors['password'][0], "Password should be atleats 8 characters.")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_password_Not_being_alphanumeric(self):
+    def test_password_not_being_alphanumeric(self):
         """Test that password should contain alphanumeric characters."""
 
         user = {
@@ -105,7 +183,47 @@ class RegisterViewTest(APITestCase):
 
         response.render()
         errors = json.loads(response.content).get("errors")
-        error = errors['error']
-        self.assertEqual(error[0], "Password should have atleast an uppercase, number and special character.")
+        error = errors['password']
+        self.assertEqual(error[0], "Password should have atleast an uppercase, "
+                "number or special character.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_password_is_required(self):
+        """ Test that password is required. """
+        
+        user = {
+            "user": {
+                "email": "testuser@gmail.com",
+                "username": "testuser"
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        self.assertEqual(errors['password'][0], "This field is required.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+ 
+    def test_password_is_not_empty(self):
+        """ Test that password is not empty. """
+        
+        user = {
+            "user": {
+                "email": "test@gmail.com",
+                "username": "testuser",
+                "password": ""
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        self.assertEqual(errors['password'][0], "Password is required.")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 

@@ -11,9 +11,9 @@ from .models import User
 class RegistrationSerializer(serializers.ModelSerializer):
     """Serializers registration requests and creates a new user."""
 
-    password = serializers.CharField(max_length=128, write_only=True, required=False, allow_null=True, allow_blank=True)
-    username = serializers.CharField(max_length=128, required=False, allow_null=True, allow_blank=True)
-    email = serializers.EmailField(max_length=128, required=False,
+    password = serializers.CharField(max_length=128, write_only=True, allow_null=True, allow_blank=True)
+    username = serializers.CharField(max_length=128, allow_null=True, allow_blank=True)
+    email = serializers.EmailField(max_length=128, 
             allow_null=True, allow_blank=True)
     # Ensure passwords are at least 8 characters long, no longer than 128
     # characters, and can not be read by the client.
@@ -26,7 +26,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         elif len(password) < 8:
             raise serializers.ValidationError('Password should be atleats 8 characters.')
         elif not re.match(r"^(?=.*[A-Z0-9])(?=.*[a-z0-9])(?!.*\s).*", password):
-            raise serializers.ValidationError("Password should have atleast an"
+            raise serializers.ValidationError("Password should have atleast an "
                     "uppercase, number or special character.")
 
         return data
