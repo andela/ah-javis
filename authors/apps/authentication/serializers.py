@@ -2,6 +2,9 @@ from django.contrib.auth import authenticate
 
 from rest_framework import serializers
 
+from django.contrib.auth.tokens import default_token_generator
+
+
 from .models import User
 
 
@@ -144,7 +147,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class EmailSerializer(serializers.Serializer):
+    # Ensures that the email is not more than 255 characters long
     email = serializers.EmailField(max_length=255)
+    token = serializers.CharField(max_length=225, required=False)
 
     # Validate that the email
     def validate(self, data):
@@ -156,6 +161,19 @@ class EmailSerializer(serializers.Serializer):
                 "User with this email doesn't exist"
             )
 
+        token = default_token_generator.make_token(user)
         return {
-            "email": data.get("email")
+            "email": data.get("email"),
+            "token": token
         }
+
+
+class ResetPasswordSerializer(serializers.ModelSerializer):
+    # Ensures that the email is not more than 128 characters long
+    # Ensures that the user cannot read the password
+
+    password = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True
+    )

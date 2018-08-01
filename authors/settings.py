@@ -161,3 +161,5 @@ EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = 'SG.q1m0U5qwRjGpkUpwSdgRUw.BCwWCbGuFITT0xnqkb1R1491bgn-ZGNn19dPoet8PF8'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
+
+VERIFCATION_URL = "http://localhost:6000/verify/"

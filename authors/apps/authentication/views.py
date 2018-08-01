@@ -3,10 +3,14 @@ from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.core.mail import send_mail
+from django.conf import settings
+from authors.apps.core.email import SendMail
 
 from .renderers import UserJSONRenderer
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer, EmailSerializer
+    LoginSerializer, RegistrationSerializer, UserSerializer,
+    EmailSerializer, ResetPasswordSerializer,
 )
 
 
@@ -79,19 +83,25 @@ class ForgotPasswordAPIView(APIView):
     serializer_class = EmailSerializer
 
     def post(self, request):
+        # Get the email and pass it to the serializer for validation
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        # Send the user and email with the reset password page
-        send_mail(
-            'Authors Haven Reset Password',
-            'Follow this link to reset your password. Link to reset password page',
-            'info@authorsheaven.com',
-            [serializer.data.get('email')],
-            fail_silently=False,
-        )
+        # Sends the user an email with the link to the reset password page
+        context = {
+            "verification_url": settings.VERIFCATION_URL + serializer.data.get('token', None)
+        }
+
+        SendMail("email.html", context, to=[serializer.data.get(
+            'email', None)], subject='Authors Haven Reset Password').send()
         return Response(status=status.HTTP_200_OK)
 
 
 class ResetPasswordAPIView(APIView):
-    def patch(self, reauest):
+    permission_classes = (AllowAny,)
+    serializer_class = ResetPasswordSerializer
+
+    def patch(self, request):
+        """ Allows the user to change their password. """
+
+        # Should take the user email and new password
         pass
