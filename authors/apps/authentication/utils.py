@@ -4,6 +4,7 @@ from django.utils import six
 
 
 class TokenGenerator(PasswordResetTokenGenerator):
+    """ Generate token """
 
     def _make_hash_value(self, user, timestamp):
         return (
