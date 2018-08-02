@@ -1,10 +1,14 @@
 from rest_framework import status
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import list_route
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
+from .models import User
+
 from authors.apps.core.email import SendMail
 
 from .renderers import UserJSONRenderer
@@ -100,8 +104,14 @@ class ResetPasswordAPIView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = ResetPasswordSerializer
 
-    def patch(self, request):
+    def put(self, request):
         """ Allows the user to change their password. """
+        # Should take the token, user_email and new_password
+        reset_data = request.data.get('reset_data', {})
 
-        # Should take the user email and new password
-        pass
+        serializer = self.serializer_class(data=reset_data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(data="Password Reset Successful",
+                        status=status.HTTP_200_OK)

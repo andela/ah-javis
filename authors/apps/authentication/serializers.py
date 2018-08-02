@@ -128,15 +128,18 @@ class UserSerializer(serializers.ModelSerializer):
         # `validated_data` dictionary before iterating over it.
         password = validated_data.pop('password', None)
 
-        for (key, value) in validated_data.items():
-            # For the keys remaining in `validated_data`, we will set them on
-            # the current `User` instance one at a time.
-            setattr(instance, key, value)
-
         if password is not None:
+            print("password only")
             # `.set_password()` is the method mentioned above. It handles all
             # of the security stuff that we shouldn't be concerned with.
             instance.set_password(password)
+
+        else:
+            print("others")
+            for (key, value) in validated_data.items():
+                # For the keys remaining in `validated_data`, we will set them on
+                # the current `User` instance one at a time.
+                setattr(instance, key, value)
 
         # Finally, after everything has been updated, we must explicitly save
         # the model. It's worth pointing out that `.set_password()` does not
@@ -162,18 +165,41 @@ class EmailSerializer(serializers.Serializer):
             )
 
         token = default_token_generator.make_token(user)
+        print(user)
+        print(type(user))
         return {
             "email": data.get("email"),
             "token": token
         }
 
 
-class ResetPasswordSerializer(serializers.ModelSerializer):
+class ResetPasswordSerializer(serializers.Serializer):
+
     # Ensures that the email is not more than 128 characters long
     # Ensures that the user cannot read the password
-
-    password = serializers.CharField(
+    token = serializers.CharField(max_length=225)
+    email = serializers.CharField(max_length=225)
+    new_password = serializers.CharField(
         max_length=128,
         min_length=8,
         write_only=True
     )
+
+    def create(self, validated_data):
+        user = User.objects.get(email=validated_data.get('email', None))
+        return user
+
+    def validate(self, data):
+        user = User.objects.filter(email=data.get('email', None)).first()
+        is_valid_token = default_token_generator.check_token(
+            user, data.get('token'))
+
+        if is_valid_token is not True:
+            raise serializers.ValidationError(
+                "Invalid token. Please generate another reset password email"
+            )
+
+        user.set_password(data.get('new_password', None))
+        user.save()
+
+        return data
