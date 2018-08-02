@@ -1,9 +1,11 @@
 from rest_framework import status
-from rest_framework.generics import RetrieveUpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
+from social_django.utils import load_strategy, load_backend
+from social_core.backends.oauth import BaseOAuth2
+from requests.exceptions import HTTPError
 from .renderers import UserJSONRenderer
 from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer
@@ -73,3 +75,48 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+class SocialSignUp(CreateAPIView):
+    permission_classes = (AllowAny,)
+    renderer_classes = (UserJSONRenderer,)
+    serializer_class = UserSerializer
+
+    def create(self, request,  *args, **kwargs):
+        # Get access token and create user or authenticate
+
+        provider = request.data['provider']
+
+        authed_user = request.user if not request.user.is_anonymous else None
+
+        strategy = load_strategy(request)
+
+        backend = load_backend(strategy=strategy, name=provider, redirect_uri=None)
+
+        if isinstance(backend, BaseOAuth2):
+            # Grab the access_token
+            token = request.data['access_token']
+
+        try:
+            # if authed_user is None, make a new user,
+            # else this social account will be associated with the user you pass in
+            user = backend.do_auth(token, user=authed_user)
+        except HTTPError as e:
+            # You can't associate a social account with more than user
+            return Response({"errors": str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if user and user.is_active:
+            serializer = self.serializer_class(user)
+
+            # if the access token was set to an empty string, then save the access token
+            # from the request
+            auth_created = user.social_auth.get(provider=provider)
+            if not auth_created.extra_data['access_token']:
+                auth_created.extra_data['access_token'] = token
+                auth_created.save()
+
+            # Set instance to user
+            serializer.instance = user
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"errors": "Error with social authentication"},
+                            status=status.HTTP_400_BAD_REQUEST)
