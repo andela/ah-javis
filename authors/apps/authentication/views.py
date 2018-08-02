@@ -49,6 +49,8 @@ class RegistrationAPIView(APIView):
 
 
 class VerifyAccount(APIView):
+    """ Verify account on vian sent link """
+
     def get(self, request, uidb64, token):
         try:
             uid = force_text(urlsafe_base64_decode(uidb64))
