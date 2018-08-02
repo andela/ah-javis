@@ -121,8 +121,6 @@ class User(AbstractBaseUser, PermissionsMixin):
         the user's real name, we return their username instead.
         """
         return self.username
-<<<<<<< HEAD
-=======
 
     @property
     def token(self):
@@ -133,9 +131,8 @@ class User(AbstractBaseUser, PermissionsMixin):
         """ Method to generate user jwt token. """
         time = datetime.now() + settings.JWT_EXPIRATION_DELTA
         token = jwt.encode({
-            "id":self.pk,
+            "id": self.pk,
             "exp": int(time.strftime('%s'))
         }, settings.JWT_SECRET_KEY, algorithm='HS256')
 
         return token.decode('utf-8')
->>>>>>> 51a64b03fd9bf0b9b818e32a80662898d7f2acd2
