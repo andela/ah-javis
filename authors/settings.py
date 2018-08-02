@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import environ
+import datetime
 
 """
 Create a .env file in you root folder(ah-jarvis/)
@@ -30,6 +31,8 @@ BASE_DIR = root()
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY')
+JWT_SECRET_KEY = env('JWT_SECRET_KEY')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
@@ -155,8 +158,13 @@ REST_FRAMEWORK = {
     ),
 }
 
+# Email configurations
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'apikey'
 EMAIL_USE_TLS = True
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+# JWT_EXPIRATION_DELTA set to default 1 day
+JWT_EXPIRATION_DELTA = datetime.timedelta(
+    seconds=env("JWT_EXPIRATION_SECONDS", default=86400))
