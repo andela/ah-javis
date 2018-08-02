@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import environ
+import datetime
 
 """
 Create a .env file in you root folder(ah-jarvis/)
@@ -167,10 +168,6 @@ AUTHENTICATION_BACKENDS = (
     # Facebook OAuth2
     'social_core.backends.facebook.FacebookAppOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
-
-    # django-rest-framework-social-oauth2
-    # 'rest_framework_social_oauth2.backends.DjangoOAuth2',
-
     # Django
     'django.contrib.auth.backends.ModelBackend',
 )
@@ -203,3 +200,5 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+# JWT_EXPIRATION_DELTA set to default 1 day
+JWT_EXPIRATION_DELTA = datetime.timedelta(seconds=env("JWT_EXPIRATION_SECONDS",default=86400))
