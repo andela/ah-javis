@@ -173,7 +173,7 @@ class RegisterViewTest(APITestCase):
             "user": {
                 "email": "test4@gmail.com",
                 "username": "testuser4",
-                "password": "testspass"
+                "password": "Testspass."
             }
         }
         response = self.client.post(
@@ -184,8 +184,49 @@ class RegisterViewTest(APITestCase):
         response.render()
         errors = json.loads(response.content).get("errors")
         error = errors['password']
-        self.assertEqual(error[0], "Password should have atleast an uppercase, "
-                "number or special character.")
+        self.assertEqual(error[0], "A password must contain atleast one number.")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_password_should_have_an_uppercase(self):
+        """Test that password should contain uppercase character."""
+
+        user = {
+            "user": {
+                "email": "test4@gmail.com",
+                "username": "testuser4",
+                "password": "testspass1."
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        error = errors['password']
+        self.assertEqual(error[0], "Password should have an uppercase")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_password_should_have_a_special_character(self):
+        """Test that password should contain special character."""
+
+        user = {
+            "user": {
+                "email": "test4@gmail.com",
+                "username": "testuser4",
+                "password": "Testspass1"
+            }
+        }
+        response = self.client.post(
+            reverse("authentication:registration"),
+            user,
+            format='json')
+
+        response.render()
+        errors = json.loads(response.content).get("errors")
+        error = errors['password']
+        self.assertEqual(error[0], "Password should have a special character.")
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_password_is_required(self):

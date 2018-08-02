@@ -25,9 +25,18 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Password is required.')
         elif len(password) < 8:
             raise serializers.ValidationError('Password should be atleats 8 characters.')
-        elif not re.match(r"^(?=.*[A-Z0-9])(?=.*[a-z0-9])(?!.*\s).*", password):
-            raise serializers.ValidationError("Password should have atleast an "
-                    "uppercase, number or special character.")
+                # Validate the password has atleast one number
+        elif not re.match(r"^(?=.*[0-9]).*", password):
+            raise serializers.ValidationError(
+                'A password must contain atleast one number.'
+            )
+            # Validate password has an uppercase
+        elif not re.match(r"^(?=.*[A-Z])(?=.*[a-z])(?!.*\s).*", password):
+            raise serializers.ValidationError("Password should have an "
+                    "uppercase")
+            # Validate the password has a special character
+        elif re.match(r"^[a-zA-Z0-9_]*$", password):
+            raise serializers.ValidationError("Password should have a special character.")
 
         return data
 
