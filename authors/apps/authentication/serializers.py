@@ -1,6 +1,9 @@
+import re
 from django.contrib.auth import authenticate
 
 from rest_framework import serializers
+from django.core.validators import RegexValidator
+from rest_framework.validators import UniqueValidator
 
 from django.contrib.auth.tokens import default_token_generator
 
@@ -11,13 +14,57 @@ from .models import User
 class RegistrationSerializer(serializers.ModelSerializer):
     """Serializers registration requests and creates a new user."""
 
+    password = serializers.CharField(
+        max_length=128, write_only=True, allow_null=True, allow_blank=True)
+    username = serializers.CharField(
+        max_length=128, allow_null=True, allow_blank=True)
+    email = serializers.EmailField(max_length=128,
+                                   allow_null=True, allow_blank=True)
     # Ensure passwords are at least 8 characters long, no longer than 128
     # characters, and can not be read by the client.
-    password = serializers.CharField(
-        max_length=128,
-        min_length=8,
-        write_only=True
-    )
+
+    def validate_password(self, data):
+        """Check that password is valid"""
+        password = data
+        if password == '':
+            raise serializers.ValidationError('Password is required.')
+        elif len(password) < 8:
+            raise serializers.ValidationError(
+                'Password should be atleats 8 characters.')
+            # Validate the password has atleast one number
+        elif not re.match(r"^(?=.*[0-9]).*", password):
+            raise serializers.ValidationError(
+                'A password must contain atleast one number.'
+            )
+            # Validate password has an uppercase
+        elif not re.match(r"^(?=.*[A-Z])(?=.*[a-z])(?!.*\s).*", password):
+            raise serializers.ValidationError("Password should have an "
+                                              "uppercase")
+            # Validate the password has a special character
+        elif re.match(r"^[a-zA-Z0-9_]*$", password):
+            raise serializers.ValidationError(
+                "Password should have a special character.")
+
+        return data
+
+    def validate_username(self, data):
+        """Check if username pass all the validation parameters."""
+        username = data
+        if username == '':
+            raise serializers.ValidationError('Username is required.')
+        elif User.objects.filter(username=username):
+            raise serializers.ValidationError('Username is taken.')
+        return data
+
+    def validate_email(self, data):
+        """Validate email"""
+        email = data
+        if email == '':
+            raise serializers.ValidationError('Email is required.')
+        elif User.objects.filter(email=email):
+            raise serializers.ValidationError('Email is taken.')
+
+        return data
 
     # The client should not be able to send a token along with a registration
     # request. Making `token` read-only handles that for us.
@@ -91,7 +138,7 @@ class LoginSerializer(serializers.Serializer):
         return {
             'email': user.email,
             'username': user.username,
-            'token':user.token
+            'token': user.token
 
         }
 
@@ -156,8 +203,10 @@ class EmailSerializer(serializers.Serializer):
     # Ensures that the email is not more than 255 characters long
     email = serializers.EmailField(max_length=255)
     token = serializers.CharField(max_length=225, required=False)
-
+    username = serializers.CharField(
+        max_length=225, required=False, read_only=True)
     # Validate that the email
+
     def validate(self, data):
         user = User.objects.filter(email=data.get('email', None)).first()
 
@@ -166,13 +215,11 @@ class EmailSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 "User with this email doesn't exist"
             )
-
         token = default_token_generator.make_token(user)
-        print(user)
-        print(type(user))
         return {
             "email": data.get("email"),
-            "token": token
+            "token": token,
+            'username': user.username,
         }
 
 

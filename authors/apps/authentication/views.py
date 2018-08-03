@@ -128,12 +128,16 @@ class ForgotPasswordAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         # Sends the user an email with the link to the reset password page
         context = {
-            "verification_url": settings.VERIFCATION_URL + serializer.data.get('token', None)
+            "verification_url": settings.VERIFCATION_URL + serializer.data.get('token', None),
+            "username": serializer.data.get('username'),
         }
 
-        SendMail("email.html", context, to=[serializer.data.get(
+        SendMail("reset_password_email.html", context, to=[serializer.data.get(
             'email', None)], subject='Authors Haven Reset Password').send()
-        return Response(status=status.HTTP_200_OK)
+
+        token = serializer.data.get('token', None)
+
+        return Response(data={"token": token, "message": "Successful. Check your email for reset link"},  status=status.HTTP_200_OK)
 
 
 class ResetPasswordAPIView(APIView):
