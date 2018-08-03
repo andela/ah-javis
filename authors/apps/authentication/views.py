@@ -1,5 +1,7 @@
+import sys
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView, UpdateAPIView
+from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from django.utils.encoding import force_bytes, force_text
@@ -15,13 +17,18 @@ from .models import User
 
 from authors.apps.core.email import SendMail
 
+from social_django.utils import load_strategy, load_backend
+from social_core.backends.oauth import BaseOAuth2
+from social_core.exceptions import MissingBackend
+from requests.exceptions import HTTPError
 from authors.apps.core.email import SendMail
 from django.contrib.auth import get_user_model
+
 from .utils import generate_token
 from .renderers import UserJSONRenderer
 from .serializers import (
     LoginSerializer, RegistrationSerializer, UserSerializer,
-    EmailSerializer, ResetPasswordSerializer,
+    EmailSerializer, ResetPasswordSerializer, SocialSerializer
 )
 
 
@@ -165,3 +172,57 @@ class ResetPasswordAPIView(APIView):
 
         return Response(data="Password Reset Successful",
                         status=status.HTTP_200_OK)
+class SocialSignUp(CreateAPIView):
+    permission_classes = (AllowAny,)
+    renderer_classes = (UserJSONRenderer,)
+    serializer_class = SocialSerializer
+
+    def create(self, request,  *args, **kwargs):
+        # Get access token and create user or authenticate
+
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        authed_user = request.user if not request.user.is_anonymous else None
+        provider = serializer.data['provider']
+
+        strategy = load_strategy(request)
+        try:
+            backend = load_backend(strategy=strategy, name=provider, redirect_uri=None)
+        except MissingBackend as e:
+            return Response({
+                "errors": {
+                    "provider":["Provider not found.", str(e)]
+                }
+
+                },status=status.HTTP_404_NOT_FOUND)
+        if isinstance(backend, BaseOAuth2):
+            # Grab the access_token
+            token = serializer.data['access_token']
+
+        try:
+            # if authed_user is None, make a new user,
+            # else this social account will be associated with the user you pass in
+            user = backend.do_auth(token, user=authed_user)
+        except BaseException as e:
+            # You can't associate a social account with more than user for some reason
+
+            return Response({"errors": str(e)},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if user and user.is_active:
+            serializer = UserSerializer(user)
+
+            # if the access token was set to an empty string, then save the access token
+            # from the request
+            auth_created = user.social_auth.get(provider=provider)
+            if not auth_created.extra_data['access_token']:
+                auth_created.extra_data['access_token'] = token
+                auth_created.save()
+
+            # Set instance to user
+            serializer.instance = user
+
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"errors": "Error with social authentication"},
+                            status=status.HTTP_400_BAD_REQUEST)

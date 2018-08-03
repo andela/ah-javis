@@ -157,6 +157,14 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
+    token = serializers.CharField(
+        max_length=128,
+        read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password', 'token')
     profile = ProfileSerializer(write_only=True)
 
     bio = serializers.CharField(source='profile.bio', read_only=True)
@@ -167,7 +175,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'email', 'username', 'password', 'profile', 'bio',
-            'image',
+            'image', 'token'
         )
 
         # The `read_only_fields` option is an alternative for explicitly
@@ -275,3 +283,8 @@ class ResetPasswordSerializer(serializers.Serializer):
         user.save()
 
         return data
+
+
+class SocialSerializer(serializers.Serializer):
+    access_token = serializers.CharField(max_length=255, required=True)
+    provider = serializers.CharField(max_length=255, required=True)
