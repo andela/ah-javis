@@ -1,3 +1,0 @@
-DEBUG=true
-DATABASE_URL=postgresql://root:root28@localhost:5432/ahjarvis
-SECRET_KEY=7pgozr2jn7zs_o%i8id6rddie!*0f0qy3$8231i^4*@u3
