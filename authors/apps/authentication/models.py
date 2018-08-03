@@ -73,6 +73,10 @@ class User(AbstractBaseUser, PermissionsMixin, TimeModel):
     # but we can still analyze the data.
     is_active = models.BooleanField(default=True)
 
+    # User's account is not confirmed by default
+    # they need to confirm email in order``
+    is_confirmed = models.BooleanField(default=False)
+
     # The `is_staff` flag is expected by Django to determine who can and cannot
     # log into the Django admin site. For most users, this flag will always be
     # falsed.
