@@ -1,4 +1,4 @@
-""" Module to test all the views in authentication. """
+""" module to test all the views in authentication. """
 import json
 from django.urls import reverse
 from rest_framework.test import APITestCase
@@ -36,7 +36,7 @@ class RegisterViewTest(APITestCase):
         user = {
             "user": {
                 "username": "testuser",
-                "password": "testspassword"
+                "password": "pass123."
             }
         }
         response = self.client.post(
@@ -63,8 +63,9 @@ class RegisterViewTest(APITestCase):
         """ Test that username is required on register. """
         user = {
             "user": {
+                "username": "",
                 "email": "test@mail.com",
-                "password": "testpassword"
+                "password": "pass123."
             }
         }
         response = self.client.post(
