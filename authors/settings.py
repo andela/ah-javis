@@ -200,5 +200,13 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
 )
+# Email configurations
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'apikey'
+EMAIL_USE_TLS = True
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
 # JWT_EXPIRATION_DELTA set to default 1 day
-JWT_EXPIRATION_DELTA = datetime.timedelta(seconds=env("JWT_EXPIRATION_SECONDS",default=86400))
+JWT_EXPIRATION_DELTA = datetime.timedelta(
+    seconds=env("JWT_EXPIRATION_SECONDS", default=86400))
