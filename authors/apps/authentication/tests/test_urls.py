@@ -18,8 +18,8 @@ class TestUrls(TestCase):
 
     def test_user_retreive_update_url(self):
         """ Tests if url for updating user exists. """
-        url = reverse("authentication:update_user")
-        self.assertEqual(resolve(url).view_name, "authentication:update_user")
+        url = reverse("authentication:user")
+        self.assertEqual(resolve(url).view_name, "authentication:user")
 
     def test_forgot_password_url(self):
         """ Tests if url for sending reset password email exists. """
@@ -32,3 +32,5 @@ class TestUrls(TestCase):
         url = reverse("authentication:reset_password")
         self.assertEqual(resolve(url).view_name,
                          "authentication:reset_password")
+        url = reverse("authentication:user")
+        self.assertEqual(resolve(url).view_name, "authentication:user")

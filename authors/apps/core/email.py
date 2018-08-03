@@ -1,8 +1,11 @@
+""" Core mail sender"""
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 
 
 class SendMail:
+    """ Send email to user """
+
     def __init__(self, template_name, context, to, subject="Author's Haven", request=None):
         self.template_name = template_name
         self.context = context
