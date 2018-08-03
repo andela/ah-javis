@@ -104,3 +104,6 @@ styles.css.map
 .vscode
 .vs/
 *.swp
+
+.DS_Store
+

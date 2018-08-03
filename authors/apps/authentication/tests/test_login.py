@@ -42,7 +42,7 @@ class TestLogin(APITestCase):
         """ Tests that email is required for login. """
         user = {
             "user": {
-                "password": "testpassword"
+                "password": "Pass123."
             }
         }
         response = self.client.post(
