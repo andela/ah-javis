@@ -1,3 +1,4 @@
+import sys
 from rest_framework import status
 from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -5,10 +6,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from social_django.utils import load_strategy, load_backend
 from social_core.backends.oauth import BaseOAuth2
+from social_core.exceptions import MissingBackend
 from requests.exceptions import HTTPError
 from .renderers import UserJSONRenderer
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer
+    LoginSerializer, RegistrationSerializer, UserSerializer, SocialSerializer
 )
 
 
@@ -78,33 +80,42 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 class SocialSignUp(CreateAPIView):
     permission_classes = (AllowAny,)
     renderer_classes = (UserJSONRenderer,)
-    serializer_class = UserSerializer
+    serializer_class = SocialSerializer
 
     def create(self, request,  *args, **kwargs):
         # Get access token and create user or authenticate
 
-        provider = request.data['provider']
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
         authed_user = request.user if not request.user.is_anonymous else None
+        provider = serializer.data['provider']
 
         strategy = load_strategy(request)
+        try:
+            backend = load_backend(strategy=strategy, name=provider, redirect_uri=None)
+        except MissingBackend as e:
+            return Response({
+                "errors": {
+                    "provider":["Provider not found.", str(e)]
+                }
 
-        backend = load_backend(strategy=strategy, name=provider, redirect_uri=None)
-
+                },status=status.HTTP_404_NOT_FOUND)
         if isinstance(backend, BaseOAuth2):
             # Grab the access_token
-            token = request.data['access_token']
+            token = serializer.data['access_token']
 
         try:
             # if authed_user is None, make a new user,
             # else this social account will be associated with the user you pass in
             user = backend.do_auth(token, user=authed_user)
-        except HTTPError as e:
-            # You can't associate a social account with more than user
+        except BaseException as e:
+            # You can't associate a social account with more than user for some reason
+
             return Response({"errors": str(e)},
                             status=status.HTTP_400_BAD_REQUEST)
         if user and user.is_active:
-            serializer = self.serializer_class(user)
+            serializer = UserSerializer(user)
 
             # if the access token was set to an empty string, then save the access token
             # from the request
