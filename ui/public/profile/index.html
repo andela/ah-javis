@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified JavaScript -->
+
+
+    <link rel="stylesheet" href="/ui/static/styles.css">
+    <title>User profile | Authors Haven</title>
+</head>
+
+<body>
+
+
+    <div class="row">
+
+
+        <div class="col m10 s12 offset-m1">
+            <div class="row m-t--75">
+                <div class="card card--profile">
+                    <div class="card-content col m6 p-t--100 p-r--50 p-l--50">
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="input_text" type="text" data-length="10" value="Test user">
+                                <label for="input_text">Username </label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="input_text" type="email" data-length="10" value="testuser@test.com">
+                                <label for="input_text">Email</label>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="textarea2" class="materialize-textarea" data-length="120">A biography, or simply bio, is a detailed description of a person's life. It involves more than just the basic facts like education, work, relationships, and death; it portrays a person's experience of these life events. Unlike a profile or curriculum vitae (résumé), a biography presents a subject's life story, highlighting various aspects of his or her life, including intimate details of experience, and may include an analysis of the subject's personality.</textarea>
+                                <label for="textarea2">Bio</label>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="card-content col m6 activities">
+                        <div class="row">
+                            <p class="card--profile__title">Activities</p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s12">
+                                <ul class="tabs">
+                                    <li class="tab col m6">
+                                        <a href="#articles">My articles</a>
+                                    </li>
+                                    <li class="tab col m6">
+                                        <a class="active" href="#favourites">Favourites</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div id="articles" class="col s12">
+                                <div class="container--fluid">
+                                    <div class="card card--article">
+                                        <span class="card--article__title">My article</span>
+                                    </div>
+                                    <div class="card card--article">
+                                        <span class="card--article__title">My article</span>
+                                    </div>
+                                    <div class="card card--article">
+                                        <span class="card--article__title">My article</span>
+                                    </div>
+                                    <div class="card card--article">
+                                        <span class="card--article__title">Lorem ipsum dolor sit amet, consectetur adipi...</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="favourites" class="col s12">
+                                <div class="container--fluid">
+                                    <div class="card card--article">
+                                        <span class="card--article__title">Lorem ipsum dolor sit amet, consectetur adipi...</span>
+                                    </div>
+                                    <div class="card card--article">
+                                        <span class="card--article__title">My article</span>
+                                    </div>
+                                    <div class="card card--article">
+                                        <span class="card--article__title">Lorem ipsum dolor sit amet, consectetur adipi...</span>
+                                    </div>
+                                    <div class="card card--article">
+                                        <span class="card--article__title">My article</span>
+                                    </div>
+                                    <div class="card card--article">
+                                        <span class="card--article__title">Lorem ipsum dolor sit amet, consectetur adipi...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <img src="https://www.gamesindustry.biz/img/base/default-user.png" alt="User image" class="card--profile__avatar avatar">
+                <a class="btn-floating waves-effect waves-light green card--profile__savebtn hide">
+                    Save
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+    <script>
+        var instance = M.Tabs.init(document.querySelector('.tabs'));
+    </script>
+</body>
+
+</html>

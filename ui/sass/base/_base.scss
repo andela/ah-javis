@@ -29,6 +29,27 @@ form {
   }
 }
 
+.container--fluid {
+  margin: 30px;
+}
+
+.card--article {
+  padding: 20px 20px;
+
+  &__title {
+    font-size: 15px;
+    font-weight: bold;
+  }
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+  color: $primary-color;
+}
+
+.tabs .indicator {
+  background-color: $primary-color;
+
+}
 .error {
   border-bottom: solid 1px red!important;
 }
