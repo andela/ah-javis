@@ -39,6 +39,12 @@ $sides: (top, bottom, left, right); // Leave this variable alone
   }
 }
 
+@each $space in $spaceamounts {
+  .t--#{$space} {
+    top: #{$space}px !important;
+  }
+}
+
 /*
   RUN GULP to generate the classes. Now you can use these helpers to customize spacing on HTML elements.
 */
