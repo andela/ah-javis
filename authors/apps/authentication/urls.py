@@ -2,7 +2,9 @@ from django.conf.urls import url
 from django.urls import path
 
 from .views import (
-    LoginAPIView, RegistrationAPIView, UserRetrieveUpdateAPIView, SocialSignUp, VerifyAccount
+    LoginAPIView, RegistrationAPIView, UserRetrieveUpdateAPIView,
+    ForgotPasswordAPIView, ResetPasswordAPIView, VerifyAccount, SocialSignUp
+
 )
 
 app_name = "authentication"
@@ -13,5 +15,9 @@ urlpatterns = [
     path('users/login/', LoginAPIView.as_view(), name="login"),
     path('users/verify/<uidb64>/<token>/',
          VerifyAccount.as_view(), name="verify"),
+    path('users/forgot_password/',
+         ForgotPasswordAPIView.as_view(), name="forgot_password"),
+    path('users/resetpassword/',
+         ResetPasswordAPIView.as_view(), name="reset_password"),
     path("convert_token/", SocialSignUp.as_view(), name="social")
 ]

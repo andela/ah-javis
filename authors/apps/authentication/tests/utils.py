@@ -9,8 +9,9 @@ TEST_USER = {
     }
 }
 
+
 def create_user(username="testuser", email="testuser@mail.com",
-        password="Pass123."):
+                password="Pass123."):
     """ create_user() creates and returns a user. """
     user = get_user_model().objects.create_user(username, email, password=password)
     user.save()

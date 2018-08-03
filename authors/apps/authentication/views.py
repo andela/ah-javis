@@ -1,5 +1,6 @@
 import sys
 from rest_framework import status
+from rest_framework.generics import RetrieveUpdateAPIView, UpdateAPIView
 from rest_framework.generics import RetrieveUpdateAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -8,6 +9,13 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .models import User
 from django.http import HttpResponse
 from rest_framework.views import APIView
+from rest_framework.decorators import list_route
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth.tokens import default_token_generator
+from .models import User
+
+from authors.apps.core.email import SendMail
 
 from social_django.utils import load_strategy, load_backend
 from social_core.backends.oauth import BaseOAuth2
@@ -19,7 +27,8 @@ from django.contrib.auth import get_user_model
 from .utils import generate_token
 from .renderers import UserJSONRenderer
 from .serializers import (
-    LoginSerializer, RegistrationSerializer, UserSerializer, SocialSerializer
+    LoginSerializer, RegistrationSerializer, UserSerializer,
+    EmailSerializer, ResetPasswordSerializer, SocialSerializer
 )
 
 
@@ -125,6 +134,44 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class ForgotPasswordAPIView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = EmailSerializer
+
+    def post(self, request):
+        # Get the email and pass it to the serializer for validation
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        # Sends the user an email with the link to the reset password page
+        context = {
+            "verification_url": settings.VERIFCATION_URL + serializer.data.get('token', None),
+            "username": serializer.data.get('username'),
+        }
+
+        SendMail("reset_password_email.html", context, to=[serializer.data.get(
+            'email', None)], subject='Authors Haven Reset Password').send()
+
+        token = serializer.data.get('token', None)
+
+        return Response(data={"token": token, "message": "Successful. Check your email for reset link"},  status=status.HTTP_200_OK)
+
+
+class ResetPasswordAPIView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = ResetPasswordSerializer
+
+    def put(self, request):
+        """ Allows the user to change their password. """
+        # Should take the token, user_email and new_password
+        reset_data = request.data.get('reset_data', {})
+
+        serializer = self.serializer_class(data=reset_data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(data="Password Reset Successful",
+                        status=status.HTTP_200_OK)
 class SocialSignUp(CreateAPIView):
     permission_classes = (AllowAny,)
     renderer_classes = (UserJSONRenderer,)

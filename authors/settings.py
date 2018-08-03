@@ -162,8 +162,10 @@ REST_FRAMEWORK = {
     ),
 }
 
+VERIFCATION_URL = "http://localhost:6000/verify/"
+
 AUTHENTICATION_BACKENDS = (
-    #Google OAuth2
+    # Google OAuth2
     'social_core.backends.google.GoogleOAuth2',
     # Facebook OAuth2
     'social_core.backends.facebook.FacebookAppOAuth2',
@@ -172,10 +174,10 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-#Google configuration
+# Google configuration
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = env('GOOGLE_KEY')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = env('GOOGLE_SECRET')
-#Scope
+# Scope
 SOCIAL_AUTH_GOOGLE_OAUTH_SCOPE = ['email', 'username']
 
 # Facebook configuration
