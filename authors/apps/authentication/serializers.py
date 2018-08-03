@@ -14,7 +14,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     password = serializers.CharField(max_length=128, write_only=True, allow_null=True, allow_blank=True)
     username = serializers.CharField(max_length=128, allow_null=True, allow_blank=True)
-    email = serializers.EmailField(max_length=128, 
+    email = serializers.EmailField(max_length=128,
             allow_null=True, allow_blank=True)
     # Ensure passwords are at least 8 characters long, no longer than 128
     # characters, and can not be read by the client.
@@ -57,7 +57,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('Email is required.')
         elif User.objects.filter(email=email):
             raise serializers.ValidationError('Email is taken.')
- 
+
         return data
 
     # The client should not be able to send a token along with a registration
@@ -150,6 +150,14 @@ class UserSerializer(serializers.ModelSerializer):
         write_only=True
     )
 
+    token = serializers.CharField(
+        max_length=128,
+        read_only=True
+    )
+
+    class Meta:
+        model = User
+        fields = ('email', 'username', 'password', 'token')
     profile = ProfileSerializer(write_only=True)
 
     bio = serializers.CharField(source='profile.bio', read_only=True)
@@ -160,8 +168,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'email', 'username', 'password', 'profile', 'bio',
-            'image',
+            'image', 'token'
         )
+
 
         # The `read_only_fields` option is an alternative for explicitly
         # specifying the field with `read_only=True` like we did for password
@@ -204,3 +213,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.profile.save()
 
         return instance
+
+class SocialSerializer(serializers.Serializer):
+    access_token = serializers.CharField(max_length=255, required=True)
+    provider = serializers.CharField(max_length=255, required=True)
