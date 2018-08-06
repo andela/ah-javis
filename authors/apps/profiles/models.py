@@ -25,3 +25,12 @@ class Profile(TimeModel):
 
     def __str__(self):
         return self.user.username
+
+
+class Follow(TimeModel):
+    # The user who follows other users
+    follower = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='is_following')
+    # The user being followed
+    following = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='is_followed_by')
