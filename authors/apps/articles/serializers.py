@@ -27,7 +27,8 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = ['title', 'slug', 'body',
-                  'description', 'image_url', 'created_at', 'updated_at', 'author']
+                  'description', 'image_url', 'created_at', 'updated_at',
+                  'author', 'likes', 'dislikes', 'likes_count', 'dislikes_count']
 
     def create(self, validated_data):
         return Article.objects.create(**validated_data)
@@ -39,3 +40,9 @@ class ArticleSerializer(serializers.ModelSerializer):
         description = data.get('description', None)
 
         return data
+
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+
+    def get_dislikes_count(self, obj):
+        return obj.dislikes.count()
