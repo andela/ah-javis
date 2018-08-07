@@ -6,6 +6,7 @@ from authors.apps.profiles.serializers import ProfileSerializer
 
 from .models import Article
 
+
 class ArticleSerializer(serializers.ModelSerializer):
     """
     Serializer to map the Model format to Json format
@@ -18,7 +19,11 @@ class ArticleSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
     author = ProfileSerializer(read_only=True)
-    
+    likes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    dislikes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    likes_count = serializers.SerializerMethodField()
+    dislikes_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Article
         fields = ['title', 'slug', 'body',
