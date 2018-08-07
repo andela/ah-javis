@@ -4,7 +4,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from authors.apps.core.utils import random_string_generator
 from authors.apps.core.models import TimeModel
-from django.contrib.auth.models import User
+from authors.apps.profiles.models import Profile
 
 class Article(TimeModel):
     ''' Model ..... '''
@@ -48,10 +48,11 @@ def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):
 
 class Rate(models.Model):
     """Ratings model."""
-    rates = models.IntegerField()
-    counter = models.IntegerField()
-    article = models.ForeignKey(Article, on_delete=models.CASCADE)
-    rater = models.ForeignKey('profiles.Profile', on_delete=models.CASCADE)
+    ratings = models.IntegerField(null=False)
+    counter = models.IntegerField(default=0)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE,
+            related_name="rate")
+    rater = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
 @receiver(pre_save, sender=Rate)
 def add_one_to_counter(sender, instance, *args, **kwargs):
