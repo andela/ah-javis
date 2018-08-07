@@ -4,6 +4,7 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from authors.apps.core.utils import random_string_generator
 from authors.apps.core.models import TimeModel
+from authors.apps.authentication.models import User
 
 
 class Article(TimeModel):
@@ -15,14 +16,18 @@ class Article(TimeModel):
     body = models.TextField()
 
     author = models.ForeignKey(
-                    'profiles.Profile',
-                    on_delete=models.CASCADE,
-                    related_name='articles')
+        'profiles.Profile',
+        on_delete=models.CASCADE,
+        related_name='articles')
     # default image for the article.
     image_url = models.URLField(blank=True, null=True)
+    likes = models.ManyToManyField(User, related_name="likes", blank=True)
+    dislikes = models.ManyToManyField(
+        User, related_name="dislikes", blank=True)
 
     def __str__(self):
         return self.title
+
 
 @receiver(pre_save, sender=Article)
 def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):
