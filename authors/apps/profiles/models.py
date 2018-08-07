@@ -23,14 +23,14 @@ class Profile(TimeModel):
     # avatar. This field is not required and it may be blank.
     image = models.URLField(blank=True)
 
+    follows = models.ManyToManyField(
+        'self', related_name='followed_by', symmetrical=False)
+
+    def follow(self, profile):
+        self.follows.add(profile)
+
+    def unfollow(self, profile):
+        self.follows.remove(profile)
+
     def __str__(self):
         return self.user.username
-
-
-class Follow(TimeModel):
-    # The user who follows other users
-    follower = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='is_following')
-    # The user being followed
-    following = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='is_followed_by')

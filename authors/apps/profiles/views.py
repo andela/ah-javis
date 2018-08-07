@@ -25,3 +25,11 @@ class ProfileRetrieveAPIView(RetrieveAPIView):
         serializer = self.serializer_class(profile)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FollowAPI():
+    pass
+
+
+class Unfollow():
+    pass
