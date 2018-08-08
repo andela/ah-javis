@@ -9,7 +9,7 @@ from .exceptions import ProfileDoesNotExist
 
 
 class ProfileRetrieveAPIView(RetrieveAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     renderer_classes = (ProfileJSONRenderer,)
     serializer_class = ProfileSerializer
 
