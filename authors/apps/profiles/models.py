@@ -26,11 +26,11 @@ class Profile(TimeModel):
     follows = models.ManyToManyField(
         'self', related_name='followed_by', symmetrical=False)
 
+    def __str__(self):
+        return self.user.username
+
     def follow(self, profile):
         self.follows.add(profile)
 
     def unfollow(self, profile):
         self.follows.remove(profile)
-
-    def __str__(self):
-        return self.user.username
