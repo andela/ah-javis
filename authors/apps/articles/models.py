@@ -7,13 +7,11 @@ from authors.apps.core.models import TimeModel
 
 
 class Article(TimeModel):
-    ''' Model ..... '''
-    slug = models.CharField(db_index=True, max_length=255)
+    ''' This class represents the Article model '''
+    slug = models.SlugField(db_index=True, max_length=255, unique=True)
     title = models.CharField(db_index=True, max_length=255)
-
     description = models.TextField()
     body = models.TextField()
-
     author = models.ForeignKey(
                     'profiles.Profile',
                     on_delete=models.CASCADE,
