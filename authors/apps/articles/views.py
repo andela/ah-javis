@@ -22,12 +22,16 @@ class RateAPIView(CreateAPIView):
         except Article.DoesNotExist:
             return Response({"errors":{"message":["Article doesnt exist."]}})
 
+        if article is None:
+            return Response({"errors":{"message":["Article doesnt exist."]}},
+                    404)
+
         serializer = self.serializer_class(data=ratings)
         serializer.is_valid(raise_exception=True)
         rate = serializer.data.get('rate')
         rating = Rate.objects.filter(article=article,
                 rater=request.user.profile).first()
-        
+
         if not rating:
             rating = Rate(article=article, rater=request.user.profile, ratings=rate)
             rating.save()
