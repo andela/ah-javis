@@ -44,6 +44,7 @@ class ProfileFollowAPIView(APIView):
         except Profile.DoesNotExist:
             raise NotFound('The user with this profile does not exist')
 
+        # The function unfollow takes the followed user
         follower.unfollow(followed)
 
         serializer = self.serializer_class(follower, context={
@@ -65,6 +66,7 @@ class ProfileFollowAPIView(APIView):
         if follower.pk is followed.pk:
             raise serializers.ValidationError('You cannot follow yourself')
 
+         # The function follow takes the followed user
         follower.follow(followed)
 
         serializer = self.serializer_class(follower, context={
