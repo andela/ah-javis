@@ -23,5 +23,14 @@ class Profile(TimeModel):
     # avatar. This field is not required and it may be blank.
     image = models.URLField(blank=True)
 
+    favorites = models.ManyToManyField(
+        'articles.Article', symmetrical=False, related_name='users_favorites')
+
     def __str__(self):
         return self.user.username
+
+    def favorite(self, article):
+        self.favorites.add(article)
+
+    def unfavorite(self, article):
+        self.favorites.remove(article)
