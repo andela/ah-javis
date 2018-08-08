@@ -24,6 +24,19 @@ class Article(TimeModel):
     def __str__(self):
         return self.title
 
+class Comment(TimeModel):
+    body = models.TextField()
+
+    article = models.ForeignKey(
+        'articles.Article', related_name='comments', on_delete=models.CASCADE
+    )
+
+    author = models.ForeignKey(
+        'profiles.Profile', related_name='comments', on_delete=models.CASCADE
+    )
+
+
+
 @receiver(pre_save, sender=Article)
 def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):
     """ create a signal to add slug field if None exists. """
