@@ -48,7 +48,7 @@ class RateTestCase(APITestCase):
 
     def login_user(self):
         """
-        login user
+        login user in order to access jwt token
         """
         response = self.client.post(
             reverse("authentication:login"),
@@ -81,7 +81,7 @@ class RateTestCase(APITestCase):
 
     def verify_user(self, user):
         """Verify user"""
-        token = generate_token.make_token(user)
+        token = generate_token.make_token(user) # Token for user verifications.
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8")
         request = APIRequestFactory().get(
                 reverse("authentication:verify", args=[uid, token]))
@@ -91,11 +91,12 @@ class RateTestCase(APITestCase):
 
     def test_can_rate_an_articlej(self):
         """ Tests that a user can rate an article """
-        user = self.create_a_user()
-        self.verify_user(user)
-        auth_user = self.login_user()
+        user = self.create_a_user() # create user
+        self.verify_user(user) # Verify created user
+        # Login test user and return authorization token.
+        auth_user = self.login_user() 
         user = User.objects.get()
-        article = self.create_article()
+        article = self.create_article() # create article
         res = self.client.post('/api/articles/'+article.slug+'/rate/',
                                     self.rate,
                                     HTTP_AUTHORIZATION='Bearer ' +
@@ -107,11 +108,13 @@ class RateTestCase(APITestCase):
 
     def test_can_not_rate_more_than_3_times(self):
         """ Should only rate for utmost 3 times."""
-        user = self.create_a_user()
-        self.verify_user(user)
-        auth_user = self.login_user()
+        user = self.create_a_user() # create user
+        self.verify_user(user) # Verify created user
+        # Login test user and return authorization token.
+        auth_user = self.login_user() 
         user = User.objects.get()
-        article = self.create_article()
+        article = self.create_article() # create article
+        # loop to rate article 3 times.
         x = 0 
         while x < 4:
             self.client.post('/api/articles/'+article.slug+'/rate/',
@@ -134,11 +137,12 @@ class RateTestCase(APITestCase):
     def test_rate_should_be_a_number(self):
         """ Should be an integer."""
 
-        user = self.create_a_user()
-        self.verify_user(user)
-        auth_user = self.login_user()
+        user = self.create_a_user() # create user
+        self.verify_user(user) # Verify created user
+        # Login test user and return authorization token.
+        auth_user = self.login_user() 
         user = User.objects.get()
-        article = self.create_article()
+        article = self.create_article() # create article
         res = self.client.post('/api/articles/'+article.slug+'/rate/',
                                     self.rate_string,
                                     HTTP_AUTHORIZATION='Bearer ' +
@@ -154,11 +158,12 @@ class RateTestCase(APITestCase):
     def test_rate_should_be_between_0_and_5(self):
         """ Should be 0, 1, 2, 3, 4, 5."""
 
-        user = self.create_a_user()
-        self.verify_user(user)
-        auth_user = self.login_user()
+        user = self.create_a_user() # create user
+        self.verify_user(user) # Verify created user
+        # Login test user and return authorization token.
+        auth_user = self.login_user() 
         user = User.objects.get()
-        article = self.create_article()
+        article = self.create_article() # create article
         res = self.client.post('/api/articles/'+article.slug+'/rate/',
                                     self.rate_range,
                                     HTTP_AUTHORIZATION='Bearer ' +
@@ -174,11 +179,12 @@ class RateTestCase(APITestCase):
     def test_rate_should_not_be_an_empty_string(self):
         """ Should not be an empty string."""
 
-        user = self.create_a_user()
-        self.verify_user(user)
-        auth_user = self.login_user()
+        user = self.create_a_user() # create user
+        self.verify_user(user) # Verify created user
+        # Login test user and return authorization token.
+        auth_user = self.login_user() 
         user = User.objects.get()
-        article = self.create_article()
+        article = self.create_article() # create article
         res = self.client.post('/api/articles/'+article.slug+'/rate/',
                                     self.rate_empty,
                                     HTTP_AUTHORIZATION='Bearer ' +
@@ -194,11 +200,12 @@ class RateTestCase(APITestCase):
     def test_cannot_rate_non_existent_article(self):
         """ Should not rate non existing article."""
 
-        user = self.create_a_user()
-        self.verify_user(user)
-        auth_user = self.login_user()
+        user = self.create_a_user() # create user
+        self.verify_user(user) # Verify created user
+        # Login test user and return authorization token.
+        auth_user = self.login_user() 
         user = User.objects.get()
-        article = self.create_article()
+        article = self.create_article() # create article
         res = self.client.post('/api/articles/random/rate/',
                                     self.rate,
                                     HTTP_AUTHORIZATION='Bearer ' +
