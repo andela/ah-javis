@@ -24,6 +24,11 @@ class RateAPIView(CreateAPIView):
         if article is None:
             return Response({"errors":{"message":["Article doesnt exist."]}},
                     404)
+        
+        if article.author == request.user.profile:
+            """If owner dont rate."""
+            return Response({"errors":{"message":["You can not rate your "
+                    "article."]}}, 403)
 
         # Serialize rate model
         serializer = self.serializer_class(data=ratings)
