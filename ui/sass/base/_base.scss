@@ -42,18 +42,24 @@ form {
   }
 }
 
-.tabs .tab a:hover, .tabs .tab a.active {
+.tabs .tab a:hover,
+.tabs .tab a.active {
   color: $primary-color;
 }
 
 .tabs .indicator {
   background-color: $primary-color;
-
 }
 .error {
-  border-bottom: solid 1px red!important;
+  border-bottom: solid 1px red !important;
 }
 
 .divider {
   background-color: #ccc;
+}
+
+[contenteditable="true"]:focus,
+[contenteditable="true"]:active {
+  border: none;
+  outline: none;
 }
