@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^api/', include('authors.apps.authentication.urls',
                           namespace='authentication')),
     url(r'^api/', include('authors.apps.articles.urls',
-                          namespace='article'))
+                          namespace='article')),
     url(r'^api/profiles/', include('authors.apps.profiles.urls',
                                    namespace='profiles')),
 ]
