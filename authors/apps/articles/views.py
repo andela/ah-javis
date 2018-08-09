@@ -25,8 +25,10 @@ class ArticleAPIView(mixins.CreateModelMixin,
         '''
         Create an article
         '''
+        serializer_context = {'request': request}
         article = request.data.get('article', {})
-        serializer = self.serializer_class(data=article)
+        serializer = self.serializer_class(
+            data=article, context=serializer_context)
         serializer.is_valid(raise_exception=True)
         serializer.save(author=request.user.profile)
 
@@ -36,9 +38,11 @@ class ArticleAPIView(mixins.CreateModelMixin,
         '''
         Get all articles
         '''
+        serializer_context = {'request': request}
         queryset = Article.objects.all()
         serializer = self.serializer_class(
-            queryset, many=True)
+            queryset, many=True,
+            context=serializer_context)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
