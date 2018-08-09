@@ -24,6 +24,7 @@ urlpatterns = [
 
     url(r'^api/profiles/', include('authors.apps.profiles.urls',
                                    namespace='profiles')),
+
     url(r'^api/', include('authors.apps.articles.urls',
-                            namespace='article'))
+                                   namespace='articles')),
 ]
