@@ -7,13 +7,11 @@ from authors.apps.core.models import TimeModel
 
 
 class Article(TimeModel):
-    ''' Model ..... '''
-    slug = models.CharField(db_index=True, max_length=255)
+    ''' This class represents the Article model '''
+    slug = models.SlugField(db_index=True, max_length=255, unique=True)
     title = models.CharField(db_index=True, max_length=255)
-
     description = models.TextField()
     body = models.TextField()
-
     author = models.ForeignKey(
                     'profiles.Profile',
                     on_delete=models.CASCADE,
@@ -25,6 +23,7 @@ class Article(TimeModel):
         return self.title
 
 class Comment(TimeModel):
+    """ Model to represent a Comment. """
     body = models.TextField()
 
     article = models.ForeignKey(
@@ -35,7 +34,9 @@ class Comment(TimeModel):
         'profiles.Profile', related_name='comments', on_delete=models.CASCADE
     )
 
-
+    parent = models.ForeignKey(
+        'self', null=True, blank=False, on_delete=models.CASCADE, related_name='thread'
+    )
 
 @receiver(pre_save, sender=Article)
 def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):
