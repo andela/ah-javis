@@ -11,12 +11,9 @@ from rest_framework import status, mixins, viewsets
 from rest_framework.generics import RetrieveAPIView, CreateAPIView
 
 from .serializers import ArticleSerializer, RateSerializer
-from .renderers import RateJSONRenderer
 from .models import Article, Rate, Comment
 from .serializers import ArticleSerializer, CommentSerializer
-from .renders import ArticleJSONRenderer, CommentJSONRenderer
-
-
+from .renders import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer
 
 class RateAPIView(CreateAPIView):
     permission_classes = (AllowAny,)
@@ -87,6 +84,17 @@ class DislikesAPIView(APIView):
         if article is None:
             return Response({"errors": {"message": ["Article doesnt exist."]}},
                             404)
+        article = Article.objects.filter(slug=slug).first()
+
+       # Check if article is none
+        if article is None:
+            return Response({"errors":{"message":["Article doesnt exist."]}},
+                    404)
+        
+        if article.author == request.user.profile:
+            """If owner dont rate."""
+            return Response({"errors":{"message":["You can not rate your "
+                    "article."]}}, 403)
 
         # Serialize rate model
         serializer = self.serializer_class(data=ratings)
@@ -130,7 +138,8 @@ class ArticleAPIView(mixins.CreateModelMixin,
     This class defines the create behavior of our articles.
     """
     lookup_field = 'slug'
-    queryset = Article.objects.all()
+    queryset = Article.objects.annotate(average_rating = Avg("rate__ratings"))
+    print(queryset)
     permission_classes = (IsAuthenticatedOrReadOnly, )
     serializer_class = ArticleSerializer
     renderer_classes = (ArticleJSONRenderer, )
@@ -150,7 +159,7 @@ class ArticleAPIView(mixins.CreateModelMixin,
         """
         Get all articles
         """
-        queryset = Article.objects.all()
+        queryset = Article.objects.annotate(average_rating = Avg("rate__ratings"))
         serializer = self.serializer_class(
             queryset, many=True)
 
