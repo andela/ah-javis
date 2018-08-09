@@ -28,7 +28,8 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['title', 'slug', 'body',
                   'description', 'image_url', 'created_at', 'updated_at',
-                  'author', 'likes', 'dislikes', 'likes_count', 'dislikes_count']
+                  'author', 'likes', 'dislikes',
+                  'likes_count', 'dislikes_count']
 
     def create(self, validated_data):
         return Article.objects.create(**validated_data)
