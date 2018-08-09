@@ -51,9 +51,9 @@ class RateSerializer(serializers.Serializer):
         if rating == '':
             raise serializers.ValidationError('Rate is required.')
         # Validate the rate is between 0 and 5.
-        if rating < 0 or rating > 5:
+        if rating < 1 or rating > 5:
             raise serializers.ValidationError(
-                'Rate should be from 0 to 5.')
+                'Rate should be from 1 to 5.')
 
         return {"rate": rating}
 

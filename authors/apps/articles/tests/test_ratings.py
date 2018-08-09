@@ -156,7 +156,7 @@ class RateTestCase(APITestCase):
         self.assertEquals(res.status_code, 400)
 
     def test_rate_should_be_between_0_and_5(self):
-        """ Should be 0, 1, 2, 3, 4, 5."""
+        """ Should be 1, 2, 3, 4, 5."""
 
         user = self.create_a_user() # create user
         self.verify_user(user) # Verify created user
@@ -173,7 +173,7 @@ class RateTestCase(APITestCase):
         res.render()
         errors = json.loads(res.content).get('rate')
         error = errors['errors']['error'][0]
-        self.assertEquals(error, "Rate should be from 0 to 5.")
+        self.assertEquals(error, "Rate should be from 1 to 5.")
         self.assertEquals(res.status_code, 400)
 
     def test_rate_should_not_be_an_empty_string(self):
@@ -216,5 +216,5 @@ class RateTestCase(APITestCase):
         errors = json.loads(res.content).get('rate')
         error = errors['errors']['message'][0]
         self.assertEquals(error, "Article doesnt exist.")
-        self.assertEquals(res.status_code, 404)
 
+        self.assertEquals(res.status_code, 404)
