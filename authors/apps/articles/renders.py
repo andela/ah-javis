@@ -7,12 +7,14 @@ class ArticleJSONRenderer(JSONRenderer):
 
     def render(self, data, media_type=None, renderer_context=None):
         if data is not None:
-            if len(data) <= 1:
+
+            if isinstance(data, dict):
                 return json.dumps({
                     'article': data
                 })
             return json.dumps({
-                'articles': data
+                'articles': data,
+                'articlesCount': len(data)
             })
         return json.dumps({
             "article": 'No article found.'
