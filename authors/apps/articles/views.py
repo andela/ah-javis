@@ -65,9 +65,9 @@ class RateAPIView(CreateAPIView):
 class ArticleAPIView(mixins.CreateModelMixin,
                      mixins.ListModelMixin,
                      mixins.RetrieveModelMixin, viewsets.GenericViewSet):
-    '''
+    """
     This class defines the create behavior of our articles.
-    '''
+    """
     lookup_field = 'slug'
     queryset = Article.objects.annotate(average_rating = Avg("rate__ratings"))
     print(queryset)
@@ -76,9 +76,9 @@ class ArticleAPIView(mixins.CreateModelMixin,
     renderer_classes = (ArticleJSONRenderer, )
 
     def create(self, request):
-        '''
+        """
         Create an article
-        '''
+        """
         article = request.data.get('article', {})
         serializer = self.serializer_class(data=article)
         serializer.is_valid(raise_exception=True)
@@ -87,9 +87,9 @@ class ArticleAPIView(mixins.CreateModelMixin,
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request):
-        '''
+        """
         Get all articles
-        '''
+        """
         queryset = Article.objects.annotate(average_rating = Avg("rate__ratings"))
         serializer = self.serializer_class(
             queryset, many=True)
@@ -97,9 +97,9 @@ class ArticleAPIView(mixins.CreateModelMixin,
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, slug):
-        '''
+        """
         Get one article
-        '''
+        """
         serializer_context = {'request': request}
         try:
             serializer_instance = self.queryset.get(slug=slug)
@@ -115,9 +115,9 @@ class ArticleAPIView(mixins.CreateModelMixin,
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def update(self, request, slug):
-        '''
+        """
         Edit an article
-        '''
+        """
         serializer_context = {'request': request}
         try:
             serializer_instance = self.queryset.get(slug=slug)
@@ -143,9 +143,9 @@ class ArticleAPIView(mixins.CreateModelMixin,
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def destroy(self, request, slug):
-        '''
+        """
         Delete an article
-        '''
+        """
         try:
             article = self.queryset.get(slug=slug)
         except Article.DoesNotExist:

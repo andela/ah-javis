@@ -322,6 +322,21 @@ class ArticleCRUDTestCase(APITestCase):
                                )
         self.assertEquals(res.status_code, 200)
 
+    def test_unauthorised_user_cannot_update_article(self):
+        """
+        Tests that unauthorised user cannot update an article
+        """
+        user = self.create_a_user()
+        self.verify_user(user)
+        auth_user = self.login_user()
+        user = User.objects.get()
+        article = self.create_article()
+        res = self.client.put('/api/articles/'+article.slug+'/',
+                              self.article1,
+                              format='json'
+                              )
+        self.assertEquals(res.status_code, 403)
+
     def test_user_can_get_articles_without_login(self):
         """
         Tests that user can get articles without login

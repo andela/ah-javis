@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Raleway:200");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans");
 
 html,
 body,
@@ -85,7 +85,7 @@ video {
   padding: 0;
   border: 0;
   vertical-align: baseline;
-  font-family: "Raleway", sans-serif;
+  font-family: "Open Sans", sans-serif;
   font-weight: 200;
 }
 /* HTML5 display-role reset for older browsers */
@@ -130,4 +130,8 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+
+.container {
+  width: 65%;
 }

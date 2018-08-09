@@ -47,3 +47,25 @@
   font-weight: 700 !important;
   font-size: 19px;
 }
+
+.article {
+  &__photo {
+    height: 480px !important;
+    width: 100%;
+  }
+
+  &__body {
+    margin: 30px 0 50px 0;
+    line-height: 35px;
+
+    &--para {
+      margin-top: 25px;
+    }
+
+    &--sub-heading {
+      padding-top: 20px;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+  }
+}
