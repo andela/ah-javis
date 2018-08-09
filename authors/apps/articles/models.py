@@ -32,7 +32,7 @@ def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):
     """ create a signal to add slug field if None exists. """
     MAXIMUM_SLUG_LENGTH = 255
 
-    if instance and not instance.slug:
+    if instance:
         slug = slugify(instance.title)
         unique = random_string_generator()
 
