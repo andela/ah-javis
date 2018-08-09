@@ -7,13 +7,13 @@ class TestProfileUrls(TestCase):
 
     def test_get_user_profile_url(self):
         ''' Test if url for retrieving user profile exists. '''
-        url = reverse("profiles:view_profile", kwargs={'username': 'username'})
+        url = reverse("profiles:view_profile", args=['username'])
 
         self.assertEqual(resolve(url).view_name, "profiles:view_profile")
 
     def test_follow_user_url(self):
         ''' Test if url for following user profile exists. '''
         url = reverse("profiles:follow_profile",
-                      kwargs={'username': 'username'})
+                      args=['username'])
 
         self.assertEqual(resolve(url).view_name, "profiles:follow_profile")
