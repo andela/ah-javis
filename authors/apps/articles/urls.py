@@ -14,6 +14,6 @@ router.register('articles', ArticleAPIView, base_name='articles')
 urlpatterns = [
     path('', include(router.urls)),
     path('articles/<slug>/like/', LikesAPIView.as_view(), name="like"),
-    path('articles/<slug>/dislike/', DislikesAPIView.as_view(), name="dislike")
-    path('articles/<slug>/rate/', RateAPIView.as_view(), name="rate"),
+    path('articles/<slug>/dislike/', DislikesAPIView.as_view(), name="dislike"),
+    path('articles/<slug>/rate/', RateAPIView.as_view(), name="rate")
 ]
