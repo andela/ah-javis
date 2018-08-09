@@ -72,7 +72,7 @@ class ArticleAPIView(mixins.CreateModelMixin,
         except Article.DoesNotExist:
             raise NotFound('Artiicle not found')
 
-        if not serializer_instance.author_id == request.user.profile.id:
+        if not serializer_instance.author.id == request.user.profile.id:
             raise PermissionDenied(
                 'You do not have permission to edit this article')
 
@@ -86,6 +86,7 @@ class ArticleAPIView(mixins.CreateModelMixin,
         )
 
         serializer.is_valid(raise_exception=True)
+        serializer.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
