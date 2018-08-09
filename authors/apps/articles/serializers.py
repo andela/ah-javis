@@ -21,11 +21,13 @@ class ArticleSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
     author = ProfileSerializer(read_only=True)
+    average_rating = serializers.FloatField(required=False, read_only=True)
 
     class Meta:
         model = Article
         fields = ['title', 'slug', 'body',
-            'description', 'image_url', 'created_at', 'updated_at', 'author']
+            'description', 'image_url', 'created_at', 'updated_at', 'author',
+            'average_rating']
 
     def create(self, validated_data):
         return Article.objects.create(**validated_data)
@@ -49,9 +51,9 @@ class RateSerializer(serializers.Serializer):
         if rating == '':
             raise serializers.ValidationError('Rate is required.')
         # Validate the rate is between 0 and 5.
-        if rating < 0 or rating > 5:
+        if rating < 1 or rating > 5:
             raise serializers.ValidationError(
-                'Rate should be from 0 to 5.')
+                'Rate should be from 1 to 5.')
 
         return {"rate": rating}
 
