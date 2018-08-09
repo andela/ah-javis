@@ -4,7 +4,7 @@ from .views import (
     LikesAPIView, DislikesAPIView
 )
 
-app_name = "artiles"
+app_name = "articles"
 
 urlpatterns = [
     path('articles/<slug>/like/', LikesAPIView.as_view(), name="like"),
