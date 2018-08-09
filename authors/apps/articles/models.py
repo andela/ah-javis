@@ -7,13 +7,11 @@ from authors.apps.core.models import TimeModel
 
 
 class Article(TimeModel):
-    ''' Model ..... '''
-    slug = models.CharField(db_index=True, max_length=255)
+    ''' This class represents the Article model '''
+    slug = models.SlugField(db_index=True, max_length=255, unique=True)
     title = models.CharField(db_index=True, max_length=255)
-
     description = models.TextField()
     body = models.TextField()
-
     author = models.ForeignKey(
                     'profiles.Profile',
                     on_delete=models.CASCADE,
@@ -29,7 +27,7 @@ def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):
     """ create a signal to add slug field if None exists. """
     MAXIMUM_SLUG_LENGTH = 255
 
-    if instance and not instance.slug:
+    if instance:
         slug = slugify(instance.title)
         unique = random_string_generator()
 
