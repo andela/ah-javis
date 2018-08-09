@@ -18,11 +18,7 @@ class RateAPIView(CreateAPIView):
         """ Rating view"""
         ratings = request.data.get("rate", {})
         # Filter articles with the given slug
-        try:
-            article = Article.objects.filter(slug=slug).first()
-
-        except Article.DoesNotExist:
-            return Response({"errors":{"message":["Article doesnt exist."]}})
+        article = Article.objects.filter(slug=slug).first()
 
        # Check if article is none
         if article is None:
