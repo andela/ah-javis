@@ -34,3 +34,9 @@ class Profile(TimeModel):
 
     def unfollow(self, profile):
         self.follows.remove(profile)
+
+    def get_followers(self, profile):
+        return profile.followed_by.all()
+
+    def get_following(self, profile):
+        return profile.follows.all()

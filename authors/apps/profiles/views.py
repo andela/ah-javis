@@ -9,9 +9,11 @@ from .renderers import ProfileJSONRenderer
 from .serializers import ProfileSerializer
 from .exceptions import ProfileDoesNotExist
 
+import json
+
 
 class ProfileRetrieveAPIView(RetrieveAPIView):
-    permission_classes = (AllowAny,)
+    permission_classes = (IsAuthenticated,)
     renderer_classes = (ProfileJSONRenderer,)
     serializer_class = ProfileSerializer
 
@@ -66,10 +68,38 @@ class ProfileFollowAPIView(APIView):
         if follower.pk is followed.pk:
             raise serializers.ValidationError('You cannot follow yourself')
 
-         # The function follow takes the followed user
+        # The function follow takes the followed user
         follower.follow(followed)
 
         serializer = self.serializer_class(follower, context={
             'request': request})
 
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FollowersAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    renderer_classes = (ProfileJSONRenderer,)
+    serializer_class = ProfileSerializer
+
+    def get(self, request, username):
+        user = request.user.profile
+        profile = Profile.objects.get(user__username=username)
+
+        followers = user.get_followers(profile)
+        serializer = self.serializer_class(followers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class FollowingAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    renderer_classes = (ProfileJSONRenderer,)
+    serializer_class = ProfileSerializer
+
+    def get(self, request, username):
+        user = request.user.profile
+        profile = Profile.objects.get(user__username=username)
+
+        following = user.get_following(profile)
+        serializer = self.serializer_class(following, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
