@@ -12,7 +12,8 @@ class ArticleJSONRenderer(JSONRenderer):
                     'article': data
                 })
             return json.dumps({
-                'articles': data
+                'articles': data,
+                'articlesCount': len(data)
             })
         return json.dumps({
             "article": 'No article found.'
