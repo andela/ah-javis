@@ -5,7 +5,8 @@ from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView, CreateAPIView
 from .serializers import ArticleSerializer, RateSerializer
-from .renders import ArticleJSONRenderer, RateJSONRenderer
+from .renders import ArticleJSONRenderer
+from .renderers import RateJSONRenderer
 from .models import Article, Rate
 from django.db.models import Avg
 
@@ -89,7 +90,7 @@ class ArticleAPIView(mixins.CreateModelMixin,
         '''
         Get all articles
         '''
-        queryset = Article.objects.annotate(average_rating = Avg("rate__ratings"))
+        queryset = Article.objects.all()
         serializer = self.serializer_class(
             queryset, many=True)
      
