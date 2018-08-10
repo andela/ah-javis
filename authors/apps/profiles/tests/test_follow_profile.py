@@ -96,3 +96,21 @@ class TestFollowAPI(APITestCase):
                                        args=[user.username]))
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_user_cannot_follow_non_existing_user(self):
+        ''' Tests that a user can unfollow another user '''
+        # Register 1 users with profile
+        user = User.objects.create_user(
+            username="cooluser", password="myCoolP@$$W0rd",
+            email="cooluser@mail.io")
+
+        # Authenticate users
+        client = APIClient()
+        client.force_authenticate(user=user)
+
+        # Make the first user follow the second one
+        response = client.post(reverse("profiles:follow_profile",
+                                       args=["user1"]))
+
+        self.assertEqual(json.loads(response.content)["profile"]["detail"],
+                         "The user with this profile does not exist")
