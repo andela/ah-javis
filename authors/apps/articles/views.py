@@ -1,40 +1,17 @@
+""" Views for django Articles. """
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from django.shortcuts import render
-from .serializers import ArticleSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
-from rest_framework.exceptions import NotFound
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
-from .models import Article
-from .renders import ArticleJSONRenderer
+from django.db.models import Avg
+
 from rest_framework import status, mixins, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, AllowAny, IsAuthenticated
 from rest_framework.exceptions import NotFound, PermissionDenied
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView, CreateAPIView
-from .serializers import ArticleSerializer, RateSerializer
-from .renders import ArticleJSONRenderer
-from .renderers import RateJSONRenderer
-from .models import Article, Rate
-from django.db.models import Avg
-
-
-class RateAPIView(CreateAPIView):
-    permission_classes = (AllowAny,)
-    serializer_class = RateSerializer
-    renderer_classes = (RateJSONRenderer,)
-
-    def create(self, request, slug):
-        """ Rating view"""
-        ratings = request.data.get("rate", {})
-        # Filter articles with the given slug
-        try:
-            article = Article.objects.filter(slug=slug).first()
-
-        except Article.DoesNotExist:
-            return Response({"errors": {"message": ["Article doesnt exist."]}})
-
-# Create your views here.
+from .renderers import RateJSONRenderer, ArticleJSONRenderer, CommentJSONRenderer
+from .serializers import ArticleSerializer, RateSerializer, CommentSerializer
+from .models import Article, Rate, Comment
 
 
 class LikesAPIView(APIView):
@@ -84,7 +61,6 @@ class DislikesAPIView(APIView):
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-
 class ArticleAPIView(mixins.CreateModelMixin,
                      mixins.ListModelMixin,
                      mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -104,6 +80,7 @@ class ArticleAPIView(mixins.CreateModelMixin,
         article = request.data.get('article', {})
         serializer = self.serializer_class(data=article)
         serializer.is_valid(raise_exception=True)
+        print(request.user)
         serializer.save(author=request.user.profile)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -180,3 +157,70 @@ class ArticleAPIView(mixins.CreateModelMixin,
                 'You do not have permission to delete this article')
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+class CommentsListCreateAPIView(generics.ListCreateAPIView):
+    lookup_field = 'article__slug'
+    lookup_url_kwarg = 'article_slug'
+    permission_classes = (IsAuthenticated,)
+    serializer_class = CommentSerializer
+    renderer_classes = (CommentJSONRenderer,)
+
+    queryset = Comment.objects.select_related(
+        'article', 'article__author', 'article__author__user',
+        'author', 'author__user'
+    )
+
+    def filter_queryset(self, queryset):
+        filters = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
+        return queryset.filter(**filters).filter(parent=None)
+
+    def create(self, request,  article_slug=None):
+        data = request.data.get('comment', {})
+        context = {'author': request.user.profile}
+
+        try:
+            context['article'] = Article.objects.get(slug=article_slug)
+        except Article.DoesNotExist:
+            raise NotFound('An article with this slug does not exist.')
+
+        serializer = self.serializer_class(data=data, context=context)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIView):
+    permission_classes = (IsAuthenticated,)
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    def destroy(self, request, article_slug=None, comment_pk=None):
+        try:
+            comment = Comment.objects.get(pk=comment_pk)
+        except Comment.DoesNotExist:
+            raise NotFound('A comment with this ID does not exist.')
+
+        comment.delete()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
+    def create(self, request, article_slug=None, comment_pk=None):
+        data = request.data.get('comment', {})
+        context = {'author': request.user.profile}
+
+        try:
+            context['article'] = Article.objects.get(slug=article_slug)
+        except Article.DoesNotExist:
+            raise NotFound('An article with this slug does not exist.')
+
+        try:
+            # get the parent comment
+            context['parent'] = comment = Comment.objects.get(pk=comment_pk)
+        except Comment.DoesNotExist:
+            raise NotFound('A comment with this ID does not exist.')
+
+        serializer = self.serializer_class(data=data, context=context)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

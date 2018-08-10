@@ -1,14 +1,18 @@
 import re
 from django.contrib.auth import authenticate
 
-from rest_framework import serializers
-from django.core.validators import RegexValidator
-from rest_framework.validators import UniqueValidator
-from django.contrib.auth.tokens import default_token_generator
-
 from authors.apps.profiles.serializers import ProfileSerializer
-from .models import Article, Rate
 
+from rest_framework import serializers
+
+from rest_framework.views import APIView
+
+from .models import Article, Comment
+
+class RecursiveSerializer(serializers.Serializer):
+   def to_representation(self, value):
+       serializer = self.parent.parent.__class__(value, context=self.context)
+       return serializer.data
 
 class ArticleSerializer(serializers.ModelSerializer):
     """
@@ -29,7 +33,7 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ['title', 'slug', 'body',
+        fields = ['title', 'sl`ug', 'body',
                   'description', 'image_url', 'created_at', 'updated_at',
                   'author', 'likes', 'dislikes',
                   'likes_count', 'dislikes_count']
@@ -68,3 +72,37 @@ class RateSerializer(serializers.Serializer):
                 'Rate should be from 0 to 5.')
 
         return {"rate": rating}
+class CommentSerializer(serializers.ModelSerializer):
+    """Handles serialization and deserialization of Comments objects."""
+    author = ProfileSerializer(required=False)
+
+    createdAt = serializers.SerializerMethodField(method_name='get_created_at')
+    updatedAt = serializers.SerializerMethodField(method_name='get_updated_at')
+
+    thread = RecursiveSerializer(many=True, read_only=True)
+    class Meta:
+        model = Comment
+        fields = (
+            'id',
+            'author',
+            'body',
+            'createdAt',
+            'updatedAt',
+            'thread'
+        )
+
+    def create(self, validated_data):
+        article = self.context['article']
+        author = self.context['author']
+        parent = self.context.get('parent', None)
+        return Comment.objects.create(
+            author=author, article=article, parent=parent, **validated_data
+        )
+
+    def get_created_at(self, instance):
+        """ return created_time """
+        return instance.created_at.isoformat()
+
+    def get_updated_at(self, instance):
+        """ return updated_at """
+        return instance.updated_at.isoformat()
