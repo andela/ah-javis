@@ -29,8 +29,7 @@ class CommentJSONRenderer(AuthorsJSONRenderer):
 class FavoriteJSONRenderer(AuthorsJSONRenderer):
     charset = 'utf-8'
     object_label = "favorite"
-    object_label_plural = 'favorites'
-        
+    object_label_plural = "favorites"
 
 class RateJSONRenderer(JSONRenderer):
     charset = 'utf-8'
