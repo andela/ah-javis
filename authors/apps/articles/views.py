@@ -14,6 +14,7 @@ from .models import Article, Rate, Comment
 from .serializers import ArticleSerializer, CommentSerializer, RateSerializer
 from .renderers import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer, FavoriteJSONRenderer
 
+
 class LikesAPIView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     renderer_classes = (ArticleJSONRenderer, )
@@ -126,7 +127,7 @@ class ArticleAPIView(mixins.CreateModelMixin,
     This class defines the create behavior of our articles.
     """
     lookup_field = 'slug'
-    queryset = Article.objects.annotate(average_rating = Avg("rate__ratings"))
+    queryset = Article.objects.annotate(average_rating=Avg("rate__ratings"))
     permission_classes = (IsAuthenticatedOrReadOnly, )
     serializer_class = ArticleSerializer
     renderer_classes = (ArticleJSONRenderer, )
@@ -220,6 +221,7 @@ class ArticleAPIView(mixins.CreateModelMixin,
 
         return Response(None, status=status.HTTP_204_NO_CONTENT)
 
+
 class CommentsListCreateAPIView(generics.ListCreateAPIView):
     lookup_field = 'article__slug'
     lookup_url_kwarg = 'article_slug'
@@ -235,7 +237,7 @@ class CommentsListCreateAPIView(generics.ListCreateAPIView):
     def filter_queryset(self, queryset):
         filters = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
         return queryset.filter(**filters).filter(parent=None)
-    
+
     def create(self, request,  article_slug=None):
         data = request.data.get('comment', {})
         context = {'author': request.user.profile}
@@ -251,13 +253,14 @@ class CommentsListCreateAPIView(generics.ListCreateAPIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
     lookup_url_kwarg = 'comment_pk'
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     renderer_classes = (CommentJSONRenderer,)
-    
+
     def destroy(self, request, article_slug=None, comment_pk=None):
         try:
             comment = Comment.objects.get(pk=comment_pk)
@@ -276,18 +279,19 @@ class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generi
             context['article'] = Article.objects.get(slug=article_slug)
         except Article.DoesNotExist:
             raise NotFound('An article with this slug does not exist.')
-        
+
         try:
             # get the parent comment
             context['parent'] = comment = Comment.objects.get(pk=comment_pk)
         except Comment.DoesNotExist:
             raise NotFound('A comment with this ID does not exist.')
-        
+
         serializer = self.serializer_class(data=data, context=context)
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class FavoriteAPIView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly,)

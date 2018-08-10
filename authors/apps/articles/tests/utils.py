@@ -12,15 +12,16 @@ TEST_USER = {
     }
 }
 
+
 def create_article():
     """
     Create a test article
     """
     user = User.objects.get()
     article = Article.objects.create(
-                title="django",
-                description="django sucks",
-                body="body", author=user.profile)
+        title="django",
+        description="django sucks",
+        body="body", author=user.profile)
     article.save()
     return article
 

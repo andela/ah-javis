@@ -49,6 +49,30 @@
 }
 
 .article {
+  &-img {
+    height: 246px !important;
+    width: 310px !important;
+  }
+  &__highlights {
+    display: flex;
+    align-items: baseline;
+    color: #888;
+
+    & > span {
+      font-size: 30px;
+    }
+  }
+  &__header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    align-content: center;
+  }
+
+  &__ratings {
+    display: flex;
+    align-items: center;
+  }
   &__photo {
     height: 480px !important;
     width: 100%;
@@ -73,7 +97,7 @@
 .reactions {
   display: flex;
   flex-direction: column;
-  margin-top: 20vh;
+  margin-top: 10px;
   align-items: flex-end;
   position: fixed;
   margin-left: 50px;
@@ -91,5 +115,48 @@
     & > span {
       padding-bottom: 5px;
     }
+  }
+}
+
+.author {
+  display: flex;
+  align-items: center;
+
+  &__avatar {
+    margin-right: 30px;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+  }
+
+  &-name {
+    margin-right: 10px;
+  }
+}
+
+.card--reactions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  & .icon-stats {
+    display: flex;
+    align-items: center;
+    padding-right: 20px;
+  }
+
+  & > .icon:last-child {
+    align-self: flex-end;
+  }
+
+  .stats {
+    display: flex;
   }
 }

@@ -27,6 +27,7 @@ class Article(TimeModel):
     def __str__(self):
         return self.title
 
+
 class Comment(TimeModel):
     """ Model to represent a Comment. """
     body = models.TextField()
@@ -42,6 +43,7 @@ class Comment(TimeModel):
     parent = models.ForeignKey(
         'self', null=True, blank=False, on_delete=models.CASCADE, related_name='thread'
     )
+
 
 @receiver(pre_save, sender=Article)
 def add_slug_to_article_if_not_exists(sender, instance, *args, **kwargs):

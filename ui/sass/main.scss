@@ -4,10 +4,11 @@
 //IMPORT ALL THE OTHER FILES HERE
 @import "base/resets";
 @import "base/base";
+@import "components/avatars";
 @import "components/buttons";
 @import "components/cards";
 @import "components/icons";
-@import "components/avatars";
+@import "components/nav";
 @import "pages/auth";
 @import "pages/articles";
 @import "utils/helpers";

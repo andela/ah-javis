@@ -17,31 +17,51 @@
 </head>
 
 <body>
-  <!-- <nav class="white">
+  <nav class="white">
     <div class="nav-wrapper p-l--30 p-r--30">
       <a href="#" class="flow-text black-text">Authors' Haven</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger">
         <i class="material-icons black-text">menu</i>
       </a>
 
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <ul id="nav-mobile" class="right nav-icons hide-on-med-and-down">
         <li>
-          <a href="#" class="black-text">Create Account</a>
+          <a href="#" class="black-text">
+            <svg class="icon">
+              <use xlink:href="../../static/assets/icons/sprite.svg#icon-search"></use>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="black-text">
+            <svg class="icon">
+              <use xlink:href="../../static/assets/icons/sprite.svg#icon-bell"></use>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a class='dropdown-trigger black-text' href='#' data-target='profile'>
+            <img src="https://randomuser.me/api/portraits/med/men/83.jpg" alt="" class="responsive-img small--avatar">
+          </a>
+          <ul id='profile' class='dropdown-content'>
+            <li>
+              <a href="#!"> Profile</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">My articles</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">Favorites</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">Sign out</a>
+            </li>
+          </ul>
         </li>
       </ul>
-    </div>
-  </nav> -->
-
-  <nav class="white">
-    <div class="nav-wrapper p-l--30 p-r--30">
-      <div class="nav-wrapper">
-        <a href="#" class="brand-logo center black-text">Back</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li>
-            <a href="sass.html" class="black-text">Sass</a>
-          </li>
-        </ul>
-      </div>
     </div>
   </nav>
 
@@ -61,11 +81,51 @@
     <div class="container p-t--50">
 
       <div class="row">
+        <div class="author">
+          <div class="author__avatar">
+            <img src="https://randomuser.me/api/portraits/med/men/73.jpg" alt="" class="responsive-img circle">
+          </div>
+          <div class="author_details">
+            <div class="author__info">
+              <div class="author-name">
+                <p>Brian Hawi</p>
+              </div>
+              <a class="btn-flat btn-flat--primary">Follow</a>
+            </div>
+            <div class="article__highlights">
+              Aug 9, 2018
+              <span class="p-r--10 p-l--10">.</span>
+              <div class="article__ratings" contenteditable="false">
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <span class="p-l--10 p-r--5">4.6</span> (4,567)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col m11">
           <div class="article" contenteditable="true">
-            <h4>
-              <strong>This is the new era</strong>
-            </h4>
+            <div class="article__header">
+              <h4 article__title>
+                This is the new era
+              </h4>
+            </div>
 
             <img src="https://media.starcruises.com//Content/Images/090010c4-5823-4ddc-96ca-b57deb4edf29_hong_kong.jpg" alt="" class="responsive-img p-t--35 article__photo">
 
@@ -127,6 +187,12 @@
               </svg>
             </div>
 
+            <div class="reactions__icon">
+              <svg class="icon">
+                <use xlink:href="../../../static/assets/icons/sprite.svg#icon-heart"></use>
+              </svg>
+            </div>
+
             <a href="#messages">
               <div class="reactions__icon">
                 <span>18</span>
@@ -135,84 +201,84 @@
                 </svg>
               </div>
             </a>
-
           </div>
         </div>
       </div>
 
       <div class="container">
-          <form class="col s12">
-              <div class = "row" id="messages">
-                  <div class = "input-field col s12">
-                    <svg class="icon material-icons prefix">
-                      <use xlink:href="../../../static/assets/icons/sprite.svg#icon-message-circle"></use>
-                    </svg>
-                     <!-- <i class = "">mode_edit</i> -->
-                     <textarea id="comment" class="materialize-textarea" length="200"></textarea>
-                     <label for = "comment">Say Something</label>
-                  </div>
-    
-                  <button class="btn waves-effect primary right" type="submit" name="action">
-                    Respond
-                  </button>
-               </div>
-          </form>
-    
-          <div class="card">
-              <div class="row">
-                  <div class="col s1">
-                    <img src="https://randomuser.me/api/portraits/med/women/73.jpg" class="circle z-depth-2 responsive-img activator gradient-45deg-light-blue-cyan">
-                  </div>
-                  <div class="col s10">
-                    <p class="grey-text text-darken-4 margin">Duncan  Gitonga</p>
-                    <span class="grey-text text-darken-1 ultra-small">10 Aug 2018</span>
-                  </div>
-                </div>
-              <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-              </div>
-    
-              <div class="card-action row">
-                <div class="input-field">
-                  <input id="comments" type="text" class="validate margin">
-                  <label for="comments" class="">Comment</label>
-                  <button class="btn  primary right">Comment</button>
-                </div>
-              </div>
-
+        <form class="col s12">
+          <div class="row" id="messages">
+            <div class="input-field col s12">
+              <svg class="icon material-icons prefix">
+                <use xlink:href="../../../static/assets/icons/sprite.svg#icon-message-circle"></use>
+              </svg>
+              <!-- <i class = "">mode_edit</i> -->
+              <textarea id="comment" class="materialize-textarea" length="200"></textarea>
+              <label for="comment">Say Something</label>
             </div>
 
-            <div class="card">
-                <div class="row">
-                    <div class="col s1">
-                      <img src="https://randomuser.me/api/portraits/med/women/73.jpg" class="circle z-depth-2 responsive-img activator gradient-45deg-light-blue-cyan">
-                    </div>
-                    <div class="col s10">
-                      <p class="grey-text text-darken-4 margin">Tolem maker</p>
-                      <span class="grey-text">10 Aug 2018</span>
-                    </div>
-                  </div>
-                <div class="card-content">
-                  <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
-                </div>
-      
-                <div class="card-action row">
-                  <div class="input-field">
-                    <input id="comments" type="text" class="validate margin">
-                    <label for="comments" class="">Comment</label>
-                    <button class="btn  primary right">Comment</button>
-                  </div>
-                </div>
-  
-              </div>
+            <button class="btn waves-effect primary right" type="submit" name="action">
+              Respond
+            </button>
+          </div>
+        </form>
+
+        <div class="card">
+          <div class="row">
+            <div class="col s1">
+              <img src="https://randomuser.me/api/portraits/med/women/73.jpg" class="circle z-depth-2 responsive-img activator gradient-45deg-light-blue-cyan">
+            </div>
+            <div class="col s10">
+              <p class="grey-text text-darken-4 margin">Duncan Gitonga</p>
+              <span class="grey-text text-darken-1 ultra-small">10 Aug 2018</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require
+              little markup to use effectively.</p>
+          </div>
+
+          <div class="card-action row">
+            <div class="input-field">
+              <input id="comments" type="text" class="validate margin">
+              <label for="comments" class="">Comment</label>
+              <button class="btn  primary right">Comment</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card">
+          <div class="row">
+            <div class="col s1">
+              <img src="https://randomuser.me/api/portraits/med/women/73.jpg" class="circle z-depth-2 responsive-img activator gradient-45deg-light-blue-cyan">
+            </div>
+            <div class="col s10">
+              <p class="grey-text text-darken-4 margin">Tolem maker</p>
+              <span class="grey-text">10 Aug 2018</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require
+              little markup to use effectively.</p>
+          </div>
+
+          <div class="card-action row">
+            <div class="input-field">
+              <input id="comments" type="text" class="validate margin">
+              <label for="comments" class="">Comment</label>
+              <button class="btn  primary right">Comment</button>
+            </div>
+          </div>
+
+        </div>
       </div>
 
 
-    <div class="divider"></div>
+      <div class="divider"></div>
     </div>
   </div>
-  <script type = "text/javascript"
-         src = "https://code.jquery.com/jquery-2.1.1.min.js"></script>  
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
   <script>
@@ -221,10 +287,10 @@
       const instances = M.Sidenav.init(elems);
     });
 
-    $(document).ready(function() {
+    $(document).ready(function () {
       $('textarea#comment').characterCounter();
     });
-          
+
   </script>
 </body>
 
