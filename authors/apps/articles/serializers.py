@@ -16,7 +16,6 @@ class RecursiveSerializer(serializers.Serializer):
 
 
 
-
 class ArticleSerializer(serializers.ModelSerializer):
     """
     Serializer to map the Model format to Json format
