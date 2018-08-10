@@ -22,6 +22,20 @@ class ArticleJSONRenderer(JSONRenderer):
 
 class CommentJSONRenderer(JSONRenderer):
     """ renders comments"""
+     def render(self, data, media_type=None, renderer_context=None):
+        if data is not None:
+            if len(data) <= 1:
+                return json.dumps({
+                    'comments': data
+                })
+            return json.dumps({
+                'comment': data
+            })
+        return json.dumps({
+            "comment": 'No article found.'
+        })
+
+class FavoriteJSONRenderer(JSONRenderer):
     charset = 'utf-8'
 
     def render(self, data, media_type=None, renderer_context=None):
@@ -47,4 +61,11 @@ class RateJSONRenderer(JSONRenderer):
         """
         return json.dumps({
             'rate': data,
+                    'favorite': data
+                })
+            return json.dumps({
+                'favorites': data
+            })
+        return json.dumps({
+            "favorite": 'No favorite article found.'
         })

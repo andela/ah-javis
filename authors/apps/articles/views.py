@@ -10,9 +10,8 @@ from rest_framework.views import APIView
 from rest_framework import status, mixins, viewsets
 from rest_framework.generics import RetrieveAPIView, CreateAPIView
 
-from .serializers import ArticleSerializer, RateSerializer
 from .models import Article, Rate, Comment
-from .serializers import ArticleSerializer, CommentSerializer
+from .serializers import ArticleSerializer, CommentSerializer, RateSerializer
 from .renders import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer
 
 class RateAPIView(CreateAPIView):
@@ -129,6 +128,9 @@ class DislikesAPIView(APIView):
         # Get the average ratings of the article.
         avg = Rate.objects.filter(article=article).aggregate(Avg('ratings'))
         return Response({"avg": avg}, status=status.HTTP_201_CREATED)
+from .serializers import ArticleSerializer
+from .renderers import ArticleJSONRenderer, FavoriteJSONRenderer
+from .models import Article
 
 
 class ArticleAPIView(mixins.CreateModelMixin,
@@ -148,8 +150,10 @@ class ArticleAPIView(mixins.CreateModelMixin,
         """
         Create an article
         """
+        serializer_context = {'request': request}
         article = request.data.get('article', {})
-        serializer = self.serializer_class(data=article)
+        serializer = self.serializer_class(
+            data=article, context=serializer_context)
         serializer.is_valid(raise_exception=True)
         serializer.save(author=request.user.profile)
 
@@ -162,6 +166,11 @@ class ArticleAPIView(mixins.CreateModelMixin,
         queryset = Article.objects.annotate(average_rating = Avg("rate__ratings"))
         serializer = self.serializer_class(
             queryset, many=True)
+        serializer_context = {'request': request}
+        queryset = Article.objects.all()
+        serializer = self.serializer_class(
+            queryset, many=True,
+            context=serializer_context)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -294,3 +303,62 @@ class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generi
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+class FavoriteAPIView(APIView):
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+    renderer_classes = (FavoriteJSONRenderer,)
+    serializer_class = ArticleSerializer
+    queryset = Article.objects.all()
+
+    def get(self, request, slug):
+        """
+        Override the retrieve method to get a article
+        """
+        serializer_context = {'request': request}
+        try:
+            serializer_instance = self.queryset.get(slug=slug)
+        except Article.DoesNotExist:
+            raise NotFound("An article with this slug doesn't exist")
+
+        serializer = self.serializer_class(
+            serializer_instance,
+            context=serializer_context
+        )
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def post(self, request, slug):
+        """
+        Method that favorites articles.
+        """
+        serializer_context = {'request': request}
+        try:
+            article = self.queryset.get(slug=slug)
+        except Article.DoesNotExist:
+            raise NotFound("An article with this slug does not exist")
+
+        request.user.profile.favorite(article)
+
+        serializer = self.serializer_class(
+            article,
+            context=serializer_context
+        )
+        return Response(serializer.data,  status=status.HTTP_201_CREATED)
+
+    def delete(self, request, slug):
+        """
+        Method that favorites articles.
+        """
+        serializer_context = {'request': request}
+        try:
+            article = self.queryset.get(slug=slug)
+        except Article.DoesNotExist:
+            raise NotFound("An article with this slug does not exist")
+
+        request.user.profile.unfavorite(article)
+
+        serializer = self.serializer_class(
+            article,
+            context=serializer_context
+        )
+        return Response(serializer.data,  status=status.HTTP_200_OK)

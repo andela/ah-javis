@@ -16,6 +16,7 @@ class RecursiveSerializer(serializers.Serializer):
 
 
 
+
 class ArticleSerializer(serializers.ModelSerializer):
     """
     Serializer to map the Model format to Json format
@@ -27,6 +28,9 @@ class ArticleSerializer(serializers.ModelSerializer):
     image_url = serializers.URLField(required=False)
     created_at = serializers.DateTimeField(read_only=True)
     updated_at = serializers.DateTimeField(read_only=True)
+    favorited = serializers.SerializerMethodField(method_name="is_favorited")
+    favoriteCount = serializers.SerializerMethodField(
+        method_name='get_favorite_count')
     author = ProfileSerializer(read_only=True)
     likes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     dislikes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
@@ -39,7 +43,18 @@ class ArticleSerializer(serializers.ModelSerializer):
         fields = ['title', 'slug', 'body',
                   'description', 'image_url', 'created_at', 'updated_at',
                   'author', 'likes', 'dislikes',
-                  'likes_count', 'dislikes_count']
+                  'likes_count', 'dislikes_count', 'favorited', 'favoriteCount',]
+
+
+    def get_favorite_count(self, instance):
+
+        return instance.users_favorites.count()
+
+    def is_favorited(self, instance):
+        username = self.context.get('request').user.username
+        if instance.users_favorites.filter(user__username=username).count() == 0:
+            return False
+        return True
 
     def create(self, validated_data):
         return Article.objects.create(**validated_data)
