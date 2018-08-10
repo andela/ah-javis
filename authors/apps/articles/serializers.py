@@ -34,7 +34,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['title', 'slug', 'body', 'description', 'image_url',
                   'created_at', 'updated_at', 'favorited', 'favoriteCount', 'author', 'likes', 'dislikes',
-                  'likes_count', 'dislikes_count']
+                  'likes_count', 'dislikes_count', 'average_rating']
 
     def get_favorite_count(self, instance):
 
@@ -45,6 +45,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         if instance.users_favorites.filter(user__username=username).count() == 0:
             return False
         return True
+    average_rating = serializers.FloatField(required=False, read_only=True)
 
     def create(self, validated_data):
         return Article.objects.create(**validated_data)
@@ -75,8 +76,8 @@ class RateSerializer(serializers.Serializer):
         if rating == '':
             raise serializers.ValidationError('Rate is required.')
         # Validate the rate is between 0 and 5.
-        if rating < 0 or rating > 5:
+        if rating < 1 or rating > 5:
             raise serializers.ValidationError(
-                'Rate should be from 0 to 5.')
+                'Rate should be from 1 to 5.')
 
         return {"rate": rating}
