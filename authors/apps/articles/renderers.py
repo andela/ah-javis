@@ -32,7 +32,13 @@ class FavoriteJSONRenderer(AuthorsJSONRenderer):
     object_label_plural = 'favorites'
         
 
-class RateJSONRenderer(AuthorsJSONRenderer):
+class RateJSONRenderer(JSONRenderer):
     charset = 'utf-8'
-    object_label = "rate"
-    object_label_plural = 'rates'
+
+    def render(self, data, media_type=None, renderer_context=None):
+        """
+        Render the ratings in a structured manner for the end user.
+        """
+        return json.dumps({
+            'rate': data,
+        })
