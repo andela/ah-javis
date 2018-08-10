@@ -35,7 +35,7 @@ class CommentJSONRenderer(JSONRenderer):
             })
         return json.dumps({
             "comment": 'No article found.'
-        }
+        })
         
 
 class RateJSONRenderer(JSONRenderer):
