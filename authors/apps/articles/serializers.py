@@ -1,13 +1,19 @@
 import re
 from django.contrib.auth import authenticate
-
-from rest_framework import serializers
 from django.core.validators import RegexValidator
-from rest_framework.validators import UniqueValidator
 from django.contrib.auth.tokens import default_token_generator
 
+from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
+
 from authors.apps.profiles.serializers import ProfileSerializer
-from .models import Article, Rate
+from .models import Article, Rate, Comment
+
+class RecursiveSerializer(serializers.Serializer):
+   def to_representation(self, value):
+       serializer = self.parent.parent.__class__(value, context=self.context)
+       return serializer.data
+
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -29,15 +35,17 @@ class ArticleSerializer(serializers.ModelSerializer):
     dislikes = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     likes_count = serializers.SerializerMethodField()
     dislikes_count = serializers.SerializerMethodField()
+    average_rating = serializers.FloatField(required=False, read_only=True)
 
     class Meta:
         model = Article
-        fields = ['title', 'slug', 'body', 'description', 'image_url',
-                  'created_at', 'updated_at', 'favorited', 'favoriteCount', 'author', 'likes', 'dislikes',
-                  'likes_count', 'dislikes_count', 'average_rating']
+        fields = ['title', 'slug', 'body',
+                  'description', 'image_url', 'created_at', 'updated_at',
+                  'author', 'likes', 'dislikes','average_rating',
+                  'likes_count', 'dislikes_count', 'favorited', 'favoriteCount',]
+
 
     def get_favorite_count(self, instance):
-
         return instance.users_favorites.count()
 
     def is_favorited(self, instance):
@@ -45,7 +53,11 @@ class ArticleSerializer(serializers.ModelSerializer):
         if instance.users_favorites.filter(user__username=username).count() == 0:
             return False
         return True
-    average_rating = serializers.FloatField(required=False, read_only=True)
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+
+    def get_dislikes_count(self, obj):
+        return obj.dislikes.count()
 
     def create(self, validated_data):
         return Article.objects.create(**validated_data)
@@ -58,6 +70,40 @@ class ArticleSerializer(serializers.ModelSerializer):
 
         return data
 
+class CommentSerializer(serializers.ModelSerializer):
+    """Handles serialization and deserialization of Comments objects."""
+    author = ProfileSerializer(required=False)
+
+    createdAt = serializers.SerializerMethodField(method_name='get_created_at')
+    updatedAt = serializers.SerializerMethodField(method_name='get_updated_at')
+
+    thread = RecursiveSerializer(many=True, read_only=True)
+    class Meta:
+        model = Comment
+        fields = (
+            'id',
+            'author',
+            'body',
+            'createdAt',
+            'updatedAt',
+            'thread'
+        )
+
+    def create(self, validated_data):
+        article = self.context['article']
+        author = self.context['author']
+        parent = self.context.get('parent', None)
+        return Comment.objects.create(
+            author=author, article=article, parent=parent, **validated_data
+        )
+
+    def get_created_at(self, instance):
+        """ return created_time """
+        return instance.created_at.isoformat()
+
+    def get_updated_at(self, instance):
+        """ return updated_at """
+        return instance.updated_at.isoformat()
     def get_likes_count(self, obj):
         return obj.likes.count()
 
