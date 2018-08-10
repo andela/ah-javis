@@ -79,6 +79,7 @@
 
   <div class="container-fluid">
     <div class="container p-t--50">
+
       <div class="row">
         <div class="author">
           <div class="author__avatar">
@@ -186,21 +187,98 @@
               </svg>
             </div>
 
-            <svg class="icon">
-              <use xlink:href="../../../static/assets/icons/sprite.svg#icon-heart"></use>
-            </svg>
-
             <div class="reactions__icon">
-              <span>18</span>
               <svg class="icon">
-                <use xlink:href="../../../static/assets/icons/sprite.svg#icon-message-circle"></use>
+                <use xlink:href="../../../static/assets/icons/sprite.svg#icon-heart"></use>
               </svg>
             </div>
+
+            <a href="#messages">
+              <div class="reactions__icon">
+                <span>18</span>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-message-circle"></use>
+                </svg>
+              </div>
+            </a>
           </div>
         </div>
       </div>
+
+      <div class="container">
+        <form class="col s12">
+          <div class="row" id="messages">
+            <div class="input-field col s12">
+              <svg class="icon material-icons prefix">
+                <use xlink:href="../../../static/assets/icons/sprite.svg#icon-message-circle"></use>
+              </svg>
+              <!-- <i class = "">mode_edit</i> -->
+              <textarea id="comment" class="materialize-textarea" length="200"></textarea>
+              <label for="comment">Say Something</label>
+            </div>
+
+            <button class="btn waves-effect primary right" type="submit" name="action">
+              Respond
+            </button>
+          </div>
+        </form>
+
+        <div class="card">
+          <div class="row">
+            <div class="col s1">
+              <img src="https://randomuser.me/api/portraits/med/women/73.jpg" class="circle z-depth-2 responsive-img activator gradient-45deg-light-blue-cyan">
+            </div>
+            <div class="col s10">
+              <p class="grey-text text-darken-4 margin">Duncan Gitonga</p>
+              <span class="grey-text text-darken-1 ultra-small">10 Aug 2018</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require
+              little markup to use effectively.</p>
+          </div>
+
+          <div class="card-action row">
+            <div class="input-field">
+              <input id="comments" type="text" class="validate margin">
+              <label for="comments" class="">Comment</label>
+              <button class="btn  primary right">Comment</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="card">
+          <div class="row">
+            <div class="col s1">
+              <img src="https://randomuser.me/api/portraits/med/women/73.jpg" class="circle z-depth-2 responsive-img activator gradient-45deg-light-blue-cyan">
+            </div>
+            <div class="col s10">
+              <p class="grey-text text-darken-4 margin">Tolem maker</p>
+              <span class="grey-text">10 Aug 2018</span>
+            </div>
+          </div>
+          <div class="card-content">
+            <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require
+              little markup to use effectively.</p>
+          </div>
+
+          <div class="card-action row">
+            <div class="input-field">
+              <input id="comments" type="text" class="validate margin">
+              <label for="comments" class="">Comment</label>
+              <button class="btn  primary right">Comment</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="divider"></div>
     </div>
   </div>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
   <script>
@@ -208,6 +286,11 @@
       const elems = document.querySelectorAll('.sidenav');
       const instances = M.Sidenav.init(elems);
     });
+
+    $(document).ready(function () {
+      $('textarea#comment').characterCounter();
+    });
+
   </script>
 </body>
 

@@ -25,6 +25,8 @@ class Profile(TimeModel):
 
     follows = models.ManyToManyField(
         'self', related_name='followed_by', symmetrical=False)
+    favorites = models.ManyToManyField(
+        'articles.Article', symmetrical=False, related_name='users_favorites')
 
     def __str__(self):
         return self.user.username
@@ -40,3 +42,8 @@ class Profile(TimeModel):
 
     def get_following(self, profile):
         return profile.follows.all()
+    def favorite(self, article):
+        self.favorites.add(article)
+
+    def unfavorite(self, article):
+        self.favorites.remove(article)
