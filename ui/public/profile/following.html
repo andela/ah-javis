@@ -28,15 +28,42 @@
         <i class="material-icons black-text">menu</i>
       </a>
 
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <ul id="nav-mobile" class="right nav-icons hide-on-med-and-down">
         <li>
-          <a href="#" class="black-text">Search</a>
+          <a href="#" class="black-text">
+            <svg class="icon">
+              <use xlink:href="../../static/assets/icons/sprite.svg#icon-search"></use>
+            </svg>
+          </a>
         </li>
         <li>
-          <a href="#" class="black-text">Bookmark</a>
+          <a href="#" class="black-text">
+            <svg class="icon">
+              <use xlink:href="../../static/assets/icons/sprite.svg#icon-bell"></use>
+            </svg>
+          </a>
         </li>
         <li>
-          <a href="#" class="black-text">Notification</a>
+          <a class='dropdown-trigger black-text' href='#' data-target='profile'>
+            <img src="https://randomuser.me/api/portraits/med/men/83.jpg" alt="" class="responsive-img small--avatar">
+          </a>
+          <ul id='profile' class='dropdown-content'>
+            <li>
+              <a href="#!"> Profile</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">My articles</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">Favorites</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">Sign out</a>
+            </li>
+          </ul>
         </li>
       </ul>
     </div>

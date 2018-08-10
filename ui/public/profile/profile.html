@@ -28,15 +28,42 @@
                 <i class="material-icons black-text">menu</i>
             </a>
 
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <ul id="nav-mobile" class="right nav-icons hide-on-med-and-down">
                 <li>
-                    <a href="#" class="black-text">Search</a>
+                    <a href="#" class="black-text">
+                        <svg class="icon">
+                            <use xlink:href="../../static/assets/icons/sprite.svg#icon-search"></use>
+                        </svg>
+                    </a>
                 </li>
                 <li>
-                    <a href="#" class="black-text">Bookmark</a>
+                    <a href="#" class="black-text">
+                        <svg class="icon">
+                            <use xlink:href="../../static/assets/icons/sprite.svg#icon-bell"></use>
+                        </svg>
+                    </a>
                 </li>
                 <li>
-                    <a href="#" class="black-text">Notification</a>
+                    <a class='dropdown-trigger black-text' href='#' data-target='profile'>
+                        <img src="https://randomuser.me/api/portraits/med/men/5.jpg" alt="" class="responsive-img small--avatar">
+                    </a>
+                    <ul id='profile' class='dropdown-content'>
+                        <li>
+                            <a href="#!"> Profile</a>
+                        </li>
+                        <li class="divider" tabindex="-1"></li>
+                        <li>
+                            <a href="#!">My articles</a>
+                        </li>
+                        <li class="divider" tabindex="-1"></li>
+                        <li>
+                            <a href="#!">Favorites</a>
+                        </li>
+                        <li class="divider" tabindex="-1"></li>
+                        <li>
+                            <a href="#!">Sign out</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -91,96 +118,102 @@
                     <div class="col m12 ">
                         <h6 class="m-b--30">Articles</h6>
 
-                        <div class="card horizontal">
-                            <div class="card-image">
-                                <img src="https://images.pexels.com/photos/207962/pexels-photo-207962.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940">
+                        <div class="card follower hoverable">
+                            <div class="follower__avatar">
+                                <img src="https://images.pexels.com/photos/207962/pexels-photo-207962.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""
+                                    class="responsive-img small-article__photo">
                             </div>
-                            <div class="card-stacked">
-                                <div class="card-content">
-                                    <h5>This is the new era</h5>
-                                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed quidem rem delectus perferendis
-                                        quisquam sapiente soluta sapiente sit amet consectetur sapiente sapiente voluptatum...
-                                        <a href="#">
-                                            <u>read article</u>
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="card-action">
-                                    <span> 234 Likes</span>
-                                    <span>54 Comments</span>
-                                </div>
+
+                            <div class="follower__info">
+                                <h6>
+                                    <strong>This is the new era</strong>
+                                </h6>
+                                <p class="m-t--10">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+                                <p class="m-t--10">
+                                    <a href="#">Read article...</a>
+                                </p>
+
                             </div>
+                            <p class="right p-l--75">
+                                <svg class="icon">
+                                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-heart"></use>
+                                </svg>
+                            </p>
+                        </div>
+                        <div class="card follower hoverable">
+                            <div class="follower__avatar">
+                                <img src="https://images.pexels.com/photos/207962/pexels-photo-207962.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""
+                                    class="responsive-img small-article__photo">
+                            </div>
+
+                            <div class="follower__info">
+                                <h6>
+                                    <strong>This is the new era</strong>
+                                </h6>
+                                <p class="m-t--10">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+                                <p class="m-t--10">
+                                    <a href="#">Read article...</a>
+                                </p>
+
+                            </div>
+                            <p class="right p-l--75">
+                                <svg class="icon">
+                                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-heart"></use>
+                                </svg>
+                            </p>
+                        </div>
+                        <div class="card follower hoverable">
+                            <div class="follower__avatar">
+                                <img src="https://images.pexels.com/photos/207962/pexels-photo-207962.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""
+                                    class="responsive-img small-article__photo">
+                            </div>
+
+                            <div class="follower__info">
+                                <h6>
+                                    <strong>This is the new era</strong>
+                                </h6>
+                                <p class="m-t--10">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+                                <p class="m-t--10">
+                                    <a href="#">Read article...</a>
+                                </p>
+
+                            </div>
+                            <p class="right p-l--75">
+                                <svg class="icon">
+                                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-heart"></use>
+                                </svg>
+                            </p>
+                        </div>
+                        <div class="card follower hoverable">
+                            <div class="follower__avatar">
+                                <img src="https://images.pexels.com/photos/207962/pexels-photo-207962.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt=""
+                                    class="responsive-img small-article__photo">
+                            </div>
+
+                            <div class="follower__info">
+                                <h6>
+                                    <strong>This is the new era</strong>
+                                </h6>
+                                <p class="m-t--10">Lorem ipsum dolor sit amet consectetur adipisicing elit...</p>
+                                <p class="m-t--10">
+                                    <a href="#">Read article...</a>
+                                </p>
+
+                            </div>
+                            <p class="right p-l--75">
+                                <svg class="icon">
+                                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-heart"></use>
+                                </svg>
+                            </p>
                         </div>
 
-                        <div class="card horizontal">
-                            <div class="card-stacked">
-                                <div class="card-content">
-                                    <h5>This is the new era</h5>
-                                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed quidem rem delectus perferendis
-                                        quisquam sapiente soluta sapiente sit amet consectetur sapiente sapiente voluptatum...
-                                        <a href="#">
-                                            <u>read article</u>
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="card-action">
-                                    <span> 234 Likes</span>
-                                    <span>54 Comments</span>
-                                </div>
-                            </div>
-                            <div class="card-image">
-                                <img src="https://media.starcruises.com//Content/Images/090010c4-5823-4ddc-96ca-b57deb4edf29_hong_kong.jpg">
-                            </div>
-                        </div>
 
-                        <div class="card horizontal">
-                            <div class="card-image">
-                                <img src="https://www.thenational.ae/image/policy:1.718018:1522650047/Thailand-The-Beach.jpg?f=16x9&w=1200&$p$f$w=0676f29">
-                            </div>
-                            <div class="card-stacked">
-                                <div class="card-content">
-                                    <h5>This is the new era</h5>
-                                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed quidem rem delectus perferendis
-                                        quisquam sapiente soluta sapiente sit amet consectetur sapiente sapiente voluptatum...
-                                        <a href="#">
-                                            <u>read article</u>
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="card-action">
-                                    <span> 234 Likes</span>
-                                    <span>54 Comments</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="card horizontal">
-                            <div class="card-stacked">
-                                <div class="card-content">
-                                    <h5>This is the new era</h5>
-                                    <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sed quidem rem delectus perferendis
-                                        quisquam sapiente soluta sapiente sit amet consectetur sapiente sapiente voluptatum...
-                                        </a>
-                                        <u>read article</u>
-                                        </a>
-                                    </p>
-                                </div>
-                                <div class="card-action">
-                                    <span> 234 Likes</span>
-                                    <span>54 Comments</span>
-                                </div>
-                            </div>
-                            <div class="card-image">
-                                <img src="https://images.pexels.com/photos/68147/waterfall-thac-dray-nur-buon-me-thuot-daklak-68147.jpeg?cs=srgb&dl=hd-wallpaper-landscape-long-exposure-68147.jpg&fm=jpg">
-                            </div>
-                        </div>
                     </div>
                 </div>
+                <!-- End of Content -->
             </div>
-            <!-- End of Content -->
         </div>
-    </div>
-    <!-- End of Main -->
+        <!-- End of Main -->
 </body>
 
 </html>
