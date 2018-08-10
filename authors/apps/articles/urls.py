@@ -5,7 +5,7 @@ from .views import ArticleAPIView, CommentsListCreateAPIView, CommentsCreateDest
 
 
 from .views import (
-    LikesAPIView, DislikesAPIView, RateAPIView
+    LikesAPIView, DislikesAPIView
 )
 
 app_name = "articles"
@@ -16,7 +16,6 @@ urlpatterns = [
     path('', include(router.urls)),
     path('articles/<slug>/like/', LikesAPIView.as_view(), name="like"),
     path('articles/<slug>/dislike/', DislikesAPIView.as_view(), name="dislike"),
-    path('articles/<slug>/rate/', RateAPIView.as_view(), name="rate")
     path('articles/<article_slug>/comments/',
          CommentsListCreateAPIView.as_view(), name="comments"),
     path('articles/<article_slug>/comments/<comment_pk>/',
