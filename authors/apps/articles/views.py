@@ -138,7 +138,6 @@ class ArticleAPIView(mixins.CreateModelMixin,
     """
     lookup_field = 'slug'
     queryset = Article.objects.annotate(average_rating = Avg("rate__ratings"))
-    print(queryset)
     permission_classes = (IsAuthenticatedOrReadOnly, )
     serializer_class = ArticleSerializer
     renderer_classes = (ArticleJSONRenderer, )
