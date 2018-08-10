@@ -1,5 +1,6 @@
 import json
 from rest_framework.renderers import JSONRenderer
+from authors.apps.core.renderers import AuthorsJSONRenderer
 
 
 class ArticleJSONRenderer(JSONRenderer):
@@ -20,52 +21,18 @@ class ArticleJSONRenderer(JSONRenderer):
             "article": 'No article found.'
         })
 
-class CommentJSONRenderer(JSONRenderer):
+class CommentJSONRenderer(AuthorsJSONRenderer):
     """ renders comments"""
-     def render(self, data, media_type=None, renderer_context=None):
-        if data is not None:
-            if len(data) <= 1:
-                return json.dumps({
-                    'comments': data
-                })
-            return json.dumps({
-                'comment': data
-            })
-        return json.dumps({
-            "comment": 'No article found.'
-        })
+    object_label = "comment"
+    object_label_plural = 'comments'
 
-class FavoriteJSONRenderer(JSONRenderer):
+class FavoriteJSONRenderer(AuthorsJSONRenderer):
     charset = 'utf-8'
-
-    def render(self, data, media_type=None, renderer_context=None):
-        if data is not None:
-            if len(data) <= 1:
-                return json.dumps({
-                    'comments': data
-                })
-            return json.dumps({
-                'comment': data
-            })
-        return json.dumps({
-            "comment": 'No article found.'
-        })
+    object_label = "favorite"
+    object_label_plural = 'favorites'
         
 
-class RateJSONRenderer(JSONRenderer):
+class RateJSONRenderer(AuthorsJSONRenderer):
     charset = 'utf-8'
-
-    def render(self, data, media_type=None, renderer_context=None):
-        """
-        Render the ratings in a structured manner for the end user.
-        """
-        return json.dumps({
-            'rate': data,
-                    'favorite': data
-                })
-            return json.dumps({
-                'favorites': data
-            })
-        return json.dumps({
-            "favorite": 'No favorite article found.'
-        })
+    object_label = "rate"
+    object_label_plural = 'rates'

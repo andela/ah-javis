@@ -42,12 +42,11 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['title', 'slug', 'body',
                   'description', 'image_url', 'created_at', 'updated_at',
-                  'author', 'likes', 'dislikes',
+                  'author', 'likes', 'dislikes','average_rating',
                   'likes_count', 'dislikes_count', 'favorited', 'favoriteCount',]
 
 
     def get_favorite_count(self, instance):
-
         return instance.users_favorites.count()
 
     def is_favorited(self, instance):
@@ -55,6 +54,11 @@ class ArticleSerializer(serializers.ModelSerializer):
         if instance.users_favorites.filter(user__username=username).count() == 0:
             return False
         return True
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+
+    def get_dislikes_count(self, obj):
+        return obj.dislikes.count()
 
     def create(self, validated_data):
         return Article.objects.create(**validated_data)

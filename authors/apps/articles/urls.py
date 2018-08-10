@@ -3,7 +3,8 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     LikesAPIView, DislikesAPIView, RateAPIView,
-    ArticleAPIView, CommentsListCreateAPIView, CommentsCreateDestroyAPIView
+    ArticleAPIView, CommentsListCreateAPIView, CommentsCreateDestroyAPIView,
+    FavoriteAPIView
 )
 
 app_name = "articles"
@@ -18,7 +19,7 @@ urlpatterns = [
         CommentsCreateDestroyAPIView.as_view() , name="comment"),
     path('articles/<slug>/like/', LikesAPIView.as_view(), name="like"),
     path('articles/<slug>/dislike/', DislikesAPIView.as_view(), name="dislike"),
-    path('articles/<slug>/rate/', RateAPIView.as_view(), name="rate")
+    path('articles/<slug>/rate/', RateAPIView.as_view(), name="rate"),
     path('articles/<slug>/favorite/',
          FavoriteAPIView.as_view(), name="favorite"),
 ]

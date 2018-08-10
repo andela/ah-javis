@@ -12,7 +12,7 @@ from rest_framework.generics import RetrieveAPIView, CreateAPIView
 
 from .models import Article, Rate, Comment
 from .serializers import ArticleSerializer, CommentSerializer, RateSerializer
-from .renders import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer
+from .renderers import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer, FavoriteJSONRenderer
 
 class RateAPIView(CreateAPIView):
     permission_classes = (AllowAny,)
@@ -128,9 +128,6 @@ class DislikesAPIView(APIView):
         # Get the average ratings of the article.
         avg = Rate.objects.filter(article=article).aggregate(Avg('ratings'))
         return Response({"avg": avg}, status=status.HTTP_201_CREATED)
-from .serializers import ArticleSerializer
-from .renderers import ArticleJSONRenderer, FavoriteJSONRenderer
-from .models import Article
 
 
 class ArticleAPIView(mixins.CreateModelMixin,
@@ -270,9 +267,11 @@ class CommentsListCreateAPIView(generics.ListCreateAPIView):
 
 class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generics.CreateAPIView):
     permission_classes = (IsAuthenticated,)
+    lookup_url_kwarg = 'comment_pk'
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-
+    renderer_classes = (CommentJSONRenderer,)
+    
     def destroy(self, request, article_slug=None, comment_pk=None):
         try:
             comment = Comment.objects.get(pk=comment_pk)

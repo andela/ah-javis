@@ -72,6 +72,7 @@ class TestFavoriteArticle(APITestCase):
         favorite = json.loads(response.content)
         details = favorite["favorite"]["detail"]
 
+
         self.assertEquals(details, "An article with this slug does not exist")
         self.assertEquals(response.status_code, status.HTTP_404_NOT_FOUND)
 
@@ -89,8 +90,8 @@ class TestFavoriteArticle(APITestCase):
         response = self.client.post(url)
         response.render()
         favorite = json.loads(response.content)
-        count = favorite['favorites']['favoriteCount']
-        is_favorited = favorite['favorites']['favorited']
+        count = favorite['favorite']['favoriteCount']
+        is_favorited = favorite['favorite']['favorited']
 
         self.assertEquals(count, 1)
         self.assertEquals(is_favorited, True)
@@ -109,8 +110,9 @@ class TestFavoriteArticle(APITestCase):
         response = self.client.delete(url)
         response.render()
         favorite = json.loads(response.content)
-        count = favorite['favorites']['favoriteCount']
-        is_favorited = favorite['favorites']['favorited']
+        count = favorite['favorite']['favoriteCount']
+
+        is_favorited = favorite['favorite']['favorited']
 
         self.assertEquals(count, 0)
         self.assertEquals(is_favorited, False)
