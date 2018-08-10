@@ -33,9 +33,6 @@ class FavoriteJSONRenderer(JSONRenderer):
             return json.dumps({
                 'favorites': data
             })
-        return json.dumps({
-            "favorite": 'No favorite article found.'
-        })
 
 
 class RateJSONRenderer(JSONRenderer):
