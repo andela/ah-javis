@@ -9,11 +9,11 @@ from rest_framework.validators import UniqueValidator
 from authors.apps.profiles.serializers import ProfileSerializer
 from .models import Article, Rate, Comment
 
-class RecursiveSerializer(serializers.Serializer):
-   def to_representation(self, value):
-       serializer = self.parent.parent.__class__(value, context=self.context)
-       return serializer.data
 
+class RecursiveSerializer(serializers.Serializer):
+    def to_representation(self, value):
+        serializer = self.parent.parent.__class__(value, context=self.context)
+        return serializer.data
 
 
 class ArticleSerializer(serializers.ModelSerializer):
@@ -41,9 +41,8 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['title', 'slug', 'body',
                   'description', 'image_url', 'created_at', 'updated_at',
-                  'author', 'likes', 'dislikes','average_rating',
-                  'likes_count', 'dislikes_count', 'favorited', 'favoriteCount',]
-
+                  'author', 'likes', 'dislikes', 'average_rating',
+                  'likes_count', 'dislikes_count', 'favorited', 'favoriteCount', ]
 
     def get_favorite_count(self, instance):
         return instance.users_favorites.count()
@@ -53,6 +52,7 @@ class ArticleSerializer(serializers.ModelSerializer):
         if instance.users_favorites.filter(user__username=username).count() == 0:
             return False
         return True
+
     def get_likes_count(self, obj):
         return obj.likes.count()
 
@@ -70,14 +70,39 @@ class ArticleSerializer(serializers.ModelSerializer):
 
         return data
 
+    def get_likes_count(self, obj):
+        return obj.likes.count()
+
+    def get_dislikes_count(self, obj):
+        return obj.dislikes.count()
+
+
+class RateSerializer(serializers.Serializer):
+    """Serializers registration requests and creates a new rate."""
+
+    rate = serializers.IntegerField(required=True)
+
+    def validate(self, data):
+        """Check that rate is valid"""
+        rating = data.get('rate')
+        if rating == '':
+            raise serializers.ValidationError('Rate is required.')
+        # Validate the rate is between 0 and 5.
+        if rating < 0 or rating > 5:
+            raise serializers.ValidationError(
+                'Rate should be from 0 to 5.')
+
+        return {"rate": rating}
+
+
 class CommentSerializer(serializers.ModelSerializer):
     """Handles serialization and deserialization of Comments objects."""
     author = ProfileSerializer(required=False)
 
     createdAt = serializers.SerializerMethodField(method_name='get_created_at')
     updatedAt = serializers.SerializerMethodField(method_name='get_updated_at')
-
     thread = RecursiveSerializer(many=True, read_only=True)
+
     class Meta:
         model = Comment
         fields = (
@@ -104,11 +129,6 @@ class CommentSerializer(serializers.ModelSerializer):
     def get_updated_at(self, instance):
         """ return updated_at """
         return instance.updated_at.isoformat()
-    def get_likes_count(self, obj):
-        return obj.likes.count()
-
-    def get_dislikes_count(self, obj):
-        return obj.dislikes.count()
 
 
 class RateSerializer(serializers.Serializer):

@@ -21,15 +21,18 @@ class ArticleJSONRenderer(JSONRenderer):
             "article": 'No article found.'
         })
 
+
 class CommentJSONRenderer(AuthorsJSONRenderer):
     """ renders comments"""
     object_label = "comment"
     object_label_plural = 'comments'
 
+
 class FavoriteJSONRenderer(AuthorsJSONRenderer):
     charset = 'utf-8'
     object_label = "favorite"
     object_label_plural = "favorites"
+
 
 class RateJSONRenderer(JSONRenderer):
     charset = 'utf-8'
