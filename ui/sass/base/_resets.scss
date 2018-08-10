@@ -135,3 +135,16 @@ table {
 .container {
   width: 65%;
 }
+
+nav .back {
+  position: absolute;
+  color: #fff;
+  display: inline-block;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.dropdown-content {
+  min-width: 190px;
+  top: -57px;
+}

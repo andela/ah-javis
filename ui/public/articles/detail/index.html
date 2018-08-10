@@ -17,31 +17,51 @@
 </head>
 
 <body>
-  <!-- <nav class="white">
+  <nav class="white">
     <div class="nav-wrapper p-l--30 p-r--30">
       <a href="#" class="flow-text black-text">Authors' Haven</a>
       <a href="#" data-target="mobile-demo" class="sidenav-trigger">
         <i class="material-icons black-text">menu</i>
       </a>
 
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <ul id="nav-mobile" class="right nav-icons hide-on-med-and-down">
         <li>
-          <a href="#" class="black-text">Create Account</a>
+          <a href="#" class="black-text">
+            <svg class="icon">
+              <use xlink:href="../../static/assets/icons/sprite.svg#icon-search"></use>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="black-text">
+            <svg class="icon">
+              <use xlink:href="../../static/assets/icons/sprite.svg#icon-bell"></use>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a class='dropdown-trigger black-text' href='#' data-target='profile'>
+            <img src="https://randomuser.me/api/portraits/med/men/83.jpg" alt="" class="responsive-img small--avatar">
+          </a>
+          <ul id='profile' class='dropdown-content'>
+            <li>
+              <a href="#!"> Profile</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">My articles</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">Favorites</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">Sign out</a>
+            </li>
+          </ul>
         </li>
       </ul>
-    </div>
-  </nav> -->
-
-  <nav class="white">
-    <div class="nav-wrapper p-l--30 p-r--30">
-      <div class="nav-wrapper">
-        <a href="#" class="brand-logo center black-text">Back</a>
-        <ul id="nav-mobile" class="right hide-on-med-and-down">
-          <li>
-            <a href="sass.html" class="black-text">Sass</a>
-          </li>
-        </ul>
-      </div>
     </div>
   </nav>
 
@@ -60,11 +80,51 @@
   <div class="container-fluid">
     <div class="container p-t--50">
       <div class="row">
+        <div class="author">
+          <div class="author__avatar">
+            <img src="https://randomuser.me/api/portraits/med/men/73.jpg" alt="" class="responsive-img circle">
+          </div>
+          <div class="author_details">
+            <div class="author__info">
+              <div class="author-name">
+                <p>Brian Hawi</p>
+              </div>
+              <a class="btn-flat btn-flat--primary">Follow</a>
+            </div>
+            <div class="article__highlights">
+              Aug 9, 2018
+              <span class="p-r--10 p-l--10">.</span>
+              <div class="article__ratings" contenteditable="false">
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <svg class="icon">
+                  <use xlink:href="../../../static/assets/icons/sprite.svg#icon-star"></use>
+                </svg>
+                <span class="p-l--10 p-r--5">4.6</span> (4,567)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
         <div class="col m11">
           <div class="article" contenteditable="true">
-            <h4>
-              <strong>This is the new era</strong>
-            </h4>
+            <div class="article__header">
+              <h4 article__title>
+                This is the new era
+              </h4>
+            </div>
 
             <img src="https://media.starcruises.com//Content/Images/090010c4-5823-4ddc-96ca-b57deb4edf29_hong_kong.jpg" alt="" class="responsive-img p-t--35 article__photo">
 
@@ -123,6 +183,17 @@
               <span>76</span>
               <svg class="icon">
                 <use xlink:href="../../../static/assets/icons/sprite.svg#icon-thumbs-down"></use>
+              </svg>
+            </div>
+
+            <svg class="icon">
+              <use xlink:href="../../../static/assets/icons/sprite.svg#icon-heart"></use>
+            </svg>
+
+            <div class="reactions__icon">
+              <span>18</span>
+              <svg class="icon">
+                <use xlink:href="../../../static/assets/icons/sprite.svg#icon-message-circle"></use>
               </svg>
             </div>
           </div>
