@@ -16,6 +16,7 @@ from .models import Article, Rate, Comment
 from .serializers import ArticleSerializer, CommentSerializer, RateSerializer
 from .renderers import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer, FavoriteJSONRenderer
 
+
 class LikesAPIView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     renderer_classes = (ArticleJSONRenderer, )
@@ -353,9 +354,11 @@ class FavoriteAPIView(APIView):
         )
         return Response(serializer.data,  status=status.HTTP_200_OK)
 
-class FilterAPIView(generics.ListAPIView):
+
+class FilterSearchAPIView(generics.ListAPIView):
     basic_fields = ['title', 'body']
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    filter_backends = (DjangoFilterBackend)
+    filter_backends = (DjangoFilterBackend, SearchFilter, )
     filter_fields = basic_fields
+    search_fields = basic_fields
