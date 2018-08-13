@@ -218,8 +218,8 @@ class ArticleAPIView(mixins.CreateModelMixin,
         else:
             raise PermissionDenied(
                 'You do not have permission to delete this article')
-
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
+        message = {"Success": "Article deleted successfully"}
+        return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 
 class CommentsListCreateAPIView(generics.ListCreateAPIView):
