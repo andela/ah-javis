@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'social_django',
+    'notifications',
 
     'authors.apps.authentication',
     'authors.apps.core',
@@ -214,3 +215,5 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 # JWT_EXPIRATION_DELTA set to default 1 day
 JWT_EXPIRATION_DELTA = datetime.timedelta(
     seconds=env("JWT_EXPIRATION_SECONDS", default=86400))
+
+CELERY_BROKER_URL = 'amqp://localhost'

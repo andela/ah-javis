@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+import notifications.urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,4 +27,6 @@ urlpatterns = [
 
     url(r'^api/', include('authors.apps.articles.urls',
                           namespace='articles')),
+    url('^inbox/notifications/',
+        include(notifications.urls, namespace='notifications')),
 ]

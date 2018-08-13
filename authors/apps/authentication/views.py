@@ -50,7 +50,7 @@ class RegistrationAPIView(APIView):
         user = get_user_model().objects.filter(
             email=serializer.data.get("email")).first()
         token = generate_token.make_token(user)
-        SendMail(
+        mail = SendMail(
             "email.html",
             {
                 'user': user,
@@ -58,8 +58,9 @@ class RegistrationAPIView(APIView):
                 'token': token
             },
             subject="Verify your account",
-            to=[user.email]
-        ).send()
+            to=[user.email],
+            user_request=request
+        ).delay()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -172,6 +173,8 @@ class ResetPasswordAPIView(APIView):
 
         return Response(data="Password Reset Successful",
                         status=status.HTTP_200_OK)
+
+
 class SocialSignUp(CreateAPIView):
     permission_classes = (AllowAny,)
     renderer_classes = (UserJSONRenderer,)
@@ -188,14 +191,15 @@ class SocialSignUp(CreateAPIView):
 
         strategy = load_strategy(request)
         try:
-            backend = load_backend(strategy=strategy, name=provider, redirect_uri=None)
+            backend = load_backend(
+                strategy=strategy, name=provider, redirect_uri=None)
         except MissingBackend as e:
             return Response({
                 "errors": {
-                    "provider":["Provider not found.", str(e)]
+                    "provider": ["Provider not found.", str(e)]
                 }
 
-                },status=status.HTTP_404_NOT_FOUND)
+            }, status=status.HTTP_404_NOT_FOUND)
         if isinstance(backend, BaseOAuth2):
             # Grab the access_token
             token = serializer.data['access_token']

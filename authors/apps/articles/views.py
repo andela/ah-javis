@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, mixins, viewsets
 from rest_framework.generics import RetrieveAPIView, CreateAPIView
+from notifications.signals import notify
+from celery import shared_task
 
 from .models import Article, Rate, Comment
 from .serializers import ArticleSerializer, CommentSerializer, RateSerializer
@@ -120,6 +122,12 @@ class RateAPIView(CreateAPIView):
         return Response({"avg": avg}, status=status.HTTP_201_CREATED)
 
 
+@shared_task
+def addTask(a):
+    print("a")
+    return a
+
+
 class ArticleAPIView(mixins.CreateModelMixin,
                      mixins.ListModelMixin,
                      mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -143,6 +151,9 @@ class ArticleAPIView(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
         serializer.save(author=request.user.profile)
 
+        notify.send(request.user, recipient=request.user,
+                    verb='You have created an article')
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def list(self, request):
@@ -155,7 +166,7 @@ class ArticleAPIView(mixins.CreateModelMixin,
         serializer = self.serializer_class(
             queryset, many=True,
             context=serializer_context)
-
+        addTask.delay(4)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, slug):
