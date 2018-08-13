@@ -1,7 +1,9 @@
 """ Views for django Articles. """
 from django.shortcuts import render
 from django.db.models import Avg
-
+#from url_filter.integrations.drf import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from rest_framework.exceptions import NotFound, PermissionDenied
@@ -13,7 +15,6 @@ from rest_framework.generics import RetrieveAPIView, CreateAPIView
 from .models import Article, Rate, Comment
 from .serializers import ArticleSerializer, CommentSerializer, RateSerializer
 from .renderers import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer, FavoriteJSONRenderer
-
 
 class LikesAPIView(APIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
@@ -351,3 +352,10 @@ class FavoriteAPIView(APIView):
             context=serializer_context
         )
         return Response(serializer.data,  status=status.HTTP_200_OK)
+
+class FilterAPIView(generics.ListAPIView):
+    basic_fields = ['title', 'body']
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    filter_backends = (DjangoFilterBackend)
+    filter_fields = basic_fields
