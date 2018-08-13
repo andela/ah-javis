@@ -2,13 +2,15 @@
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from celery import shared_task, Task
+from authors.celery import app
 
 
 class SendMail(Task):
     """ Send email to user """
     ignore_result = True
+    name = "send_email"
 
-    def __init__(self, template_name, context, to, subject="Author's Haven", user_request=None):
+    def __init__(self, template_name=None, context=None, to=None, subject="Author's Haven", user_request=None):
         super(SendMail).__init__()
         self.template_name = template_name
         self.context = context
@@ -31,3 +33,6 @@ class SendMail(Task):
         )
         mail.content_subtype = "html"
         return mail
+
+
+app.tasks.register(SendMail())

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import environ
 import datetime
+import os
 
 """
 Create a .env file in you root folder(ah-jarvis/)
@@ -78,7 +79,7 @@ ROOT_URLCONF = 'authors.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "authors/apps/core/templates"), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

@@ -60,7 +60,7 @@ class RegistrationAPIView(APIView):
             subject="Verify your account",
             to=[user.email],
             user_request=request
-        ).delay()
+        ).delay(user.email)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
