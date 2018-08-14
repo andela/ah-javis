@@ -22,7 +22,6 @@ class SendMail():
     """ Send email to user """
 
     def __init__(self, template_name=None, context=None, to=None, subject="Author's Haven", user_request=None):
-        super(SendMail).__init__()
         self.template_name = template_name
         self.context = context
         self.to = to
