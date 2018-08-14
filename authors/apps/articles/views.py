@@ -354,8 +354,9 @@ class FavoriteAPIView(APIView):
         return Response(serializer.data,  status=status.HTTP_200_OK)
 
 class FilterAPIView(generics.ListAPIView):
-    basic_fields = ['title', 'body']
+    basic_fields = ['title', 'body', 'author__user__username'] 
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
-    filter_backends = (DjangoFilterBackend)
+    filter_backends = (DjangoFilterBackend, SearchFilter, OrderingFilter)
     filter_fields = basic_fields
+    search_fields = basic_fields
