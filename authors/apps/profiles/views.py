@@ -4,9 +4,12 @@ from rest_framework.response import Response
 from rest_framework import serializers, status
 from rest_framework.views import APIView
 from rest_framework.exceptions import NotFound
+from notifications.models import Notification
+from rest_framework.renderers import JSONRenderer
+
 from .models import Profile
 from .renderers import ProfileJSONRenderer
-from .serializers import ProfileSerializer
+from .serializers import ProfileSerializer, NotificationSerializer
 from .exceptions import ProfileDoesNotExist
 
 import json
@@ -103,3 +106,17 @@ class FollowingAPIView(APIView):
         following = user.get_following(profile)
         serializer = self.serializer_class(following, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class NotificationAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = NotificationSerializer
+    renderer_classes = (JSONRenderer,)
+
+    def get(self, request, username):
+        notifications = Notification.objects.filter(
+            recipient=request.user).all()
+        serializer = self.serializer_class(
+            notifications, many=True, context={'request': request})
+
+        return Response(serializer.data)

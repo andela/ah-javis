@@ -1,4 +1,7 @@
 from rest_framework import serializers
+from notifications.models import Notification
+from authors.apps.articles.models import Article
+from authors.apps.articles.serializers import ArticleSerializer
 
 from .models import Profile
 
@@ -18,3 +21,20 @@ class ProfileSerializer(serializers.ModelSerializer):
             return obj.image
 
         return 'https://static.productionready.io/images/smiley-cyrus.jpg'
+
+
+class GenericNotificationRelatedField(serializers.RelatedField):
+    def to_representation(self, value):
+        if isinstance(value, Article):
+            serializer = (ArticleSerializer)
+
+        return serializer.data
+
+
+class NotificationSerializer(serializers.HyperlinkedModelSerializer):
+    target = GenericNotificationRelatedField(read_only=True)
+
+    class Meta:
+        model = Notification
+
+        fields = ('actor', 'target')
