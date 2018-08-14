@@ -1,7 +1,7 @@
 """ Views for django Articles. """
 from django.shortcuts import render
 from django.db.models import Avg
-#from url_filter.integrations.drf import DjangoFilterBackend
+# from url_filter.integrations.drf import DjangoFilterBackend
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import generics
@@ -356,9 +356,12 @@ class FavoriteAPIView(APIView):
 
 
 class FilterSearchAPIView(generics.ListAPIView):
-    basic_fields = ['title', 'body']
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    search_list = ['title', 'body',
+                   'description', 'author__user__username']
+    filter_list = ['title', 'author__user__username', ]
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     filter_backends = (DjangoFilterBackend, SearchFilter, )
-    filter_fields = basic_fields
-    search_fields = basic_fields
+    filter_fields = filter_list
+    search_fields = search_list
