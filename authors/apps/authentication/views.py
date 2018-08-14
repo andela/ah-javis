@@ -23,6 +23,7 @@ from social_core.exceptions import MissingBackend
 from requests.exceptions import HTTPError
 from authors.apps.core.email import SendMail
 from django.contrib.auth import get_user_model
+from django.template.loader import render_to_string
 
 from .utils import generate_token
 from .renderers import UserJSONRenderer
@@ -51,8 +52,8 @@ class RegistrationAPIView(APIView):
             email=serializer.data.get("email")).first()
         token = generate_token.make_token(user)
         mail = SendMail(
-            "email.html",
-            {
+            template_name="authentication/email.html",
+            context={
                 'user': user,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8"),
                 'token': token
@@ -60,7 +61,8 @@ class RegistrationAPIView(APIView):
             subject="Verify your account",
             to=[user.email],
             user_request=request
-        ).delay(user.email)
+        )
+        mail.delay(user.email)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
