@@ -23,7 +23,7 @@ class Article(TimeModel):
     likes = models.ManyToManyField(User, related_name="likes", blank=True)
     dislikes = models.ManyToManyField(
         User, related_name="dislikes", blank=True)
-    tags = models.ManyToManyField('article.Tag', related_name='articles')
+    tags = models.ManyToManyField('articles.Tag', related_name='articles')
 
     def __str__(self):
         return self.title
