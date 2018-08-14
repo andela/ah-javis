@@ -2,13 +2,24 @@
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from celery import shared_task, Task
+from celery.utils.log import get_task_logger
+from celery import shared_task
 from authors.celery import app
 
+logger = get_task_logger('send_mail')
 
-class SendMail(Task):
+
+@shared_task
+def send_mail(content):
+    mail = EmailMessage(
+        subject=content['subject'], body=content['message'], to=content['to']
+    )
+    mail.content_subtype = "html"
+    mail.send()
+
+
+class SendMail():
     """ Send email to user """
-    ignore_result = True
-    name = "send_email"
 
     def __init__(self, template_name=None, context=None, to=None, subject="Author's Haven", user_request=None):
         super(SendMail).__init__()
@@ -23,15 +34,11 @@ class SendMail(Task):
                 self.template_name, context=self.context, request=self.user_request)
         else:
             self.message = None
-    def run(self, source, *args, **kwargs):
-        self.source = source
-        mail = EmailMessage(
-            subject=self.subject, body=self.message, to=self.to
-        )
-        mail.content_subtype = "html"
-        mail.send()
 
-  
-
-
-app.tasks.register(SendMail())
+    def send(self):
+        content = {
+            "subject": self.subject,
+            "to": self.to,
+            "message": self.message
+        }
+        send_mail.delay(content)
