@@ -10,8 +10,7 @@ class Profile(TimeModel):
     # User models. By creating a one-to-one relationship between the two, we
     # are formalizing this relationship. Every user will have one -- and only
     # one -- related Profile model.
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE
     )
 
     # Each user profile will have a field where they can tell other users
