@@ -62,7 +62,14 @@ class ArticleSerializer(serializers.ModelSerializer):
         return obj.dislikes.count()
 
     def create(self, validated_data):
-        return Article.objects.create(**validated_data)
+        tags = validated_data.pop('tags', [])
+
+        article = Article.objects.create(**validated_data)
+
+        for tag in tags:
+            article.tags.add(tag)
+
+        return article
 
     def validate(self, data):
         # The `validate` method is used to validate the title,
