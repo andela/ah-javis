@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import Tag
+from django.utils.text import slugify
 
 class TagField(serializers.RelatedField):
     """
@@ -12,7 +13,7 @@ class TagField(serializers.RelatedField):
     
     def to_internal_value(self, data):
         tag, created = Tag.objects.get_or_create(
-            tag=data, slug=data.lower()
+            tag=data, slug=slugify(data.lower())
         )
         return tag
     
