@@ -28,7 +28,7 @@ def send_notifications_when_commented(sender, instance, created, *args, **kwargs
     if instance and created:
         users = [u.user for u in instance.article.users_favorites.all()]
         notify.send(instance, recipient=users,
-                    verb='A new article have been published')
+                    verb='A new article has been published')
         SendMail(
             template_name="articles/alert_comment.html",
             context={
