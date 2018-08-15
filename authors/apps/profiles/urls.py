@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.urls import path
 
 from .views import (ProfileRetrieveAPIView,
-                    ProfileFollowAPIView, FollowersAPIView, FollowingAPIView, NotificationAPIView)
+                    ProfileFollowAPIView, FollowersAPIView, FollowingAPIView)
 
 app_name = 'profiles'
 
@@ -14,6 +14,4 @@ urlpatterns = [
          FollowersAPIView.as_view(), name="followers"),
     path('<username>/following/',
          FollowingAPIView.as_view(), name="following"),
-    path('<username>/notifications/',
-         NotificationAPIView.as_view(), name="notifications"),
 ]

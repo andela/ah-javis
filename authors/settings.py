@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'authors.apps.core',
     'authors.apps.profiles',
     'authors.apps.articles',
+    'authors.apps.ah_notifications',
 
 ]
 
