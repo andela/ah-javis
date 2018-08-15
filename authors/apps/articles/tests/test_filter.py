@@ -32,6 +32,14 @@ class RateTestCase(APITestCase):
                     "password":"Test123."
                     }
                 }
+        self.article1 = {
+            "article": {
+                "title": "How to train your dragon",
+                "description": "Ever wonder how?",
+                "body": "You have to believe",
+                "tagList": ["django-rest", "python"]
+            }
+        }
 
     def login_user(self, user):
         """
@@ -133,3 +141,42 @@ class RateTestCase(APITestCase):
         response = json.loads(res.content)
         self.assertEquals(len(response), 0)
 
+    def test_filter_by_tag(self):
+        """ Tests that can filter by tags. """
+        author = self.create_a_user("author", "info@author.co", "Test123.")
+        rater = self.create_a_user("test", "info@test.co", "Test123.") # create user
+        self.verify_user(author) # Verify created author
+        # Login test user and return authorization token.
+        auth_author = self.login_user(self.author) 
+        article = self.create_article() # create article
+        self.client.post('/api/articles/',
+                                    self.article1,
+                                    HTTP_AUTHORIZATION='Bearer ' +
+                                    auth_author['user']['token'],
+                                    format='json'
+                                    )
+        res = self.client.get('/api/articles?tags__tag=python',
+                                    format='json'
+                                    )
+        response = json.loads(res.content)
+        self.assertEquals(response[0]['title'], "How to train your dragon")
+
+    def test_filter_by_non_existent_tag(self):
+        """ Tests filter with non existing tags. """
+        author = self.create_a_user("author", "info@author.co", "Test123.")
+        rater = self.create_a_user("test", "info@test.co", "Test123.") # create user
+        self.verify_user(author) # Verify created author
+        # Login test user and return authorization token.
+        auth_author = self.login_user(self.author) 
+        article = self.create_article() # create article
+        self.client.post('/api/articles/',
+                                    self.article1,
+                                    HTTP_AUTHORIZATION='Bearer ' +
+                                    auth_author['user']['token'],
+                                    format='json'
+                                    )
+        res = self.client.get('/api/articles?tags__tag=random',
+                                    format='json'
+                                    )
+        response = json.loads(res.content)
+        self.assertEquals(response, [])
