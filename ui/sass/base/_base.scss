@@ -64,6 +64,9 @@ form {
   outline: none;
 }
 
-textarea.materialize-textarea{
+.container--medium {
+  width: 53% !important;
+}
+textarea.materialize-textarea {
   height: 7rem;
 }
