@@ -13,7 +13,7 @@ from rest_framework.test import force_authenticate
 from rest_framework.test import APIRequestFactory
 from authors.apps.articles.models import Article, Rate
 
-class RateTestCase(APITestCase):
+class FilterTestCase(APITestCase):
     """Test Cases to test ratings feature"""
 
     def setUp(self):
@@ -87,7 +87,6 @@ class RateTestCase(APITestCase):
     def test_can_filter_by_title(self):
         """ Tests that a user can filter articles by title """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        rater = self.create_a_user("test", "info@test.co", "Test123.") # create user
         self.verify_user(author) # Verify created author
         # Login test user and return authorization token.
         auth_author = self.login_user(self.author) 
@@ -102,7 +101,6 @@ class RateTestCase(APITestCase):
     def test_filter_by_title_non_existence_title(self):
         """ Tests thae results with non existence title. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        rater = self.create_a_user("test", "info@test.co", "Test123.") # create user
         self.verify_user(author) # Verify created author
         # Login test user and return authorization token.
         auth_author = self.login_user(self.author) 
@@ -116,12 +114,11 @@ class RateTestCase(APITestCase):
     def test_filter_by_author(self):
         """ Tests that can filter by author. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        rater = self.create_a_user("test", "info@test.co", "Test123.") # create user
         self.verify_user(author) # Verify created author
         # Login test user and return authorization token.
         auth_author = self.login_user(self.author) 
         article = self.create_article() # create article
-        res = self.client.get('/api/articles?author__user__username=author',
+        res = self.client.get('/api/articles?author__id=20',
                                     format='json'
                                     )
         response = json.loads(res.content)
@@ -130,21 +127,19 @@ class RateTestCase(APITestCase):
     def test_filter_by_non_existence_author(self):
         """ Tests thae results with non existence author. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        rater = self.create_a_user("test", "info@test.co", "Test123.") # create user
         self.verify_user(author) # Verify created author
         # Login test user and return authorization token.
         auth_author = self.login_user(self.author) 
         article = self.create_article() # create article
-        res = self.client.get('/api/articles?author__user__username=random',
+        res = self.client.get('/api/articles?author__id=6',
                                     format='json'
                                     )
         response = json.loads(res.content)
-        self.assertEquals(len(response), 0)
+        self.assertEquals(response, [])
 
     def test_filter_by_tag(self):
         """ Tests that can filter by tags. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        rater = self.create_a_user("test", "info@test.co", "Test123.") # create user
         self.verify_user(author) # Verify created author
         # Login test user and return authorization token.
         auth_author = self.login_user(self.author) 
@@ -164,7 +159,6 @@ class RateTestCase(APITestCase):
     def test_filter_by_non_existent_tag(self):
         """ Tests filter with non existing tags. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        rater = self.create_a_user("test", "info@test.co", "Test123.") # create user
         self.verify_user(author) # Verify created author
         # Login test user and return authorization token.
         auth_author = self.login_user(self.author) 

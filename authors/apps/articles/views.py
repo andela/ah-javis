@@ -358,7 +358,7 @@ class FilterSearchAPIView(generics.ListAPIView):
     permission_classes = (IsAuthenticatedOrReadOnly, )
     search_list = ['title', 'body',
                    'description', 'author__user__username']
-    filter_list = ['title', 'author__user__username', 'tags__tag' ]
+    filter_list = ['title', 'author__id', 'tags__tag' ]
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
     filter_backends = (DjangoFilterBackend, SearchFilter, )
