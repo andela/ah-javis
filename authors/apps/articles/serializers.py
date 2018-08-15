@@ -102,7 +102,6 @@ class CommentSerializer(serializers.ModelSerializer):
     createdAt = serializers.SerializerMethodField(method_name='get_created_at')
     updatedAt = serializers.SerializerMethodField(method_name='get_updated_at')
     thread = RecursiveSerializer(many=True, read_only=True)
-
     class Meta:
         model = Comment
         fields = (

@@ -245,6 +245,7 @@ class CommentsListCreateAPIView(generics.ListCreateAPIView):
         'author', 'author__user'
     )
 
+
     def filter_queryset(self, queryset):
         filters = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
         return queryset.filter(**filters).filter(parent=None)
@@ -271,7 +272,7 @@ class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generi
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     renderer_classes = (CommentJSONRenderer,)
-
+    
     def destroy(self, request, article_slug=None, comment_pk=None):
         try:
             comment = Comment.objects.get(pk=comment_pk)
@@ -284,7 +285,7 @@ class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generi
 
     def create(self, request, article_slug=None, comment_pk=None):
         data = request.data.get('comment', {})
-        context = {'author': request.user.profile}
+        context = {'author': request.user.profile, 'request': request}
 
         try:
             context['article'] = Article.objects.get(slug=article_slug)
