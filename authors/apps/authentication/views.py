@@ -51,7 +51,7 @@ class RegistrationAPIView(APIView):
         user = get_user_model().objects.filter(
             email=serializer.data.get("email")).first()
         token = generate_token.make_token(user)
-        mail = SendMail(
+        SendMail(
             template_name="authentication/email.html",
             context={
                 'user': user,
@@ -61,8 +61,7 @@ class RegistrationAPIView(APIView):
             subject="Verify your account",
             to=[user.email],
             user_request=request
-        )
-        mail.delay(user.email)
+        ).send()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
