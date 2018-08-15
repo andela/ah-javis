@@ -299,23 +299,6 @@ class FavoriteAPIView(APIView):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 
-    def get(self, request, slug):
-        """
-        Override the retrieve method to get a article
-        """
-        serializer_context = {'request': request}
-        try:
-            serializer_instance = self.queryset.get(slug=slug)
-        except Article.DoesNotExist:
-            raise NotFound("An article with this slug doesn't exist")
-
-        serializer = self.serializer_class(
-            serializer_instance,
-            context=serializer_context
-        )
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     def post(self, request, slug):
         """
         Method that favorites articles.
