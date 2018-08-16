@@ -120,7 +120,8 @@ class FilterTestCase(APITestCase):
         # Login test user and return authorization token.
         auth_author = self.login_user(self.author)
         article = self.create_article()  # create article
-        res = self.client.get('/api/articles?author__id=2',
+
+        res = self.client.get(f'/api/articles?author__id={author.id}',
                               format='json'
                               )
         response = json.loads(res.content)
