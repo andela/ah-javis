@@ -112,7 +112,7 @@ class RateAPIView(CreateAPIView):
         # If exist check if the user has exceed rating counter
         if rating.counter > 3:
             """Allow rating if counter is less than 3."""
-            return Response({"errors": {"message": ["You are only allowed to"
+            return Response({"errors": {"message": ["You are only allowed to "
                                                     "rate 3 times"]}}, status=status.HTTP_403_FORBIDDEN)
 
         rating.ratings = rate
