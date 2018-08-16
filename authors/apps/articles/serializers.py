@@ -48,7 +48,11 @@ class ArticleSerializer(serializers.ModelSerializer):
         return instance.users_favorites.count()
 
     def is_favorited(self, instance):
-        username = self.context.get('request').user.username
+        request = self.context.get('request')
+        if not request:
+            return False
+
+        username = request.user.username
         if instance.users_favorites.filter(user__username=username).count() == 0:
             return False
         return True

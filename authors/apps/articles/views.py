@@ -160,7 +160,6 @@ class ArticleAPIView(mixins.CreateModelMixin,
         serializer = self.serializer_class(
             queryset, many=True,
             context=serializer_context)
-        addTask.delay(4)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, slug):

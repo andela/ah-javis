@@ -13,9 +13,10 @@ from authors.apps.profiles.serializers import ProfileSerializer
 class GenericNotificationRelatedField(serializers.RelatedField):
     def to_representation(self, value):
         actor_type =  None
+
         if isinstance(value, Article):
             actor_type = "article"
-            serializers = ArticleSerializer(value)
+            serializer = ArticleSerializer(value)
         if isinstance(value, Comment):
             actor_type = "comment"
             serializer = CommentSerializer(value)
