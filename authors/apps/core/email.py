@@ -2,11 +2,8 @@
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from celery import shared_task, Task
-from celery.utils.log import get_task_logger
 from celery import shared_task
 from authors.celery import app
-
-logger = get_task_logger('send_mail')
 
 
 @shared_task
