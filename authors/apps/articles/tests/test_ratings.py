@@ -142,7 +142,7 @@ class RateTestCase(APITestCase):
                                     auth_user["user"]["token"],
                                     format='json'
                                     )
-        self.assertEquals(res.data["errors"]["message"][0], "You are only allowed torate 3 times")
+        self.assertEquals(res.data["errors"]["message"][0], "You are only allowed to rate 3 times")
         self.assertEquals(res.status_code, 403)
 
     def test_rate_should_be_a_number(self):

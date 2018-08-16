@@ -85,25 +85,6 @@ class ArticleSerializer(serializers.ModelSerializer):
     def get_dislikes_count(self, obj):
         return obj.dislikes.count()
 
-
-class RateSerializer(serializers.Serializer):
-    """Serializers registration requests and creates a new rate."""
-
-    rate = serializers.IntegerField(required=True)
-
-    def validate(self, data):
-        """Check that rate is valid"""
-        rating = data.get('rate')
-        if rating == '':
-            raise serializers.ValidationError('Rate is required.')
-        # Validate the rate is between 0 and 5.
-        if rating < 0 or rating > 5:
-            raise serializers.ValidationError(
-                'Rate should be from 0 to 5.')
-
-        return {"rate": rating}
-
-
 class CommentSerializer(serializers.ModelSerializer):
     """Handles serialization and deserialization of Comments objects."""
     author = ProfileSerializer(required=False)
