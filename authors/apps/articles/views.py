@@ -10,8 +10,9 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, mixins, viewsets
 from rest_framework.generics import RetrieveAPIView, CreateAPIView
-from .models import Article, Rate, Comment
-from .serializers import ArticleSerializer, CommentSerializer, RateSerializer
+
+from .models import Article, Rate, Comment, Tag
+from .serializers import ArticleSerializer, CommentSerializer, RateSerializer, TagSerializer
 from .renderers import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer, FavoriteJSONRenderer
 
 
@@ -286,23 +287,6 @@ class FavoriteAPIView(APIView):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 
-    def get(self, request, slug):
-        """
-        Override the retrieve method to get a article
-        """
-        serializer_context = {'request': request}
-        try:
-            serializer_instance = self.queryset.get(slug=slug)
-        except Article.DoesNotExist:
-            raise NotFound("An article with this slug doesn't exist")
-
-        serializer = self.serializer_class(
-            serializer_instance,
-            context=serializer_context
-        )
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     def post(self, request, slug):
         """
         Method that favorites articles.
@@ -338,3 +322,15 @@ class FavoriteAPIView(APIView):
             context=serializer_context
         )
         return Response(serializer.data,  status=status.HTTP_200_OK)
+
+
+class TagAPIView(generics.ListAPIView):
+    queryset = Tag.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = TagSerializer
+
+    def list(self, request):
+        serializer_data = self.get_queryset()
+        serializer = self.serializer_class(serializer_data, many=True)
+
+        return Response({'tags': serializer.data}, status.HTTP_200_OK)
