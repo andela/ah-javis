@@ -83,6 +83,7 @@ class User(AbstractBaseUser, PermissionsMixin, TimeModel):
     is_staff = models.BooleanField(default=False)
 
     # More fields required by Django when specifying a custom user model.
+    get_notifications = models.BooleanField(default=False)
 
     # The `USERNAME_FIELD` property tells us which field we will use to log in.
     # In this case, we want that to be the email field.

@@ -9,7 +9,8 @@ from authors.apps.core.email import SendMail
 def send_notifications_to_followers(sender, instance, created, *args, **kwargs):
 
     if instance and created:
-        followers = [p.user for p in instance.author.followed_by.all()]
+        followers = filter(lambda user: user.get_notifications, [
+                           p.user for p in instance.author.followed_by.all()])
         notify.send(instance, recipient=followers,
                     verb=f'A new article has been published by {instance.author.user.username} ')
         SendMail(
@@ -29,6 +30,7 @@ def send_notifications_when_commented(sender, instance, created, *args, **kwargs
         users = [u.user for u in instance.article.users_favorites.all()]
         notify.send(instance, recipient=users,
                     verb=f'{instance.author.user.username} commented on {instance.article.title}')
+
         SendMail(
             template_name="articles/alert_comment.html",
             context={
