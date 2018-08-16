@@ -146,19 +146,6 @@ class ArticleAPIView(mixins.CreateModelMixin,
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def list(self, request):
-        """
-        Get all articles
-        """
-        serializer_context = {'request': request}
-        queryset = Article.objects.annotate(
-            average_rating=Avg("rate__ratings"))
-        serializer = self.serializer_class(
-            queryset, many=True,
-            context=serializer_context)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     def retrieve(self, request, slug):
         """
         Get one article

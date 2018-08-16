@@ -65,9 +65,9 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        title = results[0]['title']
+        title = results['results'][0]['title']
         self.assertEquals(title, 'How to train your dragon')
-        self.assertIsInstance(results, list)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_non_existent_article_title(self):
         """
@@ -77,8 +77,9 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        self.assertEquals(results, [])
-        self.assertIsInstance(results, list)
+        empty = results['count']
+        self.assertEquals(empty, 0)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_article_body(self):
         """
@@ -100,9 +101,9 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        body = results[0]['body']
+        body = results['results'][0]['body']
         self.assertEquals(body, 'You have to believe')
-        self.assertIsInstance(results, list)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_non_existent_article_body(self):
         """
@@ -112,8 +113,9 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        self.assertEquals(results, [])
-        self.assertIsInstance(results, list)
+        empty = results['count']
+        self.assertEquals(empty, 0)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_article_description(self):
         """
@@ -135,9 +137,9 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        description = results[0]['description']
+        description = results['results'][0]['description']
         self.assertEquals(description, 'Ever wonder how?')
-        self.assertIsInstance(results, list)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_non_existent_article_description(self):
         """
@@ -147,8 +149,9 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        self.assertEquals(results, [])
-        self.assertIsInstance(results, list)
+        empty = results['count']
+        self.assertEquals(empty, 0)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_article_author(self):
         """
@@ -170,9 +173,9 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        author = results[0]['author']['username']
+        author = results['results'][0]['author']['username']
         self.assertEquals(author, 'testuser')
-        self.assertIsInstance(results, list)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_non_existent_article_author(self):
         """
@@ -182,8 +185,9 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        self.assertEquals(results, [])
-        self.assertIsInstance(results, list)
+        empty = results['count']
+        self.assertEquals(empty, 0)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_tag(self):
         """
@@ -205,9 +209,10 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        tag = results[0]['tagList'][0]
+        print(results)
+        tag = results['results'][0]['tagList'][0]
         self.assertEquals(tag, 'python')
-        self.assertIsInstance(results, list)
+        self.assertIsInstance(results, dict)
 
     def test_user_search_from_non_existent_tag(self):
         """
@@ -217,5 +222,6 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        self.assertEquals(results, [])
-        self.assertIsInstance(results, list)
+        empty = results['count']
+        self.assertEquals(empty, 0)
+        self.assertIsInstance(results, dict)
