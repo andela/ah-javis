@@ -60,7 +60,7 @@ class ArticleCRUDTestCase(APITestCase):
 
     def login_user(self, user=user):
         """
-        login user
+        Login user
         """
         response = self.client.post(
             reverse("authentication:login"),
@@ -93,7 +93,7 @@ class ArticleCRUDTestCase(APITestCase):
         return article
 
     def verify_user(self, user):
-        """Verify user"""
+        """ Verify user """
         token = generate_token.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8")
         request = APIRequestFactory().get(
@@ -102,9 +102,9 @@ class ArticleCRUDTestCase(APITestCase):
         verify_account(request, uidb64=uid, token=token)
         return user
 
-    def test_user_can_create_an_article(self):
+    def test_pagination_returns_9_articles(self):
         """
-        Tests that a user can create an article
+        Tests that pagination only returns 9 articles per page.
         """
         user = self.create_a_user()
         self.verify_user(user)
