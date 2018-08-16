@@ -11,9 +11,9 @@ from authors.apps.articles.models import Comment, Article
 
 from .utils import create_user, create_article
 
-@override_settings(CELERY_ALWAYS_EAGER=True)
 class ModelTestCase(TestCase):
     """ Test the comment model. """
+    
     def test_can_create_comment(self):
         """ should be able to create a comment with model """
         user = create_user()
