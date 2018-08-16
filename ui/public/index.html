@@ -17,6 +17,7 @@
 </head>
 
 <body>
+  <!-- Nav bar-->
   <nav class="white">
     <div class="nav-wrapper p-l--30 p-r--30">
       <a href="#" class="flow-text black-text">Authors' Haven</a>
@@ -28,50 +29,93 @@
         <li>
           <a href="#" class="black-text">
             <svg class="icon">
-              <use xlink:href="../../static/assets/icons/sprite.svg#icon-search"></use>
+              <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-search"></use>
             </svg>
           </a>
         </li>
-        <li>
-          <a href="#" class="black-text">
+        <li class="relative">
+          <a href="#" class="dropdown-trigger black-text" data-target='notifications'>
             <svg class="icon">
-              <use xlink:href="../../static/assets/icons/sprite.svg#icon-bell"></use>
+              <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-bell"></use>
             </svg>
           </a>
+          <!--Notifications-->
+          <ul id="notifications" class="dropdown-content collection">
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/men/17.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/women/17.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/men/1.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/women/5.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/men/10.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/women/12.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/women/22.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/men/23.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+            <li class="collection-item">
+              <p>Danson commented on All things are made in heaven</p>
+              <img src="https://randomuser.me/api/portraits/med/women/40.jpg " alt=" " class="responsive-img small--avatar ">
+            </li>
+          </ul>
+          <div class="badge">
+            <p>20</p>
+          </div>
         </li>
         <li>
           <a class='dropdown-trigger black-text' href='#' data-target='profile'>
-            <img src="https://randomuser.me/api/portraits/med/men/5.jpg" alt="" class="responsive-img small--avatar">
+            <img src="https://randomuser.me/api/portraits/med/men/5.jpg " alt=" " class="responsive-img small--avatar ">
           </a>
           <ul id='profile' class='dropdown-content'>
             <li>
-              <a href="/ui/public/profile/followers.html"> Profile</a>
+              <a href="/ui/public/profile/followers.html "> Profile</a>
             </li>
-            <li class="divider" tabindex="-1"></li>
+            <li class="divider " tabindex="-1 "></li>
             <li>
-              <a href="/ui/public/profile/profile.html">My articles</a>
+              <a href="/ui/public/profile/profile.html ">My articles</a>
             </li>
-            <li class="divider" tabindex="-1"></li>
+            <li class="divider " tabindex="-1 "></li>
 
-            <li class="divider" tabindex="-1"></li>
+            <li class="divider " tabindex="-1 "></li>
             <li>
-              <a href="#!">Sign out</a>
+              <a href="#! ">Sign out</a>
             </li>
           </ul>
         </li>
       </ul>
     </div>
   </nav>
+  <!-- End of Navbar-->
 
-  <ul class="sidenav" id="mobile-demo">
+  <ul class="sidenav " id="mobile-demo ">
     <li>
-      <a href="#">Home</a>
+      <a href="# ">Home</a>
     </li>
     <li>
-      <a href="#">Sign in</a>
+      <a href="# ">Sign in</a>
     </li>
     <li>
-      <a href="#">Create Account</a>
+      <a href="# ">Create Account</a>
     </li>
   </ul>
 
@@ -98,19 +142,19 @@
               <div class="stats">
                 <span class="icon-stats">
                   <svg class="icon">
-                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-thumbs-up"></use>
+                    <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-thumbs-up"></use>
                   </svg>
                   234
                 </span>
                 <span class="icon-stats">
                   <svg class="icon">
-                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-message-circle"></use>
+                    <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-message-circle"></use>
                   </svg>
                   54
                 </span>
               </div>
               <svg class="icon right">
-                <use xlink:href="../../static/assets/icons/sprite.svg#icon-heart"></use>
+                <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-heart"></use>
               </svg>
             </div>
           </div>
@@ -131,19 +175,19 @@
               <div class="stats">
                 <span class="icon-stats">
                   <svg class="icon">
-                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-thumbs-up"></use>
+                    <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-thumbs-up"></use>
                   </svg>
                   234
                 </span>
                 <span class="icon-stats">
                   <svg class="icon">
-                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-message-circle"></use>
+                    <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-message-circle"></use>
                   </svg>
                   54
                 </span>
               </div>
               <svg class="icon right">
-                <use xlink:href="../../static/assets/icons/sprite.svg#icon-heart"></use>
+                <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-heart"></use>
               </svg>
             </div>
           </div>
@@ -171,19 +215,19 @@
               <div class="stats">
                 <span class="icon-stats">
                   <svg class="icon">
-                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-thumbs-up"></use>
+                    <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-thumbs-up"></use>
                   </svg>
                   234
                 </span>
                 <span class="icon-stats">
                   <svg class="icon">
-                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-message-circle"></use>
+                    <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-message-circle"></use>
                   </svg>
                   54
                 </span>
               </div>
               <svg class="icon right">
-                <use xlink:href="../../static/assets/icons/sprite.svg#icon-heart"></use>
+                <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-heart"></use>
               </svg>
             </div>
           </div>
@@ -204,19 +248,19 @@
               <div class="stats">
                 <span class="icon-stats">
                   <svg class="icon">
-                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-thumbs-up"></use>
+                    <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-thumbs-up"></use>
                   </svg>
                   234
                 </span>
                 <span class="icon-stats">
                   <svg class="icon">
-                    <use xlink:href="../../static/assets/icons/sprite.svg#icon-message-circle"></use>
+                    <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-message-circle"></use>
                   </svg>
                   54
                 </span>
               </div>
               <svg class="icon right">
-                <use xlink:href="../../static/assets/icons/sprite.svg#icon-heart"></use>
+                <use xlink:href="/ui/static/assets/icons/sprite.svg#icon-heart"></use>
               </svg>
             </div>
           </div>

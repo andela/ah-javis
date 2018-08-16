@@ -122,12 +122,6 @@ class RateAPIView(CreateAPIView):
         return Response({"avg": avg}, status=status.HTTP_201_CREATED)
 
 
-@shared_task
-def addTask(a):
-    print("a")
-    return a
-
-
 class ArticleAPIView(mixins.CreateModelMixin,
                      mixins.ListModelMixin,
                      mixins.RetrieveModelMixin, viewsets.GenericViewSet):
@@ -245,7 +239,6 @@ class CommentsListCreateAPIView(generics.ListCreateAPIView):
         'author', 'author__user'
     )
 
-
     def filter_queryset(self, queryset):
         filters = {self.lookup_field: self.kwargs[self.lookup_url_kwarg]}
         return queryset.filter(**filters).filter(parent=None)
@@ -272,7 +265,7 @@ class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generi
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     renderer_classes = (CommentJSONRenderer,)
-    
+
     def destroy(self, request, article_slug=None, comment_pk=None):
         try:
             comment = Comment.objects.get(pk=comment_pk)
