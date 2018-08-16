@@ -1,7 +1,8 @@
 """ Views for django Articles. """
 from django.shortcuts import render
 from django.db.models import Avg
-
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from rest_framework.exceptions import NotFound, PermissionDenied
@@ -12,8 +13,8 @@ from rest_framework.generics import RetrieveAPIView, CreateAPIView
 from notifications.signals import notify
 from celery import shared_task
 
-from .models import Article, Rate, Comment
-from .serializers import ArticleSerializer, CommentSerializer, RateSerializer
+from .models import Article, Rate, Comment, Tag
+from .serializers import ArticleSerializer, CommentSerializer, RateSerializer, TagSerializer
 from .renderers import ArticleJSONRenderer, CommentJSONRenderer, RateJSONRenderer, FavoriteJSONRenderer
 
 
@@ -112,7 +113,7 @@ class RateAPIView(CreateAPIView):
         # If exist check if the user has exceed rating counter
         if rating.counter > 3:
             """Allow rating if counter is less than 3."""
-            return Response({"errors": {"message": ["You are only allowed to"
+            return Response({"errors": {"message": ["You are only allowed to "
                                                     "rate 3 times"]}}, status=status.HTTP_403_FORBIDDEN)
 
         rating.ratings = rate
@@ -149,18 +150,6 @@ class ArticleAPIView(mixins.CreateModelMixin,
                     verb='You have created an article')
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def list(self, request):
-        """
-        Get all articles
-        """
-        serializer_context = {'request': request}
-        queryset = Article.objects.annotate(
-            average_rating=Avg("rate__ratings"))
-        serializer = self.serializer_class(
-            queryset, many=True,
-            context=serializer_context)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, slug):
         """
@@ -222,8 +211,8 @@ class ArticleAPIView(mixins.CreateModelMixin,
         else:
             raise PermissionDenied(
                 'You do not have permission to delete this article')
-
-        return Response(None, status=status.HTTP_204_NO_CONTENT)
+        message = {"Success": "Article deleted successfully"}
+        return Response(message, status=status.HTTP_204_NO_CONTENT)
 
 
 class CommentsListCreateAPIView(generics.ListCreateAPIView):
@@ -303,23 +292,6 @@ class FavoriteAPIView(APIView):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 
-    def get(self, request, slug):
-        """
-        Override the retrieve method to get a article
-        """
-        serializer_context = {'request': request}
-        try:
-            serializer_instance = self.queryset.get(slug=slug)
-        except Article.DoesNotExist:
-            raise NotFound("An article with this slug doesn't exist")
-
-        serializer = self.serializer_class(
-            serializer_instance,
-            context=serializer_context
-        )
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
     def post(self, request, slug):
         """
         Method that favorites articles.
@@ -355,3 +327,27 @@ class FavoriteAPIView(APIView):
             context=serializer_context
         )
         return Response(serializer.data,  status=status.HTTP_200_OK)
+
+
+class FilterSearchAPIView(generics.ListAPIView):
+    permission_classes = (IsAuthenticatedOrReadOnly, )
+    search_list = ['title', 'body',
+                   'description', 'author__user__username', 'tags__tag']
+    filter_list = ['title', 'author__id', 'tags__tag']
+    queryset = Article.objects.all()
+    serializer_class = ArticleSerializer
+    filter_backends = (DjangoFilterBackend, SearchFilter, )
+    filter_fields = filter_list
+    search_fields = search_list
+
+
+class TagAPIView(generics.ListAPIView):
+    queryset = Tag.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = TagSerializer
+
+    def list(self, request):
+        serializer_data = self.get_queryset()
+        serializer = self.serializer_class(serializer_data, many=True)
+
+        return Response({'tags': serializer.data}, status.HTTP_200_OK)
