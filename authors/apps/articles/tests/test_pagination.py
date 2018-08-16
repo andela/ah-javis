@@ -121,4 +121,4 @@ class ArticleCRUDTestCase(APITestCase):
         res = self.client.get('/api/articles/', format='json')
         results = len(json.loads(res.content).get('article').get('results'))
         self.assertEquals(res.status_code, 200)
-        self.assertEquals(results, 9)
+        self.assertEquals(results, 12)
