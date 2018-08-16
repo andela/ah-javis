@@ -13,25 +13,26 @@ from rest_framework.test import force_authenticate
 from rest_framework.test import APIRequestFactory
 from authors.apps.articles.models import Article, Rate
 
+
 class FilterTestCase(APITestCase):
     """Test Cases to test ratings feature"""
 
     def setUp(self):
         """Initialize default data."""
         self.user = {
-                "user":{
-                    "username":"test",
-                    "email":"info@test.co",
-                    "password":"Test123."
-                    }
-                }
+            "user": {
+                "username": "test",
+                "email": "info@test.co",
+                "password": "Test123."
+            }
+        }
         self.author = {
-                "user":{
-                    "username":"author",
-                    "email":"info@author.co",
-                    "password":"Test123."
-                    }
-                }
+            "user": {
+                "username": "author",
+                "email": "info@author.co",
+                "password": "Test123."
+            }
+        }
         self.article1 = {
             "article": {
                 "title": "How to train your dragon",
@@ -54,7 +55,7 @@ class FilterTestCase(APITestCase):
         return user
 
     def create_a_user(self, username, email,
-            password):
+                      password):
         """
         Create a test user
         """
@@ -76,10 +77,11 @@ class FilterTestCase(APITestCase):
 
     def verify_user(self, user):
         """Verify user"""
-        token = generate_token.make_token(user) # Token for user verifications.
+        token = generate_token.make_token(
+            user)  # Token for user verifications.
         uid = urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8")
         request = APIRequestFactory().get(
-                reverse("authentication:verify", args=[uid, token]))
+            reverse("authentication:verify", args=[uid, token]))
         verify_account = VerifyAccount.as_view()
         verify_account(request, uidb64=uid, token=token)
         return user
@@ -87,13 +89,13 @@ class FilterTestCase(APITestCase):
     def test_can_filter_by_title(self):
         """ Tests that a user can filter articles by title """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        self.verify_user(author) # Verify created author
+        self.verify_user(author)  # Verify created author
         # Login test user and return authorization token.
-        auth_author = self.login_user(self.author) 
-        article = self.create_article() # create article
+        auth_author = self.login_user(self.author)
+        article = self.create_article()  # create article
         res = self.client.get('/api/articles?title=django',
-                                    format='json'
-                                    )
+                              format='json'
+                              )
         response = json.loads(res.content)
         self.assertEquals(response['results'][0]['title'], "django")
         self.assertEquals(res.status_code, 200)
@@ -101,76 +103,77 @@ class FilterTestCase(APITestCase):
     def test_filter_by_title_non_existence_title(self):
         """ Tests thae results with non existence title. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        self.verify_user(author) # Verify created author
+        self.verify_user(author)  # Verify created author
         # Login test user and return authorization token.
-        auth_author = self.login_user(self.author) 
-        article = self.create_article() # create article
+        auth_author = self.login_user(self.author)
+        article = self.create_article()  # create article
         res = self.client.get('/api/articles?title=random',
-                                    format='json'
-                                    )
+                              format='json'
+                              )
         response = json.loads(res.content)
         self.assertEquals(len(response['results']), 0)
 
     def test_filter_by_author(self):
         """ Tests that can filter by author. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        self.verify_user(author) # Verify created author
+        self.verify_user(author)  # Verify created author
         # Login test user and return authorization token.
-        auth_author = self.login_user(self.author) 
-        article = self.create_article() # create article
-        res = self.client.get('/api/articles?author__id=20',
-                                    format='json'
-                                    )
+        auth_author = self.login_user(self.author)
+        article = self.create_article()  # create article
+        res = self.client.get('/api/articles?author__id=2',
+                              format='json'
+                              )
         response = json.loads(res.content)
         self.assertEquals(response['results'][0]['title'], "django")
 
     def test_filter_by_non_existence_author(self):
         """ Tests thae results with non existence author. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        self.verify_user(author) # Verify created author
+        self.verify_user(author)  # Verify created author
         # Login test user and return authorization token.
-        auth_author = self.login_user(self.author) 
-        article = self.create_article() # create article
+        auth_author = self.login_user(self.author)
+        article = self.create_article()  # create article
         res = self.client.get('/api/articles?author__id=6',
-                                    format='json'
-                                    )
+                              format='json'
+                              )
         response = json.loads(res.content)
         self.assertEquals(response['results'], [])
 
     def test_filter_by_tag(self):
         """ Tests that can filter by tags. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        self.verify_user(author) # Verify created author
+        self.verify_user(author)  # Verify created author
         # Login test user and return authorization token.
-        auth_author = self.login_user(self.author) 
-        article = self.create_article() # create article
+        auth_author = self.login_user(self.author)
+        article = self.create_article()  # create article
         self.client.post('/api/articles/',
-                                    self.article1,
-                                    HTTP_AUTHORIZATION='Bearer ' +
-                                    auth_author['user']['token'],
-                                    format='json'
-                                    )
+                         self.article1,
+                         HTTP_AUTHORIZATION='Bearer ' +
+                         auth_author['user']['token'],
+                         format='json'
+                         )
         res = self.client.get('/api/articles?tags__tag=python',
-                                    format='json'
-                                    )
+                              format='json'
+                              )
         response = json.loads(res.content)
-        self.assertEquals(response['results'][0]['title'], "How to train your dragon")
+        self.assertEquals(response['results'][0]
+                          ['title'], "How to train your dragon")
 
     def test_filter_by_non_existent_tag(self):
         """ Tests filter with non existing tags. """
         author = self.create_a_user("author", "info@author.co", "Test123.")
-        self.verify_user(author) # Verify created author
+        self.verify_user(author)  # Verify created author
         # Login test user and return authorization token.
-        auth_author = self.login_user(self.author) 
-        article = self.create_article() # create article
+        auth_author = self.login_user(self.author)
+        article = self.create_article()  # create article
         self.client.post('/api/articles/',
-                                    self.article1,
-                                    HTTP_AUTHORIZATION='Bearer ' +
-                                    auth_author['user']['token'],
-                                    format='json'
-                                    )
+                         self.article1,
+                         HTTP_AUTHORIZATION='Bearer ' +
+                         auth_author['user']['token'],
+                         format='json'
+                         )
         res = self.client.get('/api/articles?tags__tag=random',
-                                    format='json'
-                                    )
+                              format='json'
+                              )
         response = json.loads(res.content)
         self.assertEquals(response['results'], [])
