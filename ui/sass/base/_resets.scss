@@ -154,6 +154,7 @@ nav .back {
   width: 350px !important;
   top: -38px;
 }
+
 .collection-item {
   display: flex;
   justify-content: space-between;
@@ -163,5 +164,13 @@ nav .back {
   }
   & p {
     margin-right: 30px;
+  }
+  & span {
+    color: rgba($color: #000000, $alpha: 0.5);
+    font-size: 10px;
+    margin-left: 1px;
+  }
+  & .read {
+    opacity: 0.4;
   }
 }
