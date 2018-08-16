@@ -1,8 +1,6 @@
 """ Views for django Articles. """
-import os
 from django.shortcuts import render
 from django.db.models import Avg
-
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from rest_framework.exceptions import NotFound, PermissionDenied
