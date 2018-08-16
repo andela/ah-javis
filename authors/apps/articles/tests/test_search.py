@@ -209,7 +209,6 @@ class TestSearch(APITestCase):
         response = self.client.get(url)
         response.render()
         results = json.loads(response.content)
-        print(results)
         tag = results['results'][0]['tagList'][0]
         self.assertEquals(tag, 'python')
         self.assertIsInstance(results, dict)

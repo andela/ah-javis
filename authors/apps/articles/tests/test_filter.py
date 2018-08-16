@@ -95,7 +95,7 @@ class FilterTestCase(APITestCase):
                                     format='json'
                                     )
         response = json.loads(res.content)
-        self.assertEquals(response[0]['title'], "django")
+        self.assertEquals(response['results'][0]['title'], "django")
         self.assertEquals(res.status_code, 200)
 
     def test_filter_by_title_non_existence_title(self):
@@ -109,7 +109,7 @@ class FilterTestCase(APITestCase):
                                     format='json'
                                     )
         response = json.loads(res.content)
-        self.assertEquals(len(response), 0)
+        self.assertEquals(len(response['results']), 0)
 
     def test_filter_by_author(self):
         """ Tests that can filter by author. """
@@ -122,7 +122,7 @@ class FilterTestCase(APITestCase):
                                     format='json'
                                     )
         response = json.loads(res.content)
-        self.assertEquals(response[0]['title'], "django")
+        self.assertEquals(response['results'][0]['title'], "django")
 
     def test_filter_by_non_existence_author(self):
         """ Tests thae results with non existence author. """
@@ -135,7 +135,7 @@ class FilterTestCase(APITestCase):
                                     format='json'
                                     )
         response = json.loads(res.content)
-        self.assertEquals(response, [])
+        self.assertEquals(response['results'], [])
 
     def test_filter_by_tag(self):
         """ Tests that can filter by tags. """
@@ -154,7 +154,7 @@ class FilterTestCase(APITestCase):
                                     format='json'
                                     )
         response = json.loads(res.content)
-        self.assertEquals(response[0]['title'], "How to train your dragon")
+        self.assertEquals(response['results'][0]['title'], "How to train your dragon")
 
     def test_filter_by_non_existent_tag(self):
         """ Tests filter with non existing tags. """
@@ -173,4 +173,4 @@ class FilterTestCase(APITestCase):
                                     format='json'
                                     )
         response = json.loads(res.content)
-        self.assertEquals(response, [])
+        self.assertEquals(response['results'], [])
