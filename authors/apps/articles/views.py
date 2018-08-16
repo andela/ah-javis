@@ -1,7 +1,6 @@
 """ Views for django Articles. """
 from django.shortcuts import render
 from django.db.models import Avg
-
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from rest_framework.exceptions import NotFound, PermissionDenied
@@ -144,19 +143,6 @@ class ArticleAPIView(mixins.CreateModelMixin,
         serializer.save(author=request.user.profile)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def list(self, request):
-        """
-        Get all articles
-        """
-        serializer_context = {'request': request}
-        queryset = Article.objects.annotate(
-            average_rating=Avg("rate__ratings"))
-        serializer = self.serializer_class(
-            queryset, many=True,
-            context=serializer_context)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, slug):
         """
@@ -334,6 +320,7 @@ class FavoriteAPIView(APIView):
             context=serializer_context
         )
         return Response(serializer.data,  status=status.HTTP_200_OK)
+
 
 class TagAPIView(generics.ListAPIView):
     queryset = Tag.objects.all()
