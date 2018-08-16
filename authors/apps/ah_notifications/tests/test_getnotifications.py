@@ -2,6 +2,7 @@ import json
 from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
 from rest_framework import status
+from django.test import override_settings
 from authors.apps.authentication.models import User
 from authors.apps.articles.models import Article
 
@@ -28,7 +29,6 @@ class NotificationTestCase(APITestCase):
         user.save()
         return user
 
-
     def test_get_notification_when_follwing_creates_article(self):
         self.client.put(reverse("authentication:user"), {
             "user":{
@@ -44,8 +44,7 @@ class NotificationTestCase(APITestCase):
         response = self.client.get(reverse("ah_notifications:ah_notifications"))
         self.assertEqual(len(json.loads(response.content)['notifications']), 1)
 
-  
-
+    
     def test_subscribe(self):
         response = self.client.put(reverse("authentication:user"), {
             "user":{

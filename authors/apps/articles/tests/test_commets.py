@@ -5,13 +5,13 @@ from rest_framework.test import APITestCase
 from rest_framework.test import APIClient
 
 from django.urls import reverse
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from authors.apps.articles.models import Comment, Article
 
 from .utils import create_user, create_article
 
-
+@override_settings(CELERY_ALWAYS_EAGER=True)
 class ModelTestCase(TestCase):
     """ Test the comment model. """
     def test_can_create_comment(self):
@@ -74,14 +74,14 @@ class CommentViews(APITestCase):
         }
         self.user = create_user()
         self.client.force_authenticate(user=self.user)
-
+        
     def test_can_create_comment(self):
         """ Should be able to create comment via the api """
         article = create_article()
         url = reverse("articles:comments", kwargs={'article_slug':article.slug})
         response = self.client.post(url, self.comment, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-
+    
     def test_can_create_comment_thread(self):
         """ Should be able to create comment of a comment via the api. """
         article = create_article()
