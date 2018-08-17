@@ -23,6 +23,7 @@ from social_core.exceptions import MissingBackend
 from requests.exceptions import HTTPError
 from authors.apps.core.email import SendMail
 from django.contrib.auth import get_user_model
+from django.template.loader import render_to_string
 
 from .utils import generate_token
 from .renderers import UserJSONRenderer
@@ -51,14 +52,15 @@ class RegistrationAPIView(APIView):
             email=serializer.data.get("email")).first()
         token = generate_token.make_token(user)
         SendMail(
-            "email.html",
-            {
+            template_name="authentication/email.html",
+            context={
                 'user': user,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)).decode("utf-8"),
                 'token': token
             },
             subject="Verify your account",
-            to=[user.email]
+            to=[user.email],
+            user_request=request
         ).send()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -117,7 +119,7 @@ class UserRetrieveUpdateAPIView(RetrieveUpdateAPIView):
         serializer_data = {
             'username': user_data.get('username', request.user.username),
             'email': user_data.get('email', request.user.email),
-
+            'get_notifications': user_data.get('get_notifications', request.user.get_notifications),
             'profile': {
                 'bio': user_data.get('bio', request.user.profile.bio),
                 'image': user_data.get('image', request.user.profile.image)
@@ -172,6 +174,8 @@ class ResetPasswordAPIView(APIView):
 
         return Response(data="Password Reset Successful",
                         status=status.HTTP_200_OK)
+
+
 class SocialSignUp(CreateAPIView):
     permission_classes = (AllowAny,)
     renderer_classes = (UserJSONRenderer,)
@@ -188,14 +192,15 @@ class SocialSignUp(CreateAPIView):
 
         strategy = load_strategy(request)
         try:
-            backend = load_backend(strategy=strategy, name=provider, redirect_uri=None)
+            backend = load_backend(
+                strategy=strategy, name=provider, redirect_uri=None)
         except MissingBackend as e:
             return Response({
                 "errors": {
-                    "provider":["Provider not found.", str(e)]
+                    "provider": ["Provider not found.", str(e)]
                 }
 
-                },status=status.HTTP_404_NOT_FOUND)
+            }, status=status.HTTP_404_NOT_FOUND)
         if isinstance(backend, BaseOAuth2):
             # Grab the access_token
             token = serializer.data['access_token']

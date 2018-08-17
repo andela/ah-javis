@@ -3,16 +3,16 @@ omit =
     authors/*__init__.py
     */tests/*
     */migrations/*
-     authors/settings.py
-     */wsgi.py
+    authors/settings.py
+    */wsgi.py
 
 source =
-      authors
+    authors
 
 [report]
 omit =
     authors/*__init__.py
     */tests/*
     */migrations/*
-     authors/settings.py
-     */wsgi.py
+    authors/settings.py
+    */wsgi.py

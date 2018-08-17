@@ -1,5 +1,6 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from notifications.signals import notify
 
 from authors.apps.profiles.models import Profile
 
