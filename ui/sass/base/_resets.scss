@@ -146,9 +146,35 @@ nav .back {
 
 .dropdown-content {
   min-width: 190px;
+  max-height: 450px;
+  overflow-y: scroll;
   top: -57px;
 }
 
 .pagination li.active {
-  background-color: $primary-color;
+    background-color: $primary-color;
+  .collection {
+    width: 350px !important;
+    top: -38px;
+  }
+}
+
+.collection-item {
+  display: flex;
+  justify-content: space-between;
+  & img {
+    height: 50px;
+    width: 50px;
+  }
+  & p {
+    margin-right: 30px;
+  }
+  & span {
+    color: rgba($color: #000000, $alpha: 0.5);
+    font-size: 10px;
+    margin-left: 1px;
+  }
+  & .read {
+    opacity: 0.4;
+  }
 }

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+  <!-- Compiled and minified JavaScript -->
+
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+  <link rel="stylesheet" href="/ui/static/styles.css">
+  <title>Create Article | Authors' Haven</title>
+</head>
+
+<body>
+  <nav class="white">
+    <div class="nav-wrapper p-l--30 p-r--30">
+      <a href="/ui/public/articles/" class="flow-text black-text">Authors' Haven</a>
+      <a href="#" data-target="mobile-demo" class="sidenav-trigger">
+        <i class="material-icons black-text">menu</i>
+      </a>
+
+      <ul id="nav-mobile" class="right nav-icons hide-on-med-and-down">
+        <li>
+          <a href="#" class="black-text">
+            <svg class="icon">
+              <use xlink:href="../../../static/assets/icons/sprite.svg#icon-search"></use>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="black-text">
+            <svg class="icon">
+              <use xlink:href="../../../static/assets/icons/sprite.svg#icon-bell"></use>
+            </svg>
+          </a>
+        </li>
+        <li>
+          <a class='dropdown-trigger black-text' href='#' data-target='profile'>
+            <img src="https://randomuser.me/api/portraits/med/men/5.jpg" alt="" class="responsive-img small--avatar">
+          </a>
+          <ul id='profile' class='dropdown-content'>
+            <li>
+              <a href="#!"> Profile</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">My articles</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">Favorites</a>
+            </li>
+            <li class="divider" tabindex="-1"></li>
+            <li>
+              <a href="#!">Sign out</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <ul class="sidenav" id="mobile-demo">
+    <li>
+      <a href="#">Home</a>
+    </li>
+    <li>
+      <a href="#">Sign in</a>
+    </li>
+    <li>
+      <a href="#">Create Account</a>
+    </li>
+  </ul>
+
+  <div class="container-fluid">
+    <div class="container p-t--50">
+
+      <div class="row">
+        <div class="author">
+          <div class="author__avatar">
+            <img src="https://randomuser.me/api/portraits/med/men/73.jpg" alt="" class="responsive-img circle">
+          </div>
+          <div class="author_details">
+            <div class="author__info">
+              <div class="author-name">
+                <p>Brian Hawi</p>
+              </div>
+            </div>
+            <div class="article__highlights">
+              New Article
+              <span class="p-r--10 p-l--10">.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col m11">
+          <div class="article" contenteditable="true">
+            <div class="article__header">
+              <h4 article__title>
+                This is the new era
+              </h4>
+            </div>
+            <div class="article__body">
+              <p class="article__body--para">
+                Lorem ipsum dolor sit amet, vero ludus nam at, impetus meliore nominavi ut mei. Mei prima quaestio no. Pri option feugiat torquatos ne, eos reque perpetua id. Ne nam ludus qualisque. Usu impetus aliquam pericula ei. Eirmod invidunt honestatis per at, ut quot aliquip vis. Pro natum ludus altera ea, ne nulla maluisset reformidans his. Mea ea modus utinam. Pro ne vidisse debitis, mea vitae disputando ne. Ceteros oportere ad ius, vis elitr nonumy no. Aliquip salutandi ad eos, eu corpora perpetua nec, sea equidem offendit in. Quaestio corrumpit eos ex, an cibo scaevola vim, vide <br>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card-action row">
+        <span class="grey-text">Add a tag and click Enter</span>
+        <div class="input-field">
+          <div class="chips chips-placeholder"></div>
+          <a href="/ui/public/articles/detail/" class="btn  primary right">Publish Article</a>
+        </div>
+      </div>
+
+
+      <div class="divider"></div>
+
+    </div>
+  </div>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var elems = document.querySelectorAll('.chips');
+      var instances = M.Chips.init(elems, options);
+    });
+    $('.chips').chips();
+    $('.chips-placeholder').chips({
+      placeholder: '+Tag',
+      secondaryPlaceholder: '+Tag',
+    });
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const elems = document.querySelectorAll('.sidenav');
+      const instances = M.Sidenav.init(elems);
+    });
+
+    $(document).ready(function() {
+      $('textarea#comment').characterCounter();
+    });
+  </script>
+</body>
+
+</html>

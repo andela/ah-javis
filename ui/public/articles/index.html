@@ -54,6 +54,10 @@
                         </li>
                         <li class="divider" tabindex="-1"></li>
                         <li>
+                            <a href="/ui/public/articles/create/">New Article</a>
+                        </li>
+                        <li class="divider" tabindex="-1"></li>
+                        <li>
                             <a href="#!">My articles</a>
                         </li>
                         <li class="divider" tabindex="-1"></li>
@@ -606,71 +610,67 @@
                     </div>
 
                 </div>
+
+
+                <div class="row">
+                    <ul class="pagination center m-b--20">
+                        <li class="disabled">
+                            <a href="#!">
+                                <i class="material-icons">chevron_left</i>
+                            </a>
+                        </li>
+                        <li class="active">
+                            <a href="#!">1</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">2</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">3</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">4</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">5</a>
+                        </li>
+                        <li class="waves-effect">
+                            <a href="#!">
+                                <i class="material-icons">chevron_right</i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </div>
-    </div>
-    </div>
 
 
-    <div class="row">
-        <ul class="pagination center m-b--20">
-            <li class="disabled">
-                <a href="#!">
-                    <i class="material-icons">chevron_left</i>
-                </a>
-            </li>
-            <li class="active">
-                <a href="#!">1</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">2</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">3</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">4</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">5</a>
-            </li>
-            <li class="waves-effect">
-                <a href="#!">
-                    <i class="material-icons">chevron_right</i>
-                </a>
-            </li>
-        </ul>
-    </div>
-    </div>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
 
+            <script>
+                document.addEventListener('DOMContentLoaded', () => {
+                    const elems = document.querySelectorAll('.sidenav');
+                    const instances = M.Sidenav.init(elems);
+                });
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.dropdown-trigger');
+                    var instances = M.Dropdown.init(elems);
+                });
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const elems = document.querySelectorAll('.sidenav');
-            const instances = M.Sidenav.init(elems);
-        });
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.dropdown-trigger');
+                    var instances = M.Dropdown.init(elems);
+                });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.dropdown-trigger');
-            var instances = M.Dropdown.init(elems);
-        });
+                document.addEventListener('DOMContentLoaded', function () {
+                    var elems = document.querySelectorAll('.select');
+                    var instances = M.FormSelect.init(elems);
+                });
 
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.dropdown-trigger');
-            var instances = M.Dropdown.init(elems);
-        });
-
-        document.addEventListener('DOMContentLoaded', function () {
-            var elems = document.querySelectorAll('.select');
-            var instances = M.FormSelect.init(elems);
-        });
-
-        document.getElementById('search').addEventListener('click', (e) => {
-            const el = document.querySelector('.search-input').classList.toggle('hide')
-        })
-    </script>
+                document.getElementById('search').addEventListener('click', (e) => {
+                    const el = document.querySelector('.search-input').classList.toggle('hide')
+                })
+            </script>
 </body>
 
 </html>

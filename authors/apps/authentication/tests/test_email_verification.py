@@ -23,15 +23,7 @@ class TestLogin(APITestCase):
             user,
             format='json')
 
-    def test_send_email(self):
-        """ Tests that a verification email is sent on signup """
-        self.register_user(TEST_USER)
 
-        # Test that one message has been sent.
-        self.assertEqual(len(mail.outbox), 1)
-
-        # Verify that the subject of the first message is correct.
-        self.assertEqual(mail.outbox[0].subject, 'Verify your account')
 
     def test_account_has_been_verified(self):
         """ Tests that the account is verified """

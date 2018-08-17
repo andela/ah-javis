@@ -161,21 +161,18 @@ class UserSerializer(serializers.ModelSerializer):
         max_length=128,
         read_only=True
     )
-
-    class Meta:
-        model = User
-        fields = ('email', 'username', 'password', 'token')
     profile = ProfileSerializer(write_only=True)
 
     bio = serializers.CharField(source='profile.bio', read_only=True)
     image = image = serializers.CharField(
         source='profile.image', read_only=True)
+    get_notifications = serializers.BooleanField()
 
     class Meta:
         model = User
         fields = (
             'email', 'username', 'password', 'profile', 'bio',
-            'image', 'token'
+            'image', 'token','get_notifications',
         )
 
         # The `read_only_fields` option is an alternative for explicitly
@@ -204,13 +201,11 @@ class UserSerializer(serializers.ModelSerializer):
             setattr(instance, key, value)
 
         if password is not None:
-            print("password only")
             # `.set_password()` is the method mentioned above. It handles all
             # of the security stuff that we shouldn't be concerned with.
             instance.set_password(password)
 
         else:
-            print("others")
             for (key, value) in validated_data.items():
                 # For the keys remaining in `validated_data`, we will set them on
                 # the current `User` instance one at a time.
