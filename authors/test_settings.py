@@ -1,0 +1,5 @@
+from authors.settings import *
+
+DEBUG=True
+CELERY_TASK_ALWAYS_EAGER=True
+CELERY_TASK_EAGER_PROPOGATES=True

@@ -15,15 +15,20 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+import notifications.urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
 
     url(r'^api/', include('authors.apps.authentication.urls',
                           namespace='authentication')),
+    url(r'^api/', include('authors.apps.ah_notifications.urls',
+                          namespace='ah_notifications')),
     url(r'^api/profiles/', include('authors.apps.profiles.urls',
                                    namespace='profiles')),
 
     url(r'^api/', include('authors.apps.articles.urls',
                           namespace='articles')),
+    url('^inbox/notifications/',
+        include(notifications.urls, namespace='notifications')),
 ]

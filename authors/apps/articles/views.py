@@ -10,6 +10,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import status, mixins, viewsets
 from rest_framework.generics import RetrieveAPIView, CreateAPIView
+from notifications.signals import notify
+from celery import shared_task
 
 from .models import Article, Rate, Comment, Tag
 from .serializers import ArticleSerializer, CommentSerializer, RateSerializer, TagSerializer
@@ -144,6 +146,9 @@ class ArticleAPIView(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
         serializer.save(author=request.user.profile)
 
+        notify.send(request.user, recipient=request.user,
+                    verb='You have created an article')
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, slug):
@@ -261,7 +266,7 @@ class CommentsCreateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView, generi
 
     def create(self, request, article_slug=None, comment_pk=None):
         data = request.data.get('comment', {})
-        context = {'author': request.user.profile}
+        context = {'author': request.user.profile, 'request': request}
 
         try:
             context['article'] = Article.objects.get(slug=article_slug)

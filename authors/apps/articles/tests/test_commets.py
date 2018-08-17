@@ -5,7 +5,7 @@ from rest_framework.test import APITestCase
 from rest_framework.test import APIClient
 
 from django.urls import reverse
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from authors.apps.articles.models import Comment, Article
 

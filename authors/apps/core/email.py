@@ -1,24 +1,40 @@
 """ Core mail sender"""
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from celery import shared_task, Task
+from celery import shared_task
+from authors.celery import app
 
 
-class SendMail:
+@shared_task
+def send_mail(content):
+    mail = EmailMessage(
+        subject=content['subject'], body=content['message'], to=content['to']
+    )
+    mail.content_subtype = "html"
+    mail.send()
+
+
+class SendMail():
     """ Send email to user """
 
-    def __init__(self, template_name, context, to, subject="Author's Haven", request=None):
+    def __init__(self, template_name=None, context=None, to=None, subject="Author's Haven", user_request=None):
         self.template_name = template_name
         self.context = context
         self.to = to
         self.subject = subject
-        self.request = request
+        self.user_request = user_request
+        self.mail = None
+        if self.template_name is not None:
+            self.message = render_to_string(
+                self.template_name, context=self.context, request=self.user_request)
+        else:
+            self.message = None
 
     def send(self):
-        """ Send mail. """
-        message = render_to_string(
-            self.template_name, context=self.context, request=self.request)
-        mail = EmailMessage(
-            subject=self.subject, body=message, to=self.to
-        )
-        mail.content_subtype = "html"
-        mail.send()
+        content = {
+            "subject": self.subject,
+            "to": self.to,
+            "message": self.message
+        }
+        send_mail.delay(content)

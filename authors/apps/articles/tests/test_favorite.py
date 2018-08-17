@@ -16,7 +16,6 @@ TEST_USER = {
     }
 }
 
-
 class TestFavoriteArticle(APITestCase):
     """ Test all the favorite funtions """
 
