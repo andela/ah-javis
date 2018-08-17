@@ -148,3 +148,7 @@ nav .back {
   min-width: 190px;
   top: -57px;
 }
+
+.pagination li.active {
+  background-color: $primary-color;
+}

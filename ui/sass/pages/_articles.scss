@@ -10,6 +10,13 @@
     padding: 50px 0 !important;
     border-left: 1px solid #ccc;
   }
+  &__reveal {
+    font-size: 15px;
+    line-height: 150%;
+  }
+  &__list {
+    padding: 50px 60px 0 60px !important;
+  }
 }
 .small--avatar {
   border-radius: 50%;
@@ -38,6 +45,13 @@
       }
       &--info {
         font-size: 10px;
+      }
+      &__reveal {
+        font-size: 15px;
+        line-height: 150%;
+      }
+      &__list {
+        padding: 50px 60px 0 60px !important;
       }
     }
   }
