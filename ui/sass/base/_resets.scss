@@ -148,3 +148,29 @@ nav .back {
   min-width: 190px;
   top: -57px;
 }
+.collection {
+  width: 350px !important;
+  top: -38px;
+}
+
+.collection-item {
+  display: flex;
+  justify-content: space-between;
+  color: rgba($color: #000000, $alpha: 0.5) !important;
+
+  & img {
+    height: 50px;
+    width: 50px;
+  }
+  & p {
+    margin-right: 30px;
+  }
+  // & span {
+  //   color: rgba($color: #000000, $alpha: 0.5);
+  //   font-size: 10px;
+  //   margin-left: 5px;
+  // }
+  & .unread {
+    color: rgba($color: $primary-color, $alpha: 0.8) !important;
+  }
+}
