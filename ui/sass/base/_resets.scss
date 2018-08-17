@@ -146,6 +146,8 @@ nav .back {
 
 .dropdown-content {
   min-width: 190px;
+  max-height: 450px;
+  overflow-y: scroll;
   top: -57px;
 }
 .collection {
@@ -177,5 +179,10 @@ nav .back {
     border-radius: 50%;
     background-color: $primary_color;
     margin-right: 30px;
+  }
+  & span {
+    color: rgba($color: #000000, $alpha: 0.5);
+    font-size: 10px;
+    margin-left: 1px;
   }
 }

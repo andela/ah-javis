@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 
 import environ
 import datetime
+import os
 
 """
 Create a .env file in you root folder(ah-jarvis/)
@@ -53,11 +54,13 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'social_django',
+    'notifications',
 
     'authors.apps.authentication',
     'authors.apps.core',
     'authors.apps.profiles',
     'authors.apps.articles',
+    'authors.apps.ah_notifications',
 
 ]
 
@@ -73,7 +76,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'authors.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -218,3 +220,5 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 # JWT_EXPIRATION_DELTA set to default 1 day
 JWT_EXPIRATION_DELTA = datetime.timedelta(
     seconds=env("JWT_EXPIRATION_SECONDS", default=86400))
+
+CELERY_BROKER_URL = 'amqp://localhost'
