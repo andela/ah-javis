@@ -147,7 +147,7 @@ class ForgotPasswordAPIView(APIView):
         serializer.is_valid(raise_exception=True)
         # Sends the user an email with the link to the reset password page
         context = {
-            "verification_url": settings.VERIFCATION_URL + serializer.data.get('token', None),
+            "verification_url": settings.VERIFCATION_URL + serializer.data.get('token', None)+f'?email={serializer.data.get("email", None)}',
             "username": serializer.data.get('username'),
         }
 
