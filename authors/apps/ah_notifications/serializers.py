@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from notifications.models import Notification
 from authors.apps.articles.models import Article, Comment
+from authors.apps.authentication.models import User
 from authors.apps.articles.serializers import ArticleSerializer
 from authors.apps.articles.serializers import CommentSerializer
 from authors.apps.profiles.serializers import ProfileSerializer
@@ -17,7 +18,9 @@ class GenericNotificationRelatedField(serializers.RelatedField):
         if isinstance(value, Comment):
             actor_type = "comment"
             serializer = CommentSerializer(value)
-
+        if isinstance(value, User):
+            actor_type = "user"
+            serializer = ProfileSerializer(value.profile)
         return {
             "type": actor_type,
             "data": serializer.data

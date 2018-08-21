@@ -150,10 +150,18 @@ nav .back {
   overflow-y: scroll;
   top: -57px;
 }
-.collection {
-  width: 350px !important;
-  height: 460px;
-  top: -38px;
+
+.pagination li.active {
+      background-color: $primary-color;
+    .collection {
+      width: 350px !important;
+      top: -38px;
+    }
+  .collection {
+    width: 350px !important;
+    height: 460px;
+    top: -38px;
+  }
 }
 
 .collection-item {
