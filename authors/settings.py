@@ -38,7 +38,7 @@ JWT_SECRET_KEY = env('JWT_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['10.10.156.84', '10.10.190.236', 'localhost']
 
 # Application definition
 
@@ -149,6 +149,9 @@ STATIC_URL = '/static/'
 CORS_ORIGIN_WHITELIST = (
     '0.0.0.0:4000',
     'localhost:4000',
+    'localhost:3000',
+
+    '10.10.156.84:9000'
 )
 
 # Tell Django about the custom `User` model we created. The string
@@ -170,7 +173,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 12
 }
 
-VERIFCATION_URL = "http://localhost:6000/verify/"
+VERIFCATION_URL = "http://localhost:3000/verify/"
 
 AUTHENTICATION_BACKENDS = (
     # Google OAuth2

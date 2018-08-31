@@ -172,7 +172,7 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'email', 'username', 'password', 'profile', 'bio',
-            'image', 'token','get_notifications',
+            'image', 'token', 'get_notifications',
         )
 
         # The `read_only_fields` option is an alternative for explicitly
