@@ -223,6 +223,6 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 # JWT_EXPIRATION_DELTA set to default 1 day
 JWT_EXPIRATION_DELTA = datetime.timedelta(
-    seconds=env("JWT_EXPIRATION_SECONDS", default=86400))
+    seconds=env("JWT_EXPIRATION_SECONDS", default=86401))
 
 CELERY_BROKER_URL = env('CELERY_BROKER_URL')
