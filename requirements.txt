@@ -47,3 +47,6 @@ urllib3==1.23
 vine==1.1.4
 typed-ast==1.1.0
 wrapt==1.10.11
+gunicorn
+django-heroku
+drfdocs
