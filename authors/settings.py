@@ -175,7 +175,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 12
 }
 
-VERIFCATION_URL = "http://localhost:3000/verify/"
+VERIFCATION_URL = env('VERIFCATION_URL')
 
 AUTHENTICATION_BACKENDS = (
     # Google OAuth2
