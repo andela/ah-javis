@@ -14,6 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import include, url
+from rest_framework.documentation import include_docs_urls
+from django.urls import path
 from django.contrib import admin
 import notifications.urls
 
@@ -31,4 +33,5 @@ urlpatterns = [
                           namespace='articles')),
     url('^inbox/notifications/',
         include(notifications.urls, namespace='notifications')),
+    path('', include_docs_urls(title='AH JARVIS'))
 ]

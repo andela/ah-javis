@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import environ
 import datetime
 import os
-import django_heroku
+
 
 """
 Create a .env file in you root folder(ah-jarvis/)
@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'social_django',
     'notifications',
-    'rest_framework_docs',
+    'redocs',
 
     'authors.apps.authentication',
     'authors.apps.core',
@@ -227,4 +227,3 @@ JWT_EXPIRATION_DELTA = datetime.timedelta(
     seconds=env("JWT_EXPIRATION_SECONDS", default=86401))
 
 CELERY_BROKER_URL = env('CELERY_BROKER_URL')
-django_heroku.settings(locals())
