@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import environ
 import datetime
 import os
-import django_heroku
+# import django_heroku
 
 
 """
@@ -214,6 +214,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
     'social_core.pipeline.user.user_details',
+    'authors.apps.authentication.pipeline.get_avatar'
 )
 # Email configurations
 EMAIL_HOST = 'smtp.sendgrid.net'
@@ -227,4 +228,4 @@ JWT_EXPIRATION_DELTA = datetime.timedelta(
     seconds=env("JWT_EXPIRATION_SECONDS", default=86401))
 
 CELERY_BROKER_URL = env('CELERY_BROKER_URL')
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
