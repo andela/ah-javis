@@ -9,7 +9,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     get_notifications = serializers.BooleanField(
         source='user.get_notifications')
     bio = serializers.CharField(allow_blank=True, required=False)
-    image = serializers.SerializerMethodField()
+    image = serializers.CharField(allow_blank=True, required=False)
 
     class Meta:
         model = Profile

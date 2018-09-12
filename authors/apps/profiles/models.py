@@ -11,7 +11,7 @@ class Profile(TimeModel):
     # are formalizing this relationship. Every user will have one -- and only
     # one -- related Profile model.
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE
-    )
+                                )
 
     # Each user profile will have a field where they can tell other users
     # something about themselves. This field will be empty when the user
@@ -20,7 +20,7 @@ class Profile(TimeModel):
 
     # In addition to the `bio` field, each user may have a profile image or
     # avatar. This field is not required and it may be blank.
-    image = models.URLField(blank=True)
+    image = models.TextField(blank=True)
 
     follows = models.ManyToManyField(
         'self', related_name='followed_by', symmetrical=False)
@@ -41,6 +41,7 @@ class Profile(TimeModel):
 
     def get_following(self, profile):
         return profile.follows.all()
+
     def favorite(self, article):
         self.favorites.add(article)
 
