@@ -20,4 +20,4 @@ class ProfileSerializer(serializers.ModelSerializer):
         if obj.image:
             return obj.image
 
-        return 'https://static.productionready.io/images/smiley-cyrus.jpg'
+        return 'https://cdn1.iconfinder.com/data/icons/social-messaging-productivity-1-1/128/gender-male2-512.png'
